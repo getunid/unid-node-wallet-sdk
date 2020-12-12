@@ -13,6 +13,10 @@ export class UNiD {
         this.operator = new UNiDDidOperator()
     }
 
+    public async getDidDocument(params: { did: string }) {
+        return await this.operator.resolve(params)
+    }
+
     public async registerDid(did: string) {
         return await this.operator.create({
             publicKeys: [],
@@ -34,11 +38,9 @@ export class UNiD {
         })
     }
 
-    public async getDidDocument(params: { did: string }) {
-        return await this.operator.resolve(params)
-    }
-
     public async updateDidDocument(did: string): Promise<void> {
+        console.log(this.context)
+
         throw new UNiDNotImplementedError()
     }
 }
