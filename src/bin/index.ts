@@ -1,4 +1,4 @@
-import { UNiD } from "src"
+import { UNiD } from ".."
 import { MongoDBClient } from "../adapters/mongodb"
 import { MongoDBConnector } from "../connector/mongodb"
 
@@ -11,7 +11,9 @@ import { MongoDBConnector } from "../connector/mongodb"
             client: client,
         })
         UNiD.init({
-            connector: connector,
+            clientId    : 'CLIENT_ID',
+            clientSecret: 'CLIENT_SECRET',
+            connector   : connector,
         })
 
         const DID = await UNiD.loadDid({

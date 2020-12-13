@@ -1,6 +1,6 @@
 import * as bip32 from 'bip32'
 import * as bip39 from 'bip39'
-import { BaseConnector, MnemonicKeyringModel } from 'src/connector/base'
+import { BaseConnector, MnemonicKeyringModel } from '../connector/base'
 import { Secp256k1 } from './secp256k1'
 
 interface BIP39Context {

@@ -1,12 +1,21 @@
 import { UNiDDidOperator, PublicKeyPurpose, UNiDDidDocument } from '@unid/did-operator'
+import { ConfigManager } from './config'
 import { BaseConnector } from './connector/base'
 import { UNiDDid } from './did'
 import { UNiDNotImplementedError } from "./error"
 import { KeyRingType } from './keyring'
 import { MnemonicKeyring, MnemonicKeyringOptions } from './keyring/mnemonic'
 
-interface UNiDContext {
-    connector: BaseConnector
+export enum UNiDNetworkType {
+    Mainnet,
+    Testnet
+}
+
+export interface UNiDContext {
+    clientId    : string,
+    clientSecret: string,
+    connector   : BaseConnector,
+    envNetwork? : UNiDNetworkType
 }
 
 const SIGNING_KEY_ID = 'signingKey'
@@ -14,7 +23,6 @@ const SIGNING_KEY_ID = 'signingKey'
 /**
  */
 class UNiDKlass {
-    private _context?: UNiDContext
     private readonly _operator: UNiDDidOperator
 
     /**
@@ -28,7 +36,7 @@ class UNiDKlass {
      * @param context 
      */
     public init(context: UNiDContext) {
-        this._context = context
+        ConfigManager.setContext(context)
     }
 
     /**
@@ -90,11 +98,7 @@ class UNiDKlass {
     /**
      */
     private get connector(): BaseConnector {
-        if (! this._context) {
-            throw new Error()
-        }
-
-        return this._context.connector
+        return ConfigManager.context.connector
     }
 }
 

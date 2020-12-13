@@ -28,13 +28,15 @@ export class MongoDBClient {
         if (MongoDBClient.$conn === undefined) {
             throw new Error()
         }
+
         return MongoDBClient.$conn
     }
 
-    public static kill(): void {
+    public static async kill(): Promise<void> {
         if (MongoDBClient.$conn === undefined) {
             throw new Error()
         }
-        MongoDBClient.$conn.close()
+
+        await MongoDBClient.$conn.close()
     }
 }

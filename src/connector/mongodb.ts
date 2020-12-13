@@ -1,5 +1,5 @@
 import { Db } from 'mongodb'
-import { MongoDBClient } from "src/adapters/mongodb";
+import { MongoDBClient } from "../adapters/mongodb";
 import { BaseConnector, MnemonicKeyringModel } from "./base";
 
 interface MongoDBConnectorContext {

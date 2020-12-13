@@ -1,4 +1,4 @@
-import { Secp256k1HexKeyPair } from 'src/keyring/secp256k1'
+import { Secp256k1HexKeyPair } from '../keyring/secp256k1'
 
 export interface MnemonicKeyringModel {
     did?    : string,

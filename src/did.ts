@@ -1,4 +1,4 @@
-import { MnemonicKeyring } from 'src/keyring/mnemonic'
+import { MnemonicKeyring } from './keyring/mnemonic'
 
 export class UNiDDid {
     private keyring: MnemonicKeyring
