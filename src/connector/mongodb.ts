@@ -2,13 +2,17 @@ import { Db } from 'mongodb'
 import { MongoDBClient } from "src/adapters/mongodb";
 import { BaseConnector, MnemonicKeyringModel } from "./base";
 
+interface MongoDBConnectorContext {
+    client: MongoDBClient
+}
+
 export class MongoDBConnector implements BaseConnector {
     private database: Db
 
     private readonly DATABASE_NAME: string   = 'node_wallet_sdk'
     private readonly COLLECTION_NAME: string = 'keyring'
 
-    constructor(client: MongoDBClient) {
+    constructor(context: MongoDBConnectorContext) {
         this.database = MongoDBClient.agent.db(this.DATABASE_NAME, {})
     }
 

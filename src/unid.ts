@@ -13,16 +13,22 @@ const SIGNING_KEY_ID = 'signingKey'
 
 /**
  */
-export class UNiD {
-    private readonly _context: UNiDContext
+class UNiDKlass {
+    private _context?: UNiDContext
     private readonly _operator: UNiDDidOperator
 
     /**
      * @param context 
      */
-    public constructor(context: UNiDContext) {
-        this._context  = context
+    public constructor() {
         this._operator = new UNiDDidOperator()
+    }
+
+    /**
+     * @param context 
+     */
+    public init(context: UNiDContext) {
+        this._context = context
     }
 
     /**
@@ -84,6 +90,12 @@ export class UNiD {
     /**
      */
     private get connector(): BaseConnector {
+        if (! this._context) {
+            throw new Error()
+        }
+
         return this._context.connector
     }
 }
+
+export const UNiD = new UNiDKlass()
