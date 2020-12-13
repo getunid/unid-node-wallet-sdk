@@ -1,5 +1,11 @@
+import { MnemonicKeyring } from 'src/keyring/mnemonic'
+
 export class DID {
-    constructor() {}
+    private keyring: MnemonicKeyring
+
+    constructor(keyring: MnemonicKeyring) {
+        this.keyring = keyring
+    }
 
     /**
      */

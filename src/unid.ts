@@ -1,60 +1,69 @@
-import { UNiDDidOperator, PublicKeyPurpose } from '@unid/did-operator'
+import { UNiDDidOperator, PublicKeyPurpose, UNiDDidDocument } from '@unid/did-operator'
+import { BaseConnector } from './connector/base'
 import { UNiDNotImplementedError } from "./error"
 import { KeyRingType } from './keyring'
 import { MnemonicKeyring, MnemonicKeyringOptions } from './keyring/mnemonic'
 
 interface UNiDContext {
+    connector: BaseConnector
 }
 
-export class UNiD {
-    private readonly context: UNiDContext
-    private readonly operator: UNiDDidOperator
+const SIGNING_KEY_ID = 'signingKey'
 
+/**
+ */
+export class UNiD {
+    private readonly _context: UNiDContext
+    private readonly _operator: UNiDDidOperator
+
+    /**
+     * @param context 
+     */
     public constructor(context: UNiDContext) {
-        this.context  = context
-        this.operator = new UNiDDidOperator()
+        this._context  = context
+        this._operator = new UNiDDidOperator()
     }
 
     /**
      */
     public async loadDid(params: { did: string }) {
-        console.log(this.context)
+        console.log(this._context)
     }
 
     /**
      */
-    public async createDidDocument(type: KeyRingType.Mnemonic, options?: MnemonicKeyringOptions): Promise<void>
-    public async createDidDocument(type: KeyRingType, options?: MnemonicKeyringOptions) {
+    public async createDidDocument(type: KeyRingType.Mnemonic, options?: MnemonicKeyringOptions): Promise<UNiDDidDocument>
+    public async createDidDocument(type: KeyRingType, options?: MnemonicKeyringOptions): Promise<UNiDDidDocument> {
         switch (type) {
-        case KeyRingType.Mnemonic:
-            const _options   = options as MnemonicKeyringOptions
-            const _keyring   = await MnemonicKeyring.createKeyring(_options)
-            const _signKeyId = 'signingKey'
+            case KeyRingType.Mnemonic: {
+                const mnemonicOptions = options as MnemonicKeyringOptions
+                const keyring  = await MnemonicKeyring.createKeyring(this.connector, mnemonicOptions)
+                const document = await this._operator.create({
+                    publicKeys: [
+                        keyring.signKeyPair.toPublicKey(SIGNING_KEY_ID, Object.values(PublicKeyPurpose))
+                    ],
+                    commitmentKeys: {
+                        update  : keyring.updateKeyPair.toJwk(),
+                        recovery: keyring.recoveryKeyPair.toJwk(),
+                    },
+                    serviceEndpoints: []
+                })
 
-            const r = await this.operator.create({
-                publicKeys: [{
-                    id  : _signKeyId,
-                    type: 'EcdsaSecp256k1VerificationKey2019',
-                    jwk : _keyring.signKeyPair.toJwk(),
-                    purpose: Object.values(PublicKeyPurpose),
-                }],
-                commitmentKeys: {
-                    update: _keyring.updateKeyPair.toJwk(),
-                    recovery: _keyring.recoverKeyPair.toJwk(),
-                },
-                serviceEndpoints: []
-            })
+                // [TODO]: ローカルストアに鍵リングと DID を記録する
 
-            console.log(r)
-            break
+                return document
+            }
+            default: {
+                throw new Error()
+            }
         }
     }
 
     /**
      * @param params 
      */
-    public async getDidDocument(params: { did: string }) {
-        return await this.operator.resolve(params)
+    public async getDidDocument(params: { did: string }): Promise<UNiDDidDocument> {
+        return await this._operator.resolve(params)
     }
 
     /**
@@ -67,5 +76,11 @@ export class UNiD {
      */
     public async validateCredential() {
         throw new UNiDNotImplementedError()
+    }
+
+    /**
+     */
+    private get connector(): BaseConnector {
+        return this._context.connector
     }
 }
