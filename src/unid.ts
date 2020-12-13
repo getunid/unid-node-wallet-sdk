@@ -1,5 +1,6 @@
 import { UNiDDidOperator, PublicKeyPurpose, UNiDDidDocument } from '@unid/did-operator'
 import { BaseConnector } from './connector/base'
+import { UNiDDid } from './did'
 import { UNiDNotImplementedError } from "./error"
 import { KeyRingType } from './keyring'
 import { MnemonicKeyring, MnemonicKeyringOptions } from './keyring/mnemonic'
@@ -26,14 +27,16 @@ export class UNiD {
 
     /**
      */
-    public async loadDid(params: { did: string }) {
-        console.log(this._context)
+    public async loadDid(params: { did: string }): Promise<UNiDDid> {
+        return new UNiDDid(
+            await MnemonicKeyring.loadKeyring(this.connector, params.did)
+        )
     }
 
     /**
      */
-    public async createDidDocument(type: KeyRingType.Mnemonic, options?: MnemonicKeyringOptions): Promise<UNiDDidDocument>
-    public async createDidDocument(type: KeyRingType, options?: MnemonicKeyringOptions): Promise<UNiDDidDocument> {
+    public async createDidDocument(type: KeyRingType.Mnemonic, options?: MnemonicKeyringOptions): Promise<UNiDDid>
+    public async createDidDocument(type: KeyRingType, options?: MnemonicKeyringOptions): Promise<UNiDDid> {
         switch (type) {
             case KeyRingType.Mnemonic: {
                 const mnemonicOptions = options as MnemonicKeyringOptions
@@ -49,9 +52,9 @@ export class UNiD {
                     serviceEndpoints: []
                 })
 
-                // [TODO]: ローカルストアに鍵リングと DID を記録する
+                await keyring.setDid(document.identifier)
 
-                return document
+                return new UNiDDid(keyring)
             }
             default: {
                 throw new Error()

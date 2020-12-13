@@ -14,6 +14,7 @@ export class MongoDBClient {
 
         const config: MongoClientOptions = {
             useNewUrlParser: true,
+            useUnifiedTopology: true,
         }
 
         if (MongoDBClient.$conn === undefined) {
@@ -28,5 +29,12 @@ export class MongoDBClient {
             throw new Error()
         }
         return MongoDBClient.$conn
+    }
+
+    public static kill(): void {
+        if (MongoDBClient.$conn === undefined) {
+            throw new Error()
+        }
+        MongoDBClient.$conn.close()
     }
 }

@@ -1,7 +1,6 @@
 import { Db } from 'mongodb'
 import { MongoDBClient } from "src/adapters/mongodb";
-import { BaseConnector } from "./base";
-import { MnemonicKeyringModel } from 'src/keyring/mnemonic'
+import { BaseConnector, MnemonicKeyringModel } from "./base";
 
 export class MongoDBConnector implements BaseConnector {
     private database: Db
@@ -13,14 +12,30 @@ export class MongoDBConnector implements BaseConnector {
         this.database = MongoDBClient.agent.db(this.DATABASE_NAME, {})
     }
 
-    public async upsert(payload: MnemonicKeyringModel): Promise<MnemonicKeyringModel> {
+    async upsert(payload: MnemonicKeyringModel): Promise<MnemonicKeyringModel> {
         const coll = this.database.collection<MnemonicKeyringModel>(this.COLLECTION_NAME, {})
-        const item = await coll.findOne({ did: payload.did })
+        const item = await coll.findOne({
+            $or: [{
+                did: payload.did,
+            }, {
+                sign    : payload.sign,
+                update  : payload.update,
+                recovery: payload.recovery,
+            }]
+        })
 
         if (item) {
-            await coll.updateOne({
-                did: payload.did,
-            }, payload)
+            await coll.updateOne({ 
+                $or: [{
+                    did: payload.did,
+                }, {
+                    sign    : payload.sign,
+                    update  : payload.update,
+                    recovery: payload.recovery,
+                }]
+            }, {
+                $set: payload,
+            })
         } else {
             await coll.insertOne(payload)
         }
@@ -28,9 +43,9 @@ export class MongoDBConnector implements BaseConnector {
         return payload
     }
 
-    public async findById(did: string): Promise<MnemonicKeyringModel | undefined> {
+    async findByDid(did: string): Promise<MnemonicKeyringModel | undefined> {
         const coll = this.database.collection<MnemonicKeyringModel>(this.COLLECTION_NAME, {})
-        const item = await coll.findOne({ did })
+        const item = await coll.findOne({ did: did })
 
         if (item) {
             return item
@@ -39,7 +54,7 @@ export class MongoDBConnector implements BaseConnector {
         }
     }
 
-    public async deleteById(payload: MnemonicKeyringModel): Promise<MnemonicKeyringModel> {
+    async deleteById(payload: MnemonicKeyringModel): Promise<MnemonicKeyringModel> {
         throw new Error()
     }
 }

@@ -7,6 +7,11 @@ interface Secp256k1Context {
     private: Buffer,
 }
 
+export interface Secp256k1HexKeyPair {
+    public : string,
+    private: string,
+}
+
 const PRIVATE_KEY_SIZE            : number = 32 // Buffer(PrivateKey (32 = 256 bit))
 const COMPRESSED_PUBLIC_KEY_SIZE  : number = 33 // Buffer(0x04 + PublicKey (32 = 256 bit))
 const UNCOMPRESSED_PUBLIC_KEY_SIZE: number = 65 // Buffer(0x04 + PublicKey (64 = 512 bit))
@@ -24,10 +29,19 @@ export class Secp256k1 {
         }
         this._private = context.private
 
-        if (context.public.length !== COMPRESSED_PUBLIC_KEY_SIZE) {
-            throw new Error()
+        switch (context.public.length) {
+            case COMPRESSED_PUBLIC_KEY_SIZE: {
+                this._public = this.transformUncompressedPublicKey(context.public)
+                break
+            }
+            case UNCOMPRESSED_PUBLIC_KEY_SIZE: {
+                this._public = context.public
+                break
+            }
+            default: {
+                throw new Error()
+            }
         }
-        this._public = this.transformUncompressedPublicKey(context.public)
     }
 
     /**
@@ -44,33 +58,32 @@ export class Secp256k1 {
 
     /**
      */
-    public toKeyPair(): KeyPair.Secp256K1 {
-        if (! this.validatePoint(this.pointX, this.pointY)) {
-            throw new Error()
-        }
-
+    public toHexKeyPair(): Secp256k1HexKeyPair {
         return {
-            kty: 'EC',
-            crv: 'secp256k1',
-            x  : base64url.encode(this.pointX),
-            y  : base64url.encode(this.pointY),
-            d  : base64url.encode(this.privateKey),
+            public : this.publicKey.toString('hex'),
+            private: this.privateKey.toString('hex'),
         }
     }
 
     /**
      */
-    public toJwk(): KeyPair.Secp256K1 {
+    public toJwk(includedPrivateKey: boolean = false): KeyPair.Secp256K1 {
         if (! this.validatePoint(this.pointX, this.pointY)) {
             throw new Error()
         }
 
-        return {
+        const jwt: KeyPair.Secp256K1 = {
             kty: 'EC',
             crv: 'secp256k1',
             x  : base64url.encode(this.pointX),
             y  : base64url.encode(this.pointY),
         }
+
+        if (includedPrivateKey) {
+            jwt.d = base64url.encode(this.privateKey)
+        }
+
+        return jwt
     }
 
     /**

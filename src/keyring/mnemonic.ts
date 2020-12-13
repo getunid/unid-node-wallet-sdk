@@ -1,6 +1,6 @@
 import * as bip32 from 'bip32'
 import * as bip39 from 'bip39'
-import { BaseConnector } from 'src/connector/base'
+import { BaseConnector, MnemonicKeyringModel } from 'src/connector/base'
 import { Secp256k1 } from './secp256k1'
 
 interface BIP39Context {
@@ -21,16 +21,12 @@ export interface MnemonicKeyringOptions {
     length: BIP39PhraseSize
 }
 
-export interface MnemonicKeyringModel {
-    did?     : string
+interface MnemonicKeyringContext {
+    connector: BaseConnector
     context  : BIP39Context
     sign     : Secp256k1
     update   : Secp256k1
     recovery : Secp256k1
-}
-
-interface MnemonicKeyringContext extends MnemonicKeyringModel {
-    connector: BaseConnector
 }
 
 export class MnemonicKeyring {
@@ -45,6 +41,7 @@ export class MnemonicKeyring {
     private sign     : Secp256k1
     private update   : Secp256k1
     private recovery : Secp256k1
+    private keyring? : MnemonicKeyringModel
 
     /**
      * @param context 
@@ -58,20 +55,37 @@ export class MnemonicKeyring {
     }
 
     /**
+     * @param keyring 
      */
-    private async save() {
-        return await this.connector.upsert({
-            did     : undefined,
-            context : this.context,
-            sign    : this.sign,
-            update  : this.update,
-            recovery: this.recovery
-        })
+    private setKeyring(keyring: MnemonicKeyringModel): void {
+        this.keyring = keyring
     }
 
-    // private async load(did: string) {
-    //     return await this.connector.findById(did)
-    // }
+    /**
+     */
+    private async saveContext(did?: string): Promise<MnemonicKeyringModel> {
+        const keyring = await this.connector.upsert({
+            did     : did,
+            sign    : this.sign.toHexKeyPair(),
+            update  : this.update.toHexKeyPair(),
+            recovery: this.recovery.toHexKeyPair(),
+            seed    : this.context.seed.toString('hex'),
+            mnemonic: this.context.mnemonic,
+        })
+
+        return keyring
+    }
+
+    public async setDid(did: string): Promise<MnemonicKeyringModel> {
+        const item = await this.connector.findByDid(did)
+
+        if (! item) {
+            throw new Error()
+        }
+        this.setKeyring(await this.saveContext(did))
+
+        return item
+    }
 
     /**
      * @param connector 
@@ -89,7 +103,7 @@ export class MnemonicKeyring {
             update   : update,
             recovery : recovery,
         })
-        await instance.save()
+        instance.setKeyring(await instance.saveContext())
 
         return instance
     }
@@ -97,13 +111,49 @@ export class MnemonicKeyring {
     /**
      * @param connector 
      */
-    public static loadKeyring(connector: BaseConnector) {
+    public static async loadKeyring(connector: BaseConnector, did: string): Promise<MnemonicKeyring> {
+        const keyring = await connector.findByDid(did)
+
+        if (! keyring) {
+            throw new Error()
+        }
+
+        const context: BIP39Context = {
+            mnemonic: keyring.mnemonic,
+            seed    : Buffer.from(keyring.seed, 'hex'),
+        }
+        const sign: Secp256k1 = new Secp256k1({
+            public : Buffer.from(keyring.sign.public , 'hex'),
+            private: Buffer.from(keyring.sign.private, 'hex'),
+        })
+        const update: Secp256k1 = new Secp256k1({
+            public : Buffer.from(keyring.update.public , 'hex'),
+            private: Buffer.from(keyring.update.private, 'hex')
+        })
+        const recovery: Secp256k1 = new Secp256k1({
+            public : Buffer.from(keyring.recovery.public , 'hex'),
+            private: Buffer.from(keyring.recovery.private, 'hex')
+        })
+        const instance = new MnemonicKeyring({
+            connector: connector,
+            context  : context,
+            sign     : sign,
+            update   : update,
+            recovery : recovery,
+        })
+        instance.setKeyring(keyring)
+
+        return instance
     }
 
     /**
      */
     public get identifier(): string {
-        return ''
+        if ((! this.keyring) || (! this.keyring.did)) {
+            throw new Error()
+        }
+
+        return this.keyring.did
     }
 
     /**
@@ -116,8 +166,8 @@ export class MnemonicKeyring {
      * @param seeds 
      * @param persistent 
      */
-    public async verifySeedPhrase(seeds: Array<string>, isPersistent: boolean = false): Promise<boolean> {
-        const mnemonic = seeds.map((v) => { return v.trim() }).join(' ')
+    public async verifySeedPhrase(phrase: Array<string>, isPersistent: boolean = false): Promise<boolean> {
+        const mnemonic = phrase.map((v) => { return v.trim() }).join(' ')
         const isValid  = (this.context.mnemonic === mnemonic)
 
         if (isValid) {

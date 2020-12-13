@@ -1,6 +1,6 @@
 import { MnemonicKeyring } from 'src/keyring/mnemonic'
 
-export class DID {
+export class UNiDDid {
     private keyring: MnemonicKeyring
 
     constructor(keyring: MnemonicKeyring) {
@@ -9,19 +9,26 @@ export class DID {
 
     /**
      */
-    public async getSeedPhrase() {}
+    public async getSeedPhrase(): Promise<Array<string>> {
+        return this.keyring.getSeedPhrases()
+    }
 
     /**
      */
-    public async verifySeedPhrase() {}
+    public async verifySeedPhrase(phrase: Array<string>): Promise<boolean> {
+        return this.keyring.verifySeedPhrase(phrase)
+    }
 
     /**
      */
-    public async getIdentifier() {}
+    public async getIdentifier(): Promise<string> {
+        return this.keyring.identifier
+    }
 
     /**
      */
-    public async getDidDocument() {}
+    public async getDidDocument() {
+    }
 
     /**
      */
