@@ -1,6 +1,6 @@
 {
   "name": "@unid/node-wallet-sdk",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "main": "libs/index.js",
   "types": "libs/index.d.ts",
   "author": "UNiD <>",
