@@ -76,15 +76,14 @@ export class MnemonicKeyring {
         return keyring
     }
 
-    public async setDid(did: string): Promise<MnemonicKeyringModel> {
+    public async setDid(did: string): Promise<void> {
         const item = await this.connector.findByDid(did)
 
-        if (! item) {
+        if (item) {
             throw new Error()
         }
-        this.setKeyring(await this.saveContext(did))
 
-        return item
+        this.setKeyring(await this.saveContext(did))
     }
 
     /**
@@ -166,12 +165,12 @@ export class MnemonicKeyring {
      * @param seeds 
      * @param persistent 
      */
-    public async verifySeedPhrase(phrase: Array<string>, isPersistent: boolean = false): Promise<boolean> {
+    public async verifySeedPhrase(phrase: Array<string>, option: { isPersistent: boolean } = { isPersistent: false }): Promise<boolean> {
         const mnemonic = phrase.map((v) => { return v.trim() }).join(' ')
         const isValid  = (this.context.mnemonic === mnemonic)
 
         if (isValid) {
-            if (! isPersistent) {
+            if (! option.isPersistent) {
                 // Remove mnemonic phrase from local datastore
             }
         }

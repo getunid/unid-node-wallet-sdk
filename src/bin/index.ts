@@ -1,3 +1,4 @@
+// import { KeyRingType } from "src/keyring"
 import { UNiD } from ".."
 import { MongoDBClient } from "../adapters/mongodb"
 import { MongoDBConnector } from "../connector/mongodb"
@@ -17,11 +18,12 @@ import { MongoDBConnector } from "../connector/mongodb"
         })
 
         const DID = await UNiD.loadDid({
-            did: 'did:unid:test:EiDn8meFflBpqoAlcUF3Nmh1TyvJeEygpThWm77HF6zpqg'
+            did: 'did:unid:test:EiBtzgWy130lNOyO3JsHkR75YFeSgU7h4p6zYvfQxrAXeA',
         })
-        const did = await DID.getIdentifier()
 
-        console.log('did =', did)
+        console.log(DID.getIdentifier())
+        console.log(DID.getSeedPhrase())
+        console.log(JSON.stringify(await DID.getDidDocument(), null, 2))
 
         MongoDBClient.kill()
     } catch (err) {

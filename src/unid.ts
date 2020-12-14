@@ -23,13 +23,13 @@ const SIGNING_KEY_ID = 'signingKey'
 /**
  */
 class UNiDKlass {
-    private readonly _operator: UNiDDidOperator
+    private readonly operator: UNiDDidOperator
 
     /**
      * @param context 
      */
     public constructor() {
-        this._operator = new UNiDDidOperator()
+        this.operator = new UNiDDidOperator()
     }
 
     /**
@@ -42,9 +42,12 @@ class UNiDKlass {
     /**
      */
     public async loadDid(params: { did: string }): Promise<UNiDDid> {
-        return new UNiDDid(
-            await MnemonicKeyring.loadKeyring(this.connector, params.did)
-        )
+        const keyring = await MnemonicKeyring.loadKeyring(this.connector, params.did)
+
+        return new UNiDDid({
+            keyring : keyring,
+            operator: this.operator,
+        })
     }
 
     /**
@@ -55,7 +58,7 @@ class UNiDKlass {
             case KeyRingType.Mnemonic: {
                 const mnemonicOptions = options as MnemonicKeyringOptions
                 const keyring  = await MnemonicKeyring.createKeyring(this.connector, mnemonicOptions)
-                const document = await this._operator.create({
+                const document = await this.operator.create({
                     publicKeys: [
                         keyring.signKeyPair.toPublicKey(SIGNING_KEY_ID, Object.values(PublicKeyPurpose))
                     ],
@@ -68,7 +71,10 @@ class UNiDKlass {
 
                 await keyring.setDid(document.identifier)
 
-                return new UNiDDid(keyring)
+                return new UNiDDid({
+                    keyring : keyring,
+                    operator: this.operator,
+                })
             }
             default: {
                 throw new Error()
@@ -80,7 +86,7 @@ class UNiDKlass {
      * @param params 
      */
     public async getDidDocument(params: { did: string }): Promise<UNiDDidDocument> {
-        return await this._operator.resolve(params)
+        return await this.operator.resolve(params)
     }
 
     /**
