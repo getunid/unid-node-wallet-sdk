@@ -4,11 +4,16 @@
   "main": "libs/index.js",
   "types": "libs/index.d.ts",
   "author": "UNiD <>",
+  "contributors": [
+    "vaachii <s@pws.jp>"
+  ],
   "license": "Apache-2.0",
   "repository": "git@github.com:getunid/unid-node-wallet-sdk.git",
   "files": [
     "libs/**/*",
-    "bin/**/*"
+    "bin/**/*",
+    "LICENSE",
+    "README.md"
   ],
   "scripts": {
     "build": "npx tsc",
