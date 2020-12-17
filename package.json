@@ -1,5 +1,5 @@
 {
-  "name": "@unid/node-wallet-sdk",
+  "name": "@unid/nodejs-sdk",
   "version": "0.0.4",
   "main": "libs/index.js",
   "types": "libs/index.d.ts",
@@ -8,7 +8,7 @@
     "vaachii <s@pws.jp>"
   ],
   "license": "Apache-2.0",
-  "repository": "git@github.com:getunid/unid-node-wallet-sdk.git",
+  "repository": "git@github.com:getunid/unid-nodejs-sdk.git",
   "files": [
     "libs/**/*",
     "bin/**/*",
