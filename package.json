@@ -40,6 +40,7 @@
     "jsonld": "^3.2.0",
     "jsonld-signatures": "^6.0.0",
     "mongodb": "^3.6.3",
+    "schema-dts": "^0.8.2",
     "secp256k1": "^4.0.2",
     "secp256k1-pure": "^3.5.2",
     "tslib": "^2.0.3",

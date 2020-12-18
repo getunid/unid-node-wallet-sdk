@@ -147,7 +147,7 @@ export class MnemonicKeyring {
 
     /**
      */
-    public get identifier(): string {
+    public getIdentifier(): string {
         if ((! this.keyring) || (! this.keyring.did)) {
             throw new Error()
         }
@@ -180,19 +180,19 @@ export class MnemonicKeyring {
 
     /**
      */
-    public get signKeyPair(): Secp256k1 {
+    public getSignKeyPair(): Secp256k1 {
         return this.sign
     }
 
     /**
      */
-    public get updateKeyPair(): Secp256k1 {
+    public getUpdateKeyPair(): Secp256k1 {
         return this.update
     }
 
     /**
      */
-    public get recoveryKeyPair(): Secp256k1 {
+    public getRecoveryKeyPair(): Secp256k1 {
         return this.recovery
     }
 

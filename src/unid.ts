@@ -52,19 +52,19 @@ class UNiDKlass {
 
     /**
      */
-    public async createDidDocument(type: KeyRingType.Mnemonic, options?: MnemonicKeyringOptions): Promise<UNiDDid>
-    public async createDidDocument(type: KeyRingType, options?: MnemonicKeyringOptions): Promise<UNiDDid> {
+    public async createDid(type: KeyRingType.Mnemonic, options?: MnemonicKeyringOptions): Promise<UNiDDid>
+    public async createDid(type: KeyRingType, options?: MnemonicKeyringOptions): Promise<UNiDDid> {
         switch (type) {
             case KeyRingType.Mnemonic: {
                 const mnemonicOptions = options as MnemonicKeyringOptions
                 const keyring  = await MnemonicKeyring.createKeyring(this.connector, mnemonicOptions)
                 const document = await this.operator.create({
                     publicKeys: [
-                        keyring.signKeyPair.toPublicKey(SIGNING_KEY_ID, Object.values(PublicKeyPurpose))
+                        keyring.getSignKeyPair().toPublicKey(SIGNING_KEY_ID, Object.values(PublicKeyPurpose))
                     ],
                     commitmentKeys: {
-                        update  : keyring.updateKeyPair.toJwk(),
-                        recovery: keyring.recoveryKeyPair.toJwk(),
+                        update  : keyring.getUpdateKeyPair().toJwk(),
+                        recovery: keyring.getRecoveryKeyPair().toJwk(),
                     },
                     serviceEndpoints: []
                 })

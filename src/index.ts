@@ -1,9 +1,12 @@
+import { UNiD, UNiDNetworkType } from './unid'
 import { MongoDBClient } from './adapters/mongodb'
 import { MongoDBConnector } from './connector/mongodb'
-import { UNiD } from './unid'
+import { KeyRingType } from './keyring/index'
 
 export {
     UNiD,
+    UNiDNetworkType,
     MongoDBClient,
     MongoDBConnector,
+    KeyRingType,
 }

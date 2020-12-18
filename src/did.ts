@@ -23,14 +23,14 @@ export class UNiDDid {
 
     /**
      */
-    public async verifySeedPhrase(phrase: Array<string>): Promise<boolean> {
-        return this.keyring.verifySeedPhrase(phrase)
+    public async verifySeedPhrase(phrase: Array<string>, option: { isPersistent: boolean } = { isPersistent: false }): Promise<boolean> {
+        return this.keyring.verifySeedPhrase(phrase, option)
     }
 
     /**
      */
     public getIdentifier(): string {
-        return this.keyring.identifier
+        return this.keyring.getIdentifier()
     }
 
     /**

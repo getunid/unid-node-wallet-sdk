@@ -4804,6 +4804,11 @@ saxes@^5.0.0:
   dependencies:
     xmlchars "^2.2.0"
 
+schema-dts@^0.8.2:
+  version "0.8.2"
+  resolved "https://npm-registry.getunid.io/schema-dts/-/schema-dts-0.8.2.tgz#4a478eec4119023456e3c41b23744af69ff7a8fc"
+  integrity sha512-whRg7QF9wmPfrwAi4NRT/bjMBIdHvzpr4excNN00hn+U2aFXx9NB3JKfooUMJLDqpGEqnZpA61f5muw9lQ50ZA==
+
 secp256k1-pure@^3.5.2:
   version "3.5.2"
   resolved "https://npm-registry.getunid.io/secp256k1-pure/-/secp256k1-pure-3.5.2.tgz#947fe6a3d5863b4c78767edd5034a56f07cdd2b9"
