@@ -1,10 +1,12 @@
 import crypto from 'crypto'
 
+/**
+ */
 export class Cipher {
-    private static readonly ALGORITHM: string   = 'aes-256-cbc'
-    private static readonly IV_LENGTH: number   = 16 // 128 Bit
-    private static readonly SALT_LENGTH: number = 32 // 256 Bit
-    private static readonly PASS_LENGTH: number = 32 // 256 Bit
+    public static readonly ALGORITHM: string   = 'aes-256-cbc'
+    public static readonly IV_LENGTH: number   = 16 // 128 Bit
+    public static readonly SALT_LENGTH: number = 32 // 256 Bit
+    public static readonly PASS_LENGTH: number = 32 // 256 Bit
 
     private constructor() {}
 

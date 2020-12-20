@@ -23,7 +23,7 @@ test('Cipher#enc/dec - 2', async () => {
 })
 
 test('Cipher#dec - 1', async () => {
-    const data = crypto.randomBytes((16 + 32) - 1)
+    const data = crypto.randomBytes((Cipher.SALT_LENGTH + Cipher.IV_LENGTH) - 1)
     const secret: Buffer = Buffer.from('secret', 'utf-8')
 
     await expect(async () => {

@@ -46,13 +46,13 @@ export class Secp256k1 {
 
     /**
      */
-    public get publicKey(): Buffer {
+    public getPublicKey(): Buffer {
         return this._public
     }
 
     /**
      */
-    public get privateKey(): Buffer {
+    public getPrivateKey(): Buffer {
         return this._private
     }
 
@@ -60,27 +60,27 @@ export class Secp256k1 {
      */
     public toHexKeyPair(): Secp256k1HexKeyPair {
         return {
-            public : this.publicKey.toString('hex'),
-            private: this.privateKey.toString('hex'),
+            public : this.getPublicKey().toString('hex'),
+            private: this.getPrivateKey().toString('hex'),
         }
     }
 
     /**
      */
     public toJwk(includedPrivateKey: boolean = false): KeyPair.Secp256K1 {
-        if (! this.validatePoint(this.pointX, this.pointY)) {
+        if (! this.validatePoint()) {
             throw new Error()
         }
 
         const jwt: KeyPair.Secp256K1 = {
             kty: 'EC',
             crv: 'secp256k1',
-            x  : base64url.encode(this.pointX),
-            y  : base64url.encode(this.pointY),
+            x  : base64url.encode(this.getPointX()),
+            y  : base64url.encode(this.getPointY()),
         }
 
         if (includedPrivateKey) {
-            jwt.d = base64url.encode(this.privateKey)
+            jwt.d = base64url.encode(this.getPrivateKey())
         }
 
         return jwt
@@ -89,7 +89,7 @@ export class Secp256k1 {
     /**
      */
     public toPublicKey(id: string, purpose: Array<string>): DidPublicKey {
-        if (! this.validatePoint(this.pointX, this.pointY)) {
+        if (! this.validatePoint()) {
             throw new Error()
         }
 
@@ -103,14 +103,14 @@ export class Secp256k1 {
 
     /**
      */
-    private get pointX(): Buffer {
-        if (this.publicKey.length !== UNCOMPRESSED_PUBLIC_KEY_SIZE) {
+    public getPointX(): Buffer {
+        if (this.getPublicKey().length !== UNCOMPRESSED_PUBLIC_KEY_SIZE) {
             throw new Error()
         }
-        if (this.publicKey[0] !== 0x04) {
+        if (this.getPublicKey()[0] !== 0x04) {
             throw new Error()
         }
-        const n = this.publicKey.slice(1)
+        const n = this.getPublicKey().slice(1)
         const s = n.slice(0, 32)
 
         return s
@@ -118,26 +118,24 @@ export class Secp256k1 {
     
     /**
      */
-    private get pointY(): Buffer {
-        if (this.publicKey.length !== UNCOMPRESSED_PUBLIC_KEY_SIZE) {
+    public getPointY(): Buffer {
+        if (this.getPublicKey().length !== UNCOMPRESSED_PUBLIC_KEY_SIZE) {
             throw new Error()
         }
-        if (this.publicKey[0] !== 0x04) {
+        if (this.getPublicKey()[0] !== 0x04) {
             throw new Error()
         }
-        const n = this.publicKey.slice(1)
+        const n = this.getPublicKey().slice(1)
         const s = n.slice(32)
 
         return s
     }
     
     /**
-     * @param x 
-     * @param y 
      */
-    public validatePoint(x: Buffer, y: Buffer): boolean {
-        const nx = parseInt(x.toString('hex'), 16)
-        const ny = parseInt(y.toString('hex'), 16)
+    public validatePoint(): boolean {
+        const nx = parseInt(this.getPointX().toString('hex'), 16)
+        const ny = parseInt(this.getPointY().toString('hex'), 16)
         const np = parseInt('FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEFFFFFC2F', 16)
     
         return ((ny * ny - nx * nx * nx - 7) % np === 0)
@@ -147,6 +145,6 @@ export class Secp256k1 {
      * @param compressed 
      */
     private transformUncompressedPublicKey(compressed: Buffer): Buffer {
-        return Buffer.from(secp256k1.publicKeyConvert(compressed, false))
+        return Buffer.from(secp256k1.publicKeyConvert(Uint8Array.from(compressed), false))
     }
 }
