@@ -1,22 +1,22 @@
-interface PostalAddress {
-    '@type': 'PostalAddress',
-    addressCountry: string,
-    addressLocality: string,
-    addressRegion: string,
-    postalCode: string,
-    streetAddress: string,
-}
+import { PostalAddress, Text } from 'schema-dts'
+import { UNiDVerifiableCredential } from '.';
 
-interface AddressPerson {
+// AddressCredentialV1
+
+export interface AddressPerson {
+    '@id'  : Readonly<Text>,
     '@type': 'AddressPerson',
     address: PostalAddress,
 }
 
-// AddressCredentialV1
-
-interface AddressOrganization {
+export interface AddressOrganization {
+    '@id'  : Readonly<Text>,
     '@type': 'AddressOrganization',
     address: PostalAddress,
 }
 
-// AddressCredentialV1
+export type AddressCredentialV1 = UNiDVerifiableCredential<
+    'https://docs.unid.plus/docs/2020/credentials/address',
+    'AddressPerson' | 'AddressOrganization',
+    AddressPerson | AddressOrganization
+>

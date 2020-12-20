@@ -1,8 +1,9 @@
-import { Secp256k1 as Context } from "./keyring/secp256k1";
+import { Secp256k1 as Context } from "../keyring/secp256k1";
 import crypto from 'crypto'
 import secp256k1 from 'secp256k1'
 import base64url from 'base64url'
 import lodash from 'lodash'
+import { DateTimeTypes, DateTimeUtils } from "../utils/datetime";
 
 interface JwsHeader {
     alg: 'ES256K',
@@ -11,7 +12,7 @@ interface JwsHeader {
 }
 
 export interface ProofContext {
-    proof: {
+    proof?: {
         type: 'EcdsaSecp256k1Signature2019',
         proofPurpose: 'authentication',
         created: string,
@@ -33,12 +34,13 @@ export class JsonLdSigner {
             throw new Error()
         }
 
+        const created = (new DateTimeUtils(new Date())).$toString(DateTimeTypes.default)
         const jws = await Jws.encode(object, context)
         const proof: ProofContext = {
             proof: {
                 type: 'EcdsaSecp256k1Signature2019',
                 proofPurpose: 'authentication',
-                created: '',
+                created: created,
                 verificationMethod: '',
                 jws: jws,
             }
@@ -55,7 +57,12 @@ export class JsonLdSigner {
             throw new Error()
         }
 
-        const proof  = $object.proof
+        const proof = $object.proof
+
+        if (proof === undefined) {
+            throw new Error()
+        }
+
         const jws    = proof.jws
         const object = lodash.omit($object, [ this.PROOF_KEY ]) as T
 

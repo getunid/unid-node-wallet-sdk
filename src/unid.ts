@@ -41,6 +41,12 @@ class UNiDKlass {
 
     /**
      */
+    private getConnector(): BaseConnector {
+        return ConfigManager.context.connector
+    }
+
+    /**
+     */
     public async loadDid(params: { did: string }): Promise<UNiDDid> {
         const keyring = await MnemonicKeyring.loadKeyring(this.getConnector(), params.did)
 
@@ -99,12 +105,6 @@ class UNiDKlass {
      */
     public async validateCredential() {
         throw new UNiDNotImplementedError()
-    }
-
-    /**
-     */
-    private getConnector(): BaseConnector {
-        return ConfigManager.context.connector
     }
 }
 

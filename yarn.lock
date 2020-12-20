@@ -2,14 +2,14 @@
 # yarn lockfile v1
 
 
-"@babel/code-frame@^7.0.0", "@babel/code-frame@^7.0.0-beta.36", "@babel/code-frame@^7.10.4":
+"@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4":
   version "7.10.4"
   resolved "https://npm-registry.getunid.io/@babel%2fcode-frame/-/code-frame-7.10.4.tgz#168da1a36e90da68ae8d49c0f1b48c7c6249213a"
   integrity sha512-vG6SvB6oYEhvgisZNFRmRCUkLz11c7rp+tbNTynGqc6mS1d5ATd/sGyV6W0KZZnXRKMTzZDRgQT3Ou9jhpAfUg==
   dependencies:
     "@babel/highlight" "^7.10.4"
 
-"@babel/core@^7.0.0-beta.39", "@babel/core@^7.1.0", "@babel/core@^7.7.5":
+"@babel/core@^7.1.0", "@babel/core@^7.7.5":
   version "7.12.10"
   resolved "https://npm-registry.getunid.io/@babel%2fcore/-/core-7.12.10.tgz#b79a2e1b9f70ed3d84bbfb6d8c4ef825f606bccd"
   integrity sha512-eTAlQKq65zHfkHZV0sIVODCPGVgoo1HdBlbSLi9CqOzuZanMv2ihzY+4paiKr1mH+XmYESMAmJ/dpZ68eN6d8w==
@@ -241,7 +241,7 @@
     "@babel/parser" "^7.12.7"
     "@babel/types" "^7.12.7"
 
-"@babel/traverse@^7.0.0-beta.39", "@babel/traverse@^7.1.0", "@babel/traverse@^7.12.1", "@babel/traverse@^7.12.10", "@babel/traverse@^7.12.5":
+"@babel/traverse@^7.1.0", "@babel/traverse@^7.12.1", "@babel/traverse@^7.12.10", "@babel/traverse@^7.12.5":
   version "7.12.10"
   resolved "https://npm-registry.getunid.io/@babel%2ftraverse/-/traverse-7.12.10.tgz#2d1f4041e8bf42ea099e5b2dc48d6a594c00017a"
   integrity sha512-6aEtf0IeRgbYWzta29lePeYSk+YAFIC3kyqESeft8o5CkFlYIMX+EQDDWEiAQ9LHOA3d0oHdgrSsID/CKqXJlg==
@@ -256,7 +256,7 @@
     globals "^11.1.0"
     lodash "^4.17.19"
 
-"@babel/types@^7.0.0", "@babel/types@^7.0.0-beta.39", "@babel/types@^7.10.4", "@babel/types@^7.11.0", "@babel/types@^7.12.1", "@babel/types@^7.12.10", "@babel/types@^7.12.5", "@babel/types@^7.12.7", "@babel/types@^7.3.0", "@babel/types@^7.3.3":
+"@babel/types@^7.0.0", "@babel/types@^7.10.4", "@babel/types@^7.11.0", "@babel/types@^7.12.1", "@babel/types@^7.12.10", "@babel/types@^7.12.5", "@babel/types@^7.12.7", "@babel/types@^7.3.0", "@babel/types@^7.3.3":
   version "7.12.10"
   resolved "https://npm-registry.getunid.io/@babel%2ftypes/-/types-7.12.10.tgz#7965e4a7260b26f09c56bcfcb0498af1f6d9b260"
   integrity sha512-sf6wboJV5mGyip2hIpDSKsr80RszPinEFjsHTalMxZAZkoQ2/2yQzxlcFN52SJqsyPfLtPmenL4g2KB3KJXPDw==
@@ -277,13 +277,6 @@
   dependencies:
     exec-sh "^0.3.2"
     minimist "^1.2.0"
-
-"@enumatech/secp256k1-js@^1.0.0":
-  version "1.0.0"
-  resolved "https://npm-registry.getunid.io/@enumatech%2fsecp256k1-js/-/secp256k1-js-1.0.0.tgz#1c622ba6c6c7d77fe0c6217447adabdebf5ca05c"
-  integrity sha512-8LudvhidLtWjQWwkj1zXiuLhPGLMg/eVhmNHptsJOuqZDrHK5j2jDZOC9zkMVVO3zmWljCCrsmH0YZwH74Xh5g==
-  dependencies:
-    bn.js "^4.11.8"
 
 "@istanbuljs/load-nyc-config@^1.0.0":
   version "1.1.0"
@@ -490,35 +483,6 @@
   integrity sha512-MZPUxrmFubI36XS1DI3qmI0YdN1gks62JtFZvxR67ljjSNCeK6U08Zx4msEWOXuofgqUt6zPHSi1H9fbjR/NRA==
   dependencies:
     "@sinonjs/commons" "^1.7.0"
-
-"@transmute/es256k-jws-ts@^0.1.3":
-  version "0.1.3"
-  resolved "https://npm-registry.getunid.io/@transmute%2fes256k-jws-ts/-/es256k-jws-ts-0.1.3.tgz#19bbeb53a56f02768a6b283b26fc10f4cb43312e"
-  integrity sha512-ok0ZbjSDlL68/rnDPZclN4IoE5ytT6JjLXAzW+hR3kTHuIVwR9sLRu5tL5dB0izuEX2iIxwyJYJX7lV2b+sFnQ==
-  dependencies:
-    "@trust/keyto" "0.3.7"
-    base64url "3.0.1"
-    bitcoin-ts "1.14.2"
-    json-stringify-deterministic "1.0.1"
-
-"@transmute/lds-ecdsa-secp256k1-2019@^0.1.3":
-  version "0.1.3"
-  resolved "https://npm-registry.getunid.io/@transmute%2flds-ecdsa-secp256k1-2019/-/lds-ecdsa-secp256k1-2019-0.1.3.tgz#eed9fd819443f591fdb48c06bf19e93e77ac39d5"
-  integrity sha512-sY/Wysef+90L9em1Hfzho2Dar3Wnoke7aEE3mJub6bZqHZuhP7crURl12RUfuugPvrAu8zrZs6Vz0xfn52kKew==
-  dependencies:
-    "@transmute/es256k-jws-ts" "^0.1.3"
-    jsonld "1.6.2"
-    jsonld-signatures "4.6.0"
-    node-fetch "2.6.0"
-
-"@trust/keyto@0.3.7":
-  version "0.3.7"
-  resolved "https://npm-registry.getunid.io/@trust%2fkeyto/-/keyto-0.3.7.tgz#e251264e302a7a6be64a3e208dacb2ef6268c946"
-  integrity sha512-t5kWWCTkPgg24JWVuCTPMx7l13F7YHdxBeJkT1vmoHjROgiOIEAN8eeY+iRmP1Hwsx+S7U55HyuqSsECr08a8A==
-  dependencies:
-    asn1.js "^5.0.1"
-    base64url "^3.0.1"
-    elliptic "^6.4.1"
 
 "@types/babel__core@^7.0.0", "@types/babel__core@^7.1.7":
   version "7.1.12"
@@ -827,16 +791,6 @@ arrify@^1.0.1:
   resolved "https://npm-registry.getunid.io/arrify/-/arrify-1.0.1.tgz#898508da2226f380df904728456849c1501a4b0d"
   integrity sha1-iYUI2iIm84DfkEcoRWhJwVAaSw0=
 
-asn1.js@^5.0.1:
-  version "5.4.1"
-  resolved "https://npm-registry.getunid.io/asn1.js/-/asn1.js-5.4.1.tgz#11a980b84ebb91781ce35b0fdc2ee294e3783f07"
-  integrity sha512-+I//4cYPccV8LdmBLiX8CYvf9Sp3vQsrqu2QNXRcrbiWvcx/UdlFiqUJJzxRQxgsZmvhXhn4cSKeSmoFjVdupA==
-  dependencies:
-    bn.js "^4.0.0"
-    inherits "^2.0.1"
-    minimalistic-assert "^1.0.0"
-    safer-buffer "^2.1.0"
-
 asn1@~0.2.3:
   version "0.2.4"
   resolved "https://npm-registry.getunid.io/asn1/-/asn1-0.2.4.tgz#8d2475dfab553bb33e77b54e59e880bb8ce23136"
@@ -947,11 +901,6 @@ babel-preset-jest@^26.6.2:
     babel-plugin-jest-hoist "^26.6.2"
     babel-preset-current-node-syntax "^1.0.0"
 
-babylon@^7.0.0-beta.39:
-  version "7.0.0-beta.47"
-  resolved "https://npm-registry.getunid.io/babylon/-/babylon-7.0.0-beta.47.tgz#6d1fa44f0abec41ab7c780481e62fd9aafbdea80"
-  integrity sha512-+rq2cr4GDhtToEzKFD6KZZMDBXhjFAr9JjPw9pAppZACeEWqNM294j+NdBzkSHYXwzzBmVjZ3nEVJlOhbR2gOQ==
-
 balanced-match@^1.0.0:
   version "1.0.0"
   resolved "https://npm-registry.getunid.io/balanced-match/-/balanced-match-1.0.0.tgz#89b4d199ab2bee49de164ea02b89ce462d71b767"
@@ -964,19 +913,7 @@ base-x@^3.0.2:
   dependencies:
     safe-buffer "^5.0.1"
 
-base64-js@^1.3.1:
-  version "1.5.1"
-  resolved "https://npm-registry.getunid.io/base64-js/-/base64-js-1.5.1.tgz#1b1b440160a5bf7ad40b650f095963481903930a"
-  integrity sha512-AKpaYlHn8t4SVbOHCy+b5+KKgvR4vrsD8vbvrbiQJps7fKDTkjkDry6ji0rUJjC0kzbNePLwzxq8iypo41qeWA==
-
-base64url-universal@^1.0.1:
-  version "1.1.0"
-  resolved "https://npm-registry.getunid.io/base64url-universal/-/base64url-universal-1.1.0.tgz#94da6356c1d43ead55b1d91c045c0a5b09ec8181"
-  integrity sha512-WyftvZqye29YQ10ZnuiBeEj0lk8SN8xHU9hOznkLc85wS1cLTp6RpzlMrHxMPD9nH7S55gsBqMqgGyz93rqmkA==
-  dependencies:
-    base64url "^3.0.0"
-
-base64url@3.0.1, base64url@^3.0.0, base64url@^3.0.1:
+base64url@^3.0.1:
   version "3.0.1"
   resolved "https://npm-registry.getunid.io/base64url/-/base64url-3.0.1.tgz#6399d572e2bc3f90a9a8b22d5dbb0a32d33f788d"
   integrity sha512-ir1UPr3dkwexU7FdV8qBBbNDRUhMmIekYMFZfi+C/sLNnRESKPl23nB9b2pltqfOQNnGzsDdId90AEtG5tCx4A==
@@ -1000,11 +937,6 @@ bcrypt-pbkdf@^1.0.0:
   integrity sha1-pDAdOJtqQ/m2f/PKEaP2Y342Dp4=
   dependencies:
     tweetnacl "^0.14.3"
-
-big.js@^5.2.2:
-  version "5.2.2"
-  resolved "https://npm-registry.getunid.io/big.js/-/big.js-5.2.2.tgz#65f0af382f578bcdc742bd9c281e9cb2d7768328"
-  integrity sha512-vyL2OymJxmarO8gxMr0mhChsO9QGwhynfuu4+MHTAW6czfq9humCB7rKpUjDd9YUiDPU4mzpyupFSvOClAwbmQ==
 
 bindings@^1.3.0:
   version "1.5.0"
@@ -1036,36 +968,6 @@ bip39@^3.0.3:
     pbkdf2 "^3.0.9"
     randombytes "^2.0.1"
 
-bip66@^1.1.3:
-  version "1.1.5"
-  resolved "https://npm-registry.getunid.io/bip66/-/bip66-1.1.5.tgz#01fa8748785ca70955d5011217d1b3139969ca22"
-  integrity sha1-AfqHSHhcpwlV1QESF9GzE5lpyiI=
-  dependencies:
-    safe-buffer "^5.0.1"
-
-bitcoin-ts@1.14.2:
-  version "1.14.2"
-  resolved "https://npm-registry.getunid.io/bitcoin-ts/-/bitcoin-ts-1.14.2.tgz#332acf4039bacb126bb4ddef93fc28c8b711305c"
-  integrity sha512-jaePXvofeIIZlHV7cjlWeGtP4FA+s0+AyM5bX7PgjkXsFPd1iHv9ea0XXo8XSnnI6roDk1kYaENK7EswdaiPjA==
-
-bitcore-lib@^0.13.7:
-  version "0.13.19"
-  resolved "https://npm-registry.getunid.io/bitcore-lib/-/bitcore-lib-0.13.19.tgz#48af1e9bda10067c1ab16263472b5add2000f3dc"
-  integrity sha1-SK8em9oQBnwasWJjRyta3SAA89w=
-  dependencies:
-    bn.js "=2.0.4"
-    bs58 "=2.0.0"
-    buffer-compare "=1.0.0"
-    elliptic "=3.0.3"
-    inherits "=2.0.1"
-    lodash "=3.10.1"
-
-"bitcore-message@github:CoMakery/bitcore-message#dist":
-  version "1.0.2"
-  resolved "https://codeload.github.com/CoMakery/bitcore-message/tar.gz/8799cc327029c3d34fc725f05b2cf981363f6ebf"
-  dependencies:
-    bitcore-lib "^0.13.7"
-
 bl@^2.2.1:
   version "2.2.1"
   resolved "https://npm-registry.getunid.io/bl/-/bl-2.2.1.tgz#8c11a7b730655c5d56898cdc871224f40fd901d5"
@@ -1074,17 +976,7 @@ bl@^2.2.1:
     readable-stream "^2.3.5"
     safe-buffer "^5.1.1"
 
-bn.js@=2.0.4:
-  version "2.0.4"
-  resolved "https://npm-registry.getunid.io/bn.js/-/bn.js-2.0.4.tgz#220a7cd677f7f1bfa93627ff4193776fe7819480"
-  integrity sha1-Igp81nf38b+pNif/QZN3b+eBlIA=
-
-bn.js@^2.0.0:
-  version "2.2.0"
-  resolved "https://npm-registry.getunid.io/bn.js/-/bn.js-2.2.0.tgz#12162bc2ae71fc40a5626c33438f3a875cd37625"
-  integrity sha1-EhYrwq5x/EClYmwzQ486h1zTdiU=
-
-bn.js@^4.0.0, bn.js@^4.11.3, bn.js@^4.11.8, bn.js@^4.4.0:
+bn.js@^4.11.8, bn.js@^4.4.0:
   version "4.11.9"
   resolved "https://npm-registry.getunid.io/bn.js/-/bn.js-4.11.9.tgz#26d556829458f9d1e81fc48952493d0ba3507828"
   integrity sha512-E6QoYqCKZfgatHTdHzs1RRKP7ip4vvm+EyRUeE2RF0NblwVvb0p6jSVeNTOFxPn26QXN2o6SMfNxKp6kU8zQaw==
@@ -1130,18 +1022,6 @@ browser-process-hrtime@^1.0.0:
   resolved "https://npm-registry.getunid.io/browser-process-hrtime/-/browser-process-hrtime-1.0.0.tgz#3c9b4b7d782c8121e56f10106d84c0d0ffc94626"
   integrity sha512-9o5UecI3GhkpM6DrXr69PblIuWxPKk9Y0jHBRhdocZ2y7YECBFCsHm79Pr3OyR2AvjhDkabFJaDJMYRazHgsow==
 
-browserify-aes@^1.0.6:
-  version "1.2.0"
-  resolved "https://npm-registry.getunid.io/browserify-aes/-/browserify-aes-1.2.0.tgz#326734642f403dabc3003209853bb70ad428ef48"
-  integrity sha512-+7CHXqGuspUn/Sl5aO7Ea0xWGAtETPXNSAjHo48JfLdPWcMng33Xe4znFvQweqc/uzk5zSOI3H52CYnjCfb5hA==
-  dependencies:
-    buffer-xor "^1.0.3"
-    cipher-base "^1.0.0"
-    create-hash "^1.1.0"
-    evp_bytestokey "^1.0.3"
-    inherits "^2.0.1"
-    safe-buffer "^5.0.1"
-
 bs-logger@0.x:
   version "0.2.6"
   resolved "https://npm-registry.getunid.io/bs-logger/-/bs-logger-0.2.6.tgz#eb7d365307a72cf974cc6cda76b68354ad336bd8"
@@ -1149,12 +1029,7 @@ bs-logger@0.x:
   dependencies:
     fast-json-stable-stringify "2.x"
 
-bs58@=2.0.0:
-  version "2.0.0"
-  resolved "https://npm-registry.getunid.io/bs58/-/bs58-2.0.0.tgz#72b713bed223a0ac518bbda0e3ce3f4817f39eb5"
-  integrity sha1-crcTvtIjoKxRi72g484/SBfznrU=
-
-bs58@^4.0.0, bs58@^4.0.1:
+bs58@^4.0.0:
   version "4.0.1"
   resolved "https://npm-registry.getunid.io/bs58/-/bs58-4.0.1.tgz#be161e76c354f6f788ae4071f63f34e8c4f0a42a"
   integrity sha1-vhYedsNU9veIrkBx9j806MTwpCo=
@@ -1182,28 +1057,10 @@ bson@^1.1.4:
   resolved "https://npm-registry.getunid.io/bson/-/bson-1.1.5.tgz#2aaae98fcdf6750c0848b0cba1ddec3c73060a34"
   integrity sha512-kDuEzldR21lHciPQAIulLs1LZlCXdLziXI6Mb/TDkwXhb//UORJNPXgcRs2CuO4H0DcMkpfT3/ySsP3unoZjBg==
 
-buffer-compare@=1.0.0:
-  version "1.0.0"
-  resolved "https://npm-registry.getunid.io/buffer-compare/-/buffer-compare-1.0.0.tgz#acaa7a966e98eee9fae14b31c39a5f158fb3c4a2"
-  integrity sha1-rKp6lm6Y7un64Usxw5pfFY+zxKI=
-
 buffer-from@1.x, buffer-from@^1.0.0:
   version "1.1.1"
   resolved "https://npm-registry.getunid.io/buffer-from/-/buffer-from-1.1.1.tgz#32713bc028f75c02fdb710d7c7bcec1f2c6070ef"
   integrity sha512-MQcXEUbCKtEo7bhqEs6560Hyd4XaovZlO/k9V3hjVUF/zwW7KBVdSK4gIt/bzwS9MbR5qob+F5jusZsb0YQK2A==
-
-buffer-xor@^1.0.3:
-  version "1.0.3"
-  resolved "https://npm-registry.getunid.io/buffer-xor/-/buffer-xor-1.0.3.tgz#26e61ed1422fb70dd42e6e36729ed51d855fe8d9"
-  integrity sha1-JuYe0UIvtw3ULm42cp7VHYVf6Nk=
-
-buffer@^5.4.3:
-  version "5.7.1"
-  resolved "https://npm-registry.getunid.io/buffer/-/buffer-5.7.1.tgz#ba62e7c13133053582197160851a8f648e99eed0"
-  integrity sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==
-  dependencies:
-    base64-js "^1.3.1"
-    ieee754 "^1.1.13"
 
 cache-base@^1.0.1:
   version "1.0.1"
@@ -1323,7 +1180,7 @@ ci-info@^2.0.0:
   resolved "https://npm-registry.getunid.io/ci-info/-/ci-info-2.0.0.tgz#67a9e964be31a51e15e5010d58e6f12834002f46"
   integrity sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==
 
-cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
+cipher-base@^1.0.1, cipher-base@^1.0.3:
   version "1.0.4"
   resolved "https://npm-registry.getunid.io/cipher-base/-/cipher-base-1.0.4.tgz#8760e4ecc272f4c363532f926d874aae2c1397de"
   integrity sha512-Kkht5ye6ZGmwv40uUDZztayT2ThLQGfnj/T71N/XzeZeo3nf8foyW7zGTsPYkEya3m5f3cAypH+qe7YOrM1U2Q==
@@ -1403,11 +1260,6 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
   integrity sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==
   dependencies:
     delayed-stream "~1.0.0"
-
-commander@^2.20.3:
-  version "2.20.3"
-  resolved "https://npm-registry.getunid.io/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
-  integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
 
 compare-func@^2.0.0:
   version "2.0.0"
@@ -1657,18 +1509,6 @@ create-require@^1.1.0:
   resolved "https://npm-registry.getunid.io/create-require/-/create-require-1.1.1.tgz#c1d7e8f1e5f6cfc9ff65f9cd352d37348756c333"
   integrity sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==
 
-credentials-context@^1.0.0:
-  version "1.0.0"
-  resolved "https://npm-registry.getunid.io/credentials-context/-/credentials-context-1.0.0.tgz#a63cb4b7e0a4ca4460d247b7c9370a58b10ebac9"
-  integrity sha512-rF3GPhTUGY58xlpuVRif/1i0BxVpynpmFdGNS81S2ezdKPSKoFke5ZOZWB8ZUvGi8bV8CuDM+ZcM/uf4z0PQVQ==
-
-cross-env@^6.0.3:
-  version "6.0.3"
-  resolved "https://npm-registry.getunid.io/cross-env/-/cross-env-6.0.3.tgz#4256b71e49b3a40637a0ce70768a6ef5c72ae941"
-  integrity sha512-+KqxF6LCvfhWvADcDPqo64yVIB31gv/jQulX2NGzKS/g3GEVz6/pt4wjHFtFWsHMddebWD/sDthJemzM4MaAag==
-  dependencies:
-    cross-spawn "^7.0.0"
-
 cross-spawn@^6.0.0:
   version "6.0.5"
   resolved "https://npm-registry.getunid.io/cross-spawn/-/cross-spawn-6.0.5.tgz#4a5ec7c64dfae22c3a14124dbacdee846d80cbc4"
@@ -1693,18 +1533,6 @@ crypto-js@^4.0.0:
   version "4.0.0"
   resolved "https://npm-registry.getunid.io/crypto-js/-/crypto-js-4.0.0.tgz#2904ab2677a9d042856a2ea2ef80de92e4a36dcc"
   integrity sha512-bzHZN8Pn+gS7DQA6n+iUmBfl0hO5DJq++QP3U6uTucDtk/0iGpXd/Gg7CGR0p8tJhofJyaKoWBuJI4eAO00BBg==
-
-crypto-ld@^3.7.0:
-  version "3.9.0"
-  resolved "https://npm-registry.getunid.io/crypto-ld/-/crypto-ld-3.9.0.tgz#4f42849a143b5d65f28b018d80bc0fee6cd37ba8"
-  integrity sha512-PFE7V6A2QNnUp6iiPVEZI4p8wsztkEWLbY1BAXVnclm/aw4KGwpJ+1Ds4vQUCJ5BsWxj15fwE5rHQ8AWaWB2nw==
-  dependencies:
-    base64url-universal "^1.0.1"
-    bs58 "^4.0.1"
-    node-forge "~0.10.0"
-    semver "^6.2.0"
-  optionalDependencies:
-    sodium-native "^3.2.0"
 
 cssom@^0.4.4:
   version "0.4.4"
@@ -1886,15 +1714,6 @@ dotgitignore@^2.1.0:
     find-up "^3.0.0"
     minimatch "^3.0.4"
 
-drbg.js@^1.0.1:
-  version "1.0.1"
-  resolved "https://npm-registry.getunid.io/drbg.js/-/drbg.js-1.0.1.tgz#3e36b6c42b37043823cdbc332d58f31e2445480b"
-  integrity sha1-Pja2xCs3BDgjzbwzLVjzHiRFSAs=
-  dependencies:
-    browserify-aes "^1.0.6"
-    create-hash "^1.1.2"
-    create-hmac "^1.1.4"
-
 ecc-jsbn@~0.1.1:
   version "0.1.2"
   resolved "https://npm-registry.getunid.io/ecc-jsbn/-/ecc-jsbn-0.1.2.tgz#3a83a904e54353287874c564b7549386849a98c9"
@@ -1903,17 +1722,7 @@ ecc-jsbn@~0.1.1:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
 
-elliptic@=3.0.3:
-  version "3.0.3"
-  resolved "https://npm-registry.getunid.io/elliptic/-/elliptic-3.0.3.tgz#865c9b420bfbe55006b9f969f97a0d2c44966595"
-  integrity sha1-hlybQgv75VAGuflp+XoNLESWZZU=
-  dependencies:
-    bn.js "^2.0.0"
-    brorand "^1.0.1"
-    hash.js "^1.0.0"
-    inherits "^2.0.1"
-
-elliptic@^6.2.3, elliptic@^6.4.0, elliptic@^6.4.1, elliptic@^6.5.2:
+elliptic@^6.4.0, elliptic@^6.5.2:
   version "6.5.3"
   resolved "https://npm-registry.getunid.io/elliptic/-/elliptic-6.5.3.tgz#cb59eb2efdaf73a0bd78ccd7015a62ad6e0f93d6"
   integrity sha512-IMqzv5wNQf+E6aHeIqATs0tOLeOTwj1QKbRcS3jBbYkl5oLAserA8yJTT7/VyHUYG91PRmPyeQDObKLPpeS4dw==
@@ -1935,11 +1744,6 @@ emoji-regex@^8.0.0:
   version "8.0.0"
   resolved "https://npm-registry.getunid.io/emoji-regex/-/emoji-regex-8.0.0.tgz#e818fd69ce5ccfcb404594f842963bf53164cc37"
   integrity sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A==
-
-emojis-list@^3.0.0:
-  version "3.0.0"
-  resolved "https://npm-registry.getunid.io/emojis-list/-/emojis-list-3.0.0.tgz#5570662046ad29e2e916e71aae260abdff4f6a78"
-  integrity sha512-/kyM18EfinwXZbno9FyUGeFh87KC8HRQBQGildHZbEuRyWFOmv1U10o9BBp8XVZDVNNuQKyIGIu5ZYAAXJ0V2Q==
 
 end-of-stream@^1.1.0:
   version "1.4.4"
@@ -2018,14 +1822,6 @@ esutils@^2.0.2:
   version "2.0.3"
   resolved "https://npm-registry.getunid.io/esutils/-/esutils-2.0.3.tgz#74d2eb4de0b8da1293711910d50775b9b710ef64"
   integrity sha512-kVscqXk4OCp68SZ0dkgEKVi6/8ij300KBWTJq32P/dYeWTSwK41WyTxalN1eRmA5Z9UU/LX9D7FWSmV9SAYx6g==
-
-evp_bytestokey@^1.0.3:
-  version "1.0.3"
-  resolved "https://npm-registry.getunid.io/evp_bytestokey/-/evp_bytestokey-1.0.3.tgz#7fcbdb198dc71959432efe13842684e0525acb02"
-  integrity sha512-/f2Go4TognH/KvCISP7OUsHn85hT9nUkxxA9BEWxFn+Oj9o8ZNLm/40hdlgSLyuOimsrTKLUMEorQexp/aPQeA==
-  dependencies:
-    md5.js "^1.3.4"
-    safe-buffer "^5.1.1"
 
 exec-sh@^0.3.2:
   version "0.3.4"
@@ -2253,15 +2049,6 @@ fs-access@^1.0.1:
   dependencies:
     null-check "^1.0.0"
 
-fs-extra@^8.1.0:
-  version "8.1.0"
-  resolved "https://npm-registry.getunid.io/fs-extra/-/fs-extra-8.1.0.tgz#49d43c45a88cd9677668cb7be1b46efdb8d2e1c0"
-  integrity sha512-yhlQgA6mnOJUKOsRUFsgJdQCvkKhcz8tlZG5HBQfReYZy46OwLcY+Zia0mtdHsOo9y/hP+CxMN0TU9QxoOtG4g==
-  dependencies:
-    graceful-fs "^4.2.0"
-    jsonfile "^4.0.0"
-    universalify "^0.1.0"
-
 fs-extra@^9.0.1:
   version "9.0.1"
   resolved "https://npm-registry.getunid.io/fs-extra/-/fs-extra-9.0.1.tgz#910da0062437ba4c39fedd863f1675ccfefcb9fc"
@@ -2326,11 +2113,6 @@ get-stdin@^4.0.1:
   version "4.0.1"
   resolved "https://npm-registry.getunid.io/get-stdin/-/get-stdin-4.0.1.tgz#b968c6b0a04384324902e8bf1a5df32579a450fe"
   integrity sha1-uWjGsKBDhDJJAui/Gl3zJXmkUP4=
-
-get-stdin@^7.0.0:
-  version "7.0.0"
-  resolved "https://npm-registry.getunid.io/get-stdin/-/get-stdin-7.0.0.tgz#8d5de98f15171a125c5e516643c7a6d0ea8a96f6"
-  integrity sha512-zRKcywvrXlXsA0v0i9Io4KDRaAw7+a1ZpjRwl9Wox8PFlVCCHra7E9c4kqXCoCM9nR5tBkaTTZRBoCm60bFqTQ==
 
 get-stream@^4.0.0:
   version "4.1.0"
@@ -2578,11 +2360,6 @@ iconv-lite@0.4.24:
   dependencies:
     safer-buffer ">= 2.1.2 < 3"
 
-ieee754@^1.1.13:
-  version "1.2.1"
-  resolved "https://npm-registry.getunid.io/ieee754/-/ieee754-1.2.1.tgz#8eb7a10a63fff25d15a57b001586d177d1b0d352"
-  integrity sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==
-
 import-local@^3.0.2:
   version "3.0.2"
   resolved "https://npm-registry.getunid.io/import-local/-/import-local-3.0.2.tgz#a8cfd0431d1de4a2199703d003e3e62364fa6db6"
@@ -2626,12 +2403,7 @@ inherits@2, inherits@^2.0.1, inherits@^2.0.3, inherits@^2.0.4, inherits@~2.0.3:
   resolved "https://npm-registry.getunid.io/inherits/-/inherits-2.0.4.tgz#0fa2c64f932917c3433a0ded55363aae37416b7c"
   integrity sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
 
-inherits@=2.0.1:
-  version "2.0.1"
-  resolved "https://npm-registry.getunid.io/inherits/-/inherits-2.0.1.tgz#b17d08d326b4423e568eff719f91b0b1cbdf69f1"
-  integrity sha1-sX0I0ya0Qj5Wjv9xn5GwscvfafE=
-
-ini@^1.3.2, ini@^1.3.5:
+ini@^1.3.2:
   version "1.3.8"
   resolved "https://npm-registry.getunid.io/ini/-/ini-1.3.8.tgz#a29da425b48806f34767a4efce397269af28432c"
   integrity sha512-JV/yugV2uzW5iMRSiZAyDtQd+nxtUnjeLt0acNdw98kKLrvuRVyB80tsREOE7yvGVgalhZ6RNXCmEHkUKBKxew==
@@ -2669,11 +2441,6 @@ is-buffer@^1.1.5:
   version "1.1.6"
   resolved "https://npm-registry.getunid.io/is-buffer/-/is-buffer-1.1.6.tgz#efaa2ea9daa0d7ab2ea13a97b2b8ad51fefbe8be"
   integrity sha512-NcdALwpXkTm5Zvvbk7owOUSvVvBKDgKP5/ewfXEznmQFfs4ZRmanOeKBTjRVjka3QFoN6XJ+9F3USqfHqTaU5w==
-
-is-buffer@^2.0.3:
-  version "2.0.5"
-  resolved "https://npm-registry.getunid.io/is-buffer/-/is-buffer-2.0.5.tgz#ebc252e400d22ff8d77fa09888821a24a658c191"
-  integrity sha512-i2R6zNFDwgEHJyQUtJEk0XFi1i0dPFn/oqjK3/vPCcDeJvW5NQ83V8QbicfF1SupOaB0h8ntgBC2YiE7dfyctQ==
 
 is-callable@^1.1.4, is-callable@^1.2.2:
   version "1.2.2"
@@ -3296,16 +3063,6 @@ jest@^26.6.3:
     import-local "^3.0.2"
     jest-cli "^26.6.3"
 
-js-secp256k1@^0.2.2:
-  version "0.2.2"
-  resolved "https://npm-registry.getunid.io/js-secp256k1/-/js-secp256k1-0.2.2.tgz#58166418895ecb1988b163845ffcc69e0ab1fa3b"
-  integrity sha512-lAe4oD/coEIIarkWN841CUz28s1v4t3cZm/DOxVCXFfZq5oWwLOP4QdBtnPEdhffS37kJNOgwXMSdWwVwOXqAg==
-  dependencies:
-    buffer "^5.4.3"
-    cross-env "^6.0.3"
-    is-buffer "^2.0.3"
-    wasm-loader "^1.3.0"
-
 js-tokens@^4.0.0:
   version "4.0.0"
   resolved "https://npm-registry.getunid.io/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
@@ -3381,11 +3138,6 @@ json-schema@0.2.3:
   resolved "https://npm-registry.getunid.io/json-schema/-/json-schema-0.2.3.tgz#b480c892e59a2f05954ce727bd3f2a4e882f9e13"
   integrity sha1-tIDIkuWaLwWVTOcnvT8qTogvnhM=
 
-json-stringify-deterministic@1.0.1:
-  version "1.0.1"
-  resolved "https://npm-registry.getunid.io/json-stringify-deterministic/-/json-stringify-deterministic-1.0.1.tgz#3334798c374d723d46f7ba0e47d6e5e5ac8511f9"
-  integrity sha512-9Fg0OY3uyzozpvJ8TVbUk09PjzhT7O2Q5kEe30g6OrKhbA/Is92igcx0XDDX7E3yAwnIlUcYLRl+ZkVrBYVP7A==
-
 json-stringify-safe@^5.0.1, json-stringify-safe@~5.0.1:
   version "5.0.1"
   resolved "https://npm-registry.getunid.io/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz#1296a2d58fd45f19a0f6ce01d65701e2c735b6eb"
@@ -3405,13 +3157,6 @@ json5@^1.0.1:
   dependencies:
     minimist "^1.2.0"
 
-jsonfile@^4.0.0:
-  version "4.0.0"
-  resolved "https://npm-registry.getunid.io/jsonfile/-/jsonfile-4.0.0.tgz#8771aae0799b64076b76640fca058f9c10e33ecb"
-  integrity sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=
-  optionalDependencies:
-    graceful-fs "^4.1.6"
-
 jsonfile@^6.0.1:
   version "6.1.0"
   resolved "https://npm-registry.getunid.io/jsonfile/-/jsonfile-6.1.0.tgz#bc55b2634793c679ec6403094eb13698a6ec0aae"
@@ -3420,66 +3165,6 @@ jsonfile@^6.0.1:
     universalify "^2.0.0"
   optionalDependencies:
     graceful-fs "^4.1.6"
-
-jsonld-signatures@4.6.0:
-  version "4.6.0"
-  resolved "https://npm-registry.getunid.io/jsonld-signatures/-/jsonld-signatures-4.6.0.tgz#cd6355ac282241b26f226832445279c792485823"
-  integrity sha512-DerdxAFumi/ef73yiejQE8P1aVD6SLrZ8+fB6yI4OuMdOIYPhWnX+qs3ur5i8It424YoAqgx1/8MIBUTkFPJUw==
-  dependencies:
-    base64url "^3.0.1"
-    bitcore-message "github:CoMakery/bitcore-message#dist"
-    bs58 "^4.0.1"
-    crypto-ld "^3.7.0"
-    jsonld "^2.0.2"
-    node-forge "^0.9.1"
-    security-context "^4.0.0"
-    serialize-error "^4.1.0"
-
-jsonld-signatures@^5.0.0:
-  version "5.2.0"
-  resolved "https://npm-registry.getunid.io/jsonld-signatures/-/jsonld-signatures-5.2.0.tgz#2f6210c3aad0a50f925991ce3e91c78856c0752d"
-  integrity sha512-/dGgMElXc3oBS+/OUwMc3DTK4riHKLE9Lk7NF1Upz2ZlBTNfnOw5uLRkFQOJFBDqDEm5hK6hIfkoC/rCWFh9tQ==
-  dependencies:
-    base64url "^3.0.1"
-    crypto-ld "^3.7.0"
-    jsonld "^2.0.2"
-    node-forge "^0.10.0"
-    security-context "^4.0.0"
-    serialize-error "^5.0.0"
-
-jsonld-signatures@^6.0.0:
-  version "6.0.0"
-  resolved "https://npm-registry.getunid.io/jsonld-signatures/-/jsonld-signatures-6.0.0.tgz#aaf1e34fa7d1a9729b2fe85b9b92232e68c883b1"
-  integrity sha512-GIh5DCZ5g5vQBAFcjSDHmYyTaD/fYh5KwlAiKgx83VRzcQNNgzeG7DsLdXcgyCxEai9qIM9u2frZAInKDN5+og==
-  dependencies:
-    base64url "^3.0.1"
-    crypto-ld "^3.7.0"
-    jsonld "^2.0.2"
-    node-forge "^0.10.0"
-    security-context "^4.0.0"
-    serialize-error "^5.0.0"
-
-jsonld@1.6.2:
-  version "1.6.2"
-  resolved "https://npm-registry.getunid.io/jsonld/-/jsonld-1.6.2.tgz#d81620dccf75fd7bc7501709eeec5da77ecc45e9"
-  integrity sha512-eMzFHqhF2kPMrMUjw8+Lz9IF1QkrxTOIfVndkP/OpuoZs31VdDtfDs8mLa5EOC/ROdemFTQGLdYPZbRtmMe2Yw==
-  dependencies:
-    rdf-canonize "^1.0.2"
-    request "^2.88.0"
-    semver "^5.6.0"
-    xmldom "0.1.19"
-
-jsonld@^2.0.2:
-  version "2.0.2"
-  resolved "https://npm-registry.getunid.io/jsonld/-/jsonld-2.0.2.tgz#f5d0631de828ce6dee3a14f08cbdc6a53174cd15"
-  integrity sha512-/TQzRe75/3h2khu57IUojha5oat+M82bm8RYw0jLhlmmPrW/kTWAZ9nGzKPfZWnPYnVVJJMQVc/pU8HCmpv9xg==
-  dependencies:
-    canonicalize "^1.0.1"
-    lru-cache "^5.1.1"
-    rdf-canonize "^1.0.2"
-    request "^2.88.0"
-    semver "^6.3.0"
-    xmldom "0.1.19"
 
 jsonld@^3.2.0:
   version "3.2.0"
@@ -3577,15 +3262,6 @@ load-json-file@^4.0.0:
     pify "^3.0.0"
     strip-bom "^3.0.0"
 
-loader-utils@^1.1.0:
-  version "1.4.0"
-  resolved "https://npm-registry.getunid.io/loader-utils/-/loader-utils-1.4.0.tgz#c579b5e34cb34b1a74edc6c1fb36bfa371d5a613"
-  integrity sha512-qH0WSMBtn/oHuwjy/NucEgbx5dbxxnxup9s4PVXJUDHZBQY+s0NWA9rJf53RBnQZxfch7euUui7hpoAPvALZdA==
-  dependencies:
-    big.js "^5.2.2"
-    emojis-list "^3.0.0"
-    json5 "^1.0.1"
-
 locate-path@^2.0.0:
   version "2.0.0"
   resolved "https://npm-registry.getunid.io/locate-path/-/locate-path-2.0.0.tgz#2b568b265eec944c6d9c0de9c3dbbbca0354cd8e"
@@ -3644,20 +3320,10 @@ lodash.templatesettings@^4.0.0:
   dependencies:
     lodash._reinterpolate "^3.0.0"
 
-lodash@=3.10.1:
-  version "3.10.1"
-  resolved "https://npm-registry.getunid.io/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
-  integrity sha1-W/Rejkm6QYnhfUgnid/RW9FAt7Y=
-
 lodash@^4.17.15, lodash@^4.17.19, lodash@^4.17.20:
   version "4.17.20"
   resolved "https://npm-registry.getunid.io/lodash/-/lodash-4.17.20.tgz#b44a9b6297bcb698f1c51a3545a2b3b368d59c52"
   integrity sha512-PlhdFcillOINfeV7Ni6oF1TAEayyZBoZ8bcshTHqOYJYlrqzRK5hagpagky5o4HfCzzd1TRkXPMFq6cKk9rGmA==
-
-long@^3.2.0:
-  version "3.2.0"
-  resolved "https://npm-registry.getunid.io/long/-/long-3.2.0.tgz#d821b7138ca1cb581c172990ef14db200b5c474b"
-  integrity sha1-2CG3E4yhy1gcFymQ7xTbIAtcR0s=
 
 loud-rejection@^1.0.0:
   version "1.6.0"
@@ -4014,20 +3680,10 @@ node-addon-api@^2.0.0:
   resolved "https://npm-registry.getunid.io/node-addon-api/-/node-addon-api-2.0.2.tgz#432cfa82962ce494b132e9d72a15b29f71ff5d32"
   integrity sha512-Ntyt4AIXyaLIuMHF6IOoTakB3K+RWxwtsHNRxllEoA6vPwP9o4866g6YWDLUdnucilZhmkxiHwHr11gAENw+QA==
 
-node-fetch@2.6.0:
-  version "2.6.0"
-  resolved "https://npm-registry.getunid.io/node-fetch/-/node-fetch-2.6.0.tgz#e633456386d4aa55863f676a7ab0daa8fdecb0fd"
-  integrity sha512-8dG4H5ujfvFiqDmVu9fQ5bOHUC15JMjMY/Zumv26oOvvVJjM67KF8koCWIabKQ1GJIa9r2mMZscBq/TbdOcmNA==
-
-node-forge@^0.10.0, node-forge@~0.10.0:
+node-forge@^0.10.0:
   version "0.10.0"
   resolved "https://npm-registry.getunid.io/node-forge/-/node-forge-0.10.0.tgz#32dea2afb3e9926f02ee5ce8794902691a676bf3"
   integrity sha512-PPmu8eEeG9saEUvI97fm4OYxXVB6bFvyNTyiUOBichBpFG8A1Ljw3bY62+5oOjDEMHRnd0Y7HQ+x7uzxOzC6JA==
-
-node-forge@^0.9.1:
-  version "0.9.2"
-  resolved "https://npm-registry.getunid.io/node-forge/-/node-forge-0.9.2.tgz#b35a44c28889b2ea55cabf8c79e3563f9676190a"
-  integrity sha512-naKSScof4Wn+aoHU6HBsifh92Zeicm1GDQKd1vp3Y/kOi8ub0DozCa9KpvYNCXslFHYRmLNiqRopGdTGwNLpNw==
 
 node-gyp-build@^4.2.0:
   version "4.2.3"
@@ -4814,18 +4470,6 @@ schema-dts@^0.8.2:
   resolved "https://npm-registry.getunid.io/schema-dts/-/schema-dts-0.8.2.tgz#4a478eec4119023456e3c41b23744af69ff7a8fc"
   integrity sha512-whRg7QF9wmPfrwAi4NRT/bjMBIdHvzpr4excNN00hn+U2aFXx9NB3JKfooUMJLDqpGEqnZpA61f5muw9lQ50ZA==
 
-secp256k1-pure@^3.5.2:
-  version "3.5.2"
-  resolved "https://npm-registry.getunid.io/secp256k1-pure/-/secp256k1-pure-3.5.2.tgz#947fe6a3d5863b4c78767edd5034a56f07cdd2b9"
-  integrity sha512-j2aq8ll15/l6ahKeXB2rvEe46coOj/TNtwHPBAsKwKPgRpL+F/HxtJjbgtXWWH7s2Bu5mL+3a0MzTIy31djY3g==
-  dependencies:
-    bip66 "^1.1.3"
-    bn.js "^4.11.3"
-    create-hash "^1.1.2"
-    drbg.js "^1.0.1"
-    elliptic "^6.2.3"
-    safe-buffer "^5.1.0"
-
 secp256k1@^4.0.2:
   version "4.0.2"
   resolved "https://npm-registry.getunid.io/secp256k1/-/secp256k1-4.0.2.tgz#15dd57d0f0b9fdb54ac1fa1694f40e5e9a54f4a1"
@@ -4835,12 +4479,7 @@ secp256k1@^4.0.2:
     node-addon-api "^2.0.0"
     node-gyp-build "^4.2.0"
 
-security-context@^4.0.0:
-  version "4.0.0"
-  resolved "https://npm-registry.getunid.io/security-context/-/security-context-4.0.0.tgz#e73f5d22bee9c7699a02eaaced359d001dc948e9"
-  integrity sha512-yiDCS7tpKQl6p4NG57BdKLTSNLFfj5HosBIzXBl4jZf/qorJzSzbEUIdLhN+vVYgyLlvjixY8DPPTgqI8zvNCA==
-
-"semver@2 || 3 || 4 || 5", semver@^5.1.0, semver@^5.4.1, semver@^5.5.0, semver@^5.6.0:
+"semver@2 || 3 || 4 || 5", semver@^5.1.0, semver@^5.4.1, semver@^5.5.0:
   version "5.7.1"
   resolved "https://npm-registry.getunid.io/semver/-/semver-5.7.1.tgz#a954f931aeba508d307bbf069eff0c01c96116f7"
   integrity sha512-sauaDf/PZdVgrLTNYHRtpXa1iRiKcaebiKQ1BJdpQlWH2lCvexQdX55snPFyK7QzpudqbCI0qXFfOasHdyNDGQ==
@@ -4852,24 +4491,10 @@ semver@7.x, semver@^7.1.1, semver@^7.3.2:
   dependencies:
     lru-cache "^6.0.0"
 
-semver@^6.0.0, semver@^6.2.0, semver@^6.3.0:
+semver@^6.0.0, semver@^6.3.0:
   version "6.3.0"
   resolved "https://npm-registry.getunid.io/semver/-/semver-6.3.0.tgz#ee0a64c8af5e8ceea67687b133761e1becbd1d3d"
   integrity sha512-b39TBaTSfV6yBrapU89p5fKekE2m/NwnDocOVruQFS1/veMgdzuPcnOM34M6CwxW8jH/lxEa5rBoDeUwu5HHTw==
-
-serialize-error@^4.1.0:
-  version "4.1.0"
-  resolved "https://npm-registry.getunid.io/serialize-error/-/serialize-error-4.1.0.tgz#63e1e33ede20bcd89d9f0528ea4c15fbf0f2b78a"
-  integrity sha512-5j9GgyGsP9vV9Uj1S0lDCvlsd+gc2LEPVK7HHHte7IyPwOD4lVQFeaX143gx3U5AnoCi+wbcb3mvaxVysjpxEw==
-  dependencies:
-    type-fest "^0.3.0"
-
-serialize-error@^5.0.0:
-  version "5.0.0"
-  resolved "https://npm-registry.getunid.io/serialize-error/-/serialize-error-5.0.0.tgz#a7ebbcdb03a5d71a6ed8461ffe0fc1a1afed62ac"
-  integrity sha512-/VtpuyzYf82mHYTtI4QKtwHa79vAdU5OQpNPAmE/0UDdlGT0ZxHwC+J6gXkw29wwoVI8fMPsfcVHOwXtUQYYQA==
-  dependencies:
-    type-fest "^0.8.0"
 
 set-blocking@^2.0.0:
   version "2.0.0"
@@ -4984,14 +4609,6 @@ snapdragon@^0.8.1:
     source-map "^0.5.6"
     source-map-resolve "^0.5.0"
     use "^3.1.0"
-
-sodium-native@^3.2.0:
-  version "3.2.0"
-  resolved "https://npm-registry.getunid.io/sodium-native/-/sodium-native-3.2.0.tgz#68a9469b96edadffef320cbce51294ad5f72a37f"
-  integrity sha512-8aq/vQSegLwsRch8Sb/Bpf9aAqlNe5dp0+NVhb9UjHv42zDZ0D5zX3wBRUbXK9Ejum9uZE6DUgT4vVLlUFRBWg==
-  dependencies:
-    ini "^1.3.5"
-    node-gyp-build "^4.2.0"
 
 source-map-resolve@^0.5.0:
   version "0.5.3"
@@ -5525,17 +5142,12 @@ type-fest@^0.18.0:
   resolved "https://npm-registry.getunid.io/type-fest/-/type-fest-0.18.1.tgz#db4bc151a4a2cf4eebf9add5db75508db6cc841f"
   integrity sha512-OIAYXk8+ISY+qTOwkHtKqzAuxchoMiD9Udx+FSGQDuiRR+PJKJHc2NJAXlbhkGwTt/4/nKZxELY1w3ReWOL8mw==
 
-type-fest@^0.3.0:
-  version "0.3.1"
-  resolved "https://npm-registry.getunid.io/type-fest/-/type-fest-0.3.1.tgz#63d00d204e059474fe5e1b7c011112bbd1dc29e1"
-  integrity sha512-cUGJnCdr4STbePCgqNFbpVNCepa+kAVohJs1sLhxzdH+gnEoOd8VhbYa7pD3zZYGiURWM2xzEII3fQcRizDkYQ==
-
 type-fest@^0.6.0:
   version "0.6.0"
   resolved "https://npm-registry.getunid.io/type-fest/-/type-fest-0.6.0.tgz#8d2a2370d3df886eb5c90ada1c5bf6188acf838b"
   integrity sha512-q+MB8nYR1KDLrgr4G5yemftpMC7/QLqVndBmEEdqzmNj5dcFOO4Oo8qlwZE3ULT3+Zim1F8Kq4cBnikNhlCMlg==
 
-type-fest@^0.8.0, type-fest@^0.8.1:
+type-fest@^0.8.1:
   version "0.8.1"
   resolved "https://npm-registry.getunid.io/type-fest/-/type-fest-0.8.1.tgz#09e249ebde851d3b1e48d27c105444667f17b83d"
   integrity sha512-4dbzIzqvjtgiM5rw1k5rEHtBANKmdudhGyBEajN01fEyhaAIhsoKNy6y7+IN93IfpFtwY9iqi7kD+xwKhQsNJA==
@@ -5606,11 +5218,6 @@ union-value@^1.0.0:
     get-value "^2.0.6"
     is-extendable "^0.1.1"
     set-value "^2.0.1"
-
-universalify@^0.1.0:
-  version "0.1.2"
-  resolved "https://npm-registry.getunid.io/universalify/-/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"
-  integrity sha512-rBJeI5CXAlmy1pV+617WB9J63U6XcazHHF2f2dbJix4XzpUF0RS3Zbj0FGIOCAva5P/d/GBOYaACQ1w+0azUkg==
 
 universalify@^1.0.0:
   version "1.0.0"
@@ -5684,20 +5291,6 @@ varint@^6.0.0:
   resolved "https://npm-registry.getunid.io/varint/-/varint-6.0.0.tgz#9881eb0ce8feaea6512439d19ddf84bf551661d0"
   integrity sha512-cXEIW6cfr15lFv563k4GuVuW/fiwjknytD37jIOLSdSWuOI6WnO/oKwmP2FQTU2l01LP8/M5TSAJpzUaGe3uWg==
 
-vc-js@^0.6.4:
-  version "0.6.4"
-  resolved "https://npm-registry.getunid.io/vc-js/-/vc-js-0.6.4.tgz#49f408c590260d28c25a3ca4e30ece0de61c3ae1"
-  integrity sha512-ogwYys94k8mFyFZEn1Ru3nIA5Z/9C4iCU4grNWUYOYVWldcsn6UDp6erYFbaSkilzv7RK3cQu5N8prkxfHpZwA==
-  dependencies:
-    commander "^2.20.3"
-    credentials-context "^1.0.0"
-    debug "^4.1.1"
-    fs-extra "^8.1.0"
-    get-stdin "^7.0.0"
-    jsonld "^2.0.2"
-    jsonld-signatures "^5.0.0"
-    supports-color "^7.1.0"
-
 verror@1.10.0:
   version "1.10.0"
   resolved "https://npm-registry.getunid.io/verror/-/verror-1.10.0.tgz#3a105ca17053af55d6e270c1f8288682e18da400"
@@ -5728,43 +5321,10 @@ walker@^1.0.7, walker@~1.0.5:
   dependencies:
     makeerror "1.0.x"
 
-wasm-dce@^1.0.0:
-  version "1.0.2"
-  resolved "https://npm-registry.getunid.io/wasm-dce/-/wasm-dce-1.0.2.tgz#7e21e566fa17c61e8e257742a377a5bdb8f2e4f5"
-  integrity sha512-Fq1+nu43ybsjSnBquLrW/cULmKs61qbv9k8ep13QUe0nABBezMoNAA+j6QY66MW0/eoDVDp1rjXDqQ2VKyS/Xg==
-  dependencies:
-    "@babel/core" "^7.0.0-beta.39"
-    "@babel/traverse" "^7.0.0-beta.39"
-    "@babel/types" "^7.0.0-beta.39"
-    babylon "^7.0.0-beta.39"
-    webassembly-interpreter "0.0.30"
-
-wasm-loader@^1.3.0:
-  version "1.3.0"
-  resolved "https://npm-registry.getunid.io/wasm-loader/-/wasm-loader-1.3.0.tgz#a123a6b6c9a9dac60de38449703be3537742e155"
-  integrity sha512-R4s75XH+o8qM+WaRrAU9S2rbAMDzob18/S3V8R9ZoFpZkPWLAohWWlzWAp1ybeTkOuuku/X1zJtxiV0pBYxZww==
-  dependencies:
-    loader-utils "^1.1.0"
-    wasm-dce "^1.0.0"
-
 web-encoding@^1.0.2, web-encoding@^1.0.4:
   version "1.0.4"
   resolved "https://npm-registry.getunid.io/web-encoding/-/web-encoding-1.0.4.tgz#0398d39ce2cbef5ed2617080750ed874e6153aea"
   integrity sha512-DcXs2lbVPzuJmn2kuDEwul2oZg7p4YMa5J2f0YzsOBHaAnBYGPNUB/rJ74DTjTKpw7F0+lSsVM8sFHE2UyBixg==
-
-webassembly-floating-point-hex-parser@0.1.2:
-  version "0.1.2"
-  resolved "https://npm-registry.getunid.io/webassembly-floating-point-hex-parser/-/webassembly-floating-point-hex-parser-0.1.2.tgz#85bb01f54e68690c2645ea0cfad26c1110fdf988"
-  integrity sha512-TUf1H++8U10+stJbFydnvrpG5Sznz5Rilez/oZlV5zI0C/e4cSxd8rALAJ8VpTvjVWxLmL3SVSJUK6Ap9AoiNg==
-
-webassembly-interpreter@0.0.30:
-  version "0.0.30"
-  resolved "https://npm-registry.getunid.io/webassembly-interpreter/-/webassembly-interpreter-0.0.30.tgz#f35aaec0fff2e6fd9ca7277eb1a9059dccedcb7f"
-  integrity sha512-+Jdy2piEvz9T5j751mOE8+rBO12p+nNW6Fg4kJZ+zP1oUfsm+151sbAbM8AFxWTURmWCGP+r8Lxwfv3pzN1bCQ==
-  dependencies:
-    "@babel/code-frame" "^7.0.0-beta.36"
-    long "^3.2.0"
-    webassembly-floating-point-hex-parser "0.1.2"
 
 webidl-conversions@^5.0.0:
   version "5.0.0"

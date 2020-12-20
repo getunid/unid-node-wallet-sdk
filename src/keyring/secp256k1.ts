@@ -1,6 +1,7 @@
 import { KeyPair, DidPublicKey } from '@unid/did-operator'
 import base64url from 'base64url'
 import secp256k1 from 'secp256k1'
+import { utils } from '../utils/utils'
 
 interface Secp256k1Context {
     public : Buffer,
@@ -65,6 +66,31 @@ export class Secp256k1 {
         }
     }
 
+    public static fromJwk(jwk: KeyPair.Secp256K1): Secp256k1 {
+        let d = jwk.d
+        let x = jwk.x
+        let y = jwk.y
+
+        if (d === undefined) {
+            d = base64url.encode(
+                Buffer.from(utils.range(0, PRIVATE_KEY_SIZE).map(() => {
+                    return 0x0
+                }))
+            )
+        }
+
+        return new Secp256k1({
+            private: Buffer.from(base64url.toBuffer(d)),
+            public : Buffer.from(
+                Buffer.concat([
+                    Uint8Array.from([ 0x04 ]),
+                    Uint8Array.from(base64url.toBuffer(x)),
+                    Uint8Array.from(base64url.toBuffer(y)),
+                ])
+            ),
+        })
+    }
+
     /**
      */
     public toJwk(includedPrivateKey: boolean = false): KeyPair.Secp256K1 {
@@ -72,7 +98,7 @@ export class Secp256k1 {
             throw new Error()
         }
 
-        const jwt: KeyPair.Secp256K1 = {
+        const jwk: KeyPair.Secp256K1 = {
             kty: 'EC',
             crv: 'secp256k1',
             x  : base64url.encode(this.getPointX()),
@@ -80,10 +106,10 @@ export class Secp256k1 {
         }
 
         if (includedPrivateKey) {
-            jwt.d = base64url.encode(this.getPrivateKey())
+            jwk.d = base64url.encode(this.getPrivateKey())
         }
 
-        return jwt
+        return jwk
     }
 
     /**
