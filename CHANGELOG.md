@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.6...v0.0.7) (2020-12-20)
+
+
+### Features
+
+* Added cipher functions ([1985467](https://github.com/getunid/unid-nodejs-sdk/commit/198546761f6cc45b65ca37e0ef5c4d50f752f976))
+* Added signer functions ([61c4ebe](https://github.com/getunid/unid-nodejs-sdk/commit/61c4ebe8140658024cd30541d937e55dc54d81b7))
+* Added VC functions ([5faf5e6](https://github.com/getunid/unid-nodejs-sdk/commit/5faf5e6160c31067b3be81fb2627bb896fc99e1d))
+* Refactoring and added schemas ([2d5428a](https://github.com/getunid/unid-nodejs-sdk/commit/2d5428a01e8d80e59ea2ce611846a6df4d1cd5c3))
+
 ### [0.0.6](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.5...v0.0.6) (2020-12-18)
 
 ### [0.0.5](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.4...v0.0.5) (2020-12-17)
