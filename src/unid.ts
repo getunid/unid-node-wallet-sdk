@@ -42,7 +42,7 @@ class UNiDKlass {
     /**
      */
     public async loadDid(params: { did: string }): Promise<UNiDDid> {
-        const keyring = await MnemonicKeyring.loadKeyring(this.connector, params.did)
+        const keyring = await MnemonicKeyring.loadKeyring(this.getConnector(), params.did)
 
         return new UNiDDid({
             keyring : keyring,
@@ -57,7 +57,7 @@ class UNiDKlass {
         switch (type) {
             case KeyRingType.Mnemonic: {
                 const mnemonicOptions = options as MnemonicKeyringOptions
-                const keyring  = await MnemonicKeyring.createKeyring(this.connector, mnemonicOptions)
+                const keyring  = await MnemonicKeyring.createKeyring(this.getConnector(), mnemonicOptions)
                 const document = await this.operator.create({
                     publicKeys: [
                         keyring.getSignKeyPair().toPublicKey(SIGNING_KEY_ID, Object.values(PublicKeyPurpose))
@@ -103,7 +103,7 @@ class UNiDKlass {
 
     /**
      */
-    private get connector(): BaseConnector {
+    private getConnector(): BaseConnector {
         return ConfigManager.context.connector
     }
 }
