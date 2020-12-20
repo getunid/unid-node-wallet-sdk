@@ -1,5 +1,5 @@
 import { Text } from 'schema-dts'
-import { UNiDVerifiableCredential } from '.'
+import { UNiDVC } from '.'
 
 // GenderCredentialV1
 
@@ -9,7 +9,7 @@ export interface GenderPerson {
     gender : Readonly<Text>,
 }
 
-export type GenderCredentialV1 = UNiDVerifiableCredential<
+export type GenderCredentialV1 = UNiDVC<
     'https://docs.unid.plus/docs/2020/credentials/gender',
     'GenderPerson',
     GenderPerson

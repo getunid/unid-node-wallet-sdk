@@ -1,7 +1,9 @@
 import { UNiDDidOperator, PublicKeyPurpose, UNiDDidDocument } from '@unid/did-operator'
+import { ProofContext } from './cipher/signer'
 import { ConfigManager } from './config'
 import { BaseConnector } from './connector/base'
 import { UNiDDid } from './did'
+import { UNiDVC } from './did/credential'
 import { UNiDNotImplementedError } from "./error"
 import { KeyRingType } from './keyring'
 import { MnemonicKeyring, MnemonicKeyringOptions } from './keyring/mnemonic'
@@ -103,8 +105,8 @@ class UNiDKlass {
 
     /**
      */
-    public async validateCredential() {
-        throw new UNiDNotImplementedError()
+    public async validateCredential<T>(credential: T & ProofContext): Promise<{ payload: T, isValid: boolean }> {
+        return await UNiDVC.verify<T>(credential)
     }
 }
 

@@ -24,24 +24,27 @@ export interface ProofContext {
     }
 }
 
-export class JsonLdSigner {
+export class CredentialSigner {
     private static readonly PROOF_KEY: string = 'proof'
 
     private constructor() {}
 
-    public static async sign<T>(object: T, context: Context): Promise<T & ProofContext> {
+    public static async sign<T>(object: T, suite: {
+        did    : string,
+        context: Context,
+    }): Promise<T & ProofContext> {
         if (Object.keys(object).indexOf(this.PROOF_KEY) !== -1) {
             throw new Error()
         }
 
         const created = (new DateTimeUtils(new Date())).$toString(DateTimeTypes.default)
-        const jws = await Jws.encode(object, context)
+        const jws = await Jws.encode(object, suite.context)
         const proof: ProofContext = {
             proof: {
                 type: 'EcdsaSecp256k1Signature2019',
                 proofPurpose: 'authentication',
                 created: created,
-                verificationMethod: '',
+                verificationMethod: suite.did,
                 jws: jws,
             }
         }
@@ -52,25 +55,27 @@ export class JsonLdSigner {
         return signedObject
     }
 
-    public static async verify<T>($object: T & ProofContext, context: Context): Promise<{ payload: T, isValid: boolean }> {
-        if (Object.keys($object).indexOf(this.PROOF_KEY) === -1) {
+    public static async verify<T>(object: T & ProofContext, suite: {
+        context: Context,
+    }): Promise<{ payload: T, isValid: boolean }> {
+        if (Object.keys(object).indexOf(this.PROOF_KEY) === -1) {
             throw new Error()
         }
 
-        const proof = $object.proof
+        const proof = object.proof
 
         if (proof === undefined) {
             throw new Error()
         }
 
-        const jws    = proof.jws
-        const object = lodash.omit($object, [ this.PROOF_KEY ]) as T
+        const jws     = proof.jws
+        const payload = lodash.omit(object, [ this.PROOF_KEY ]) as T
 
         // Verify
-        const isValid = await Jws.verify(object, jws, context)
+        const isValid = await Jws.verify(payload, jws, suite.context)
 
         return {
-            payload: object,
+            payload: payload,
             isValid: isValid,
         }
     }

@@ -1,5 +1,6 @@
 import { MnemonicKeyring } from '../keyring/mnemonic'
 import { UNiDDidOperator } from '@unid/did-operator'
+import { UNiDVC } from './credential'
 
 interface UNiDDidContext {
     keyring : MnemonicKeyring
@@ -45,11 +46,18 @@ export class UNiDDid {
      * Create: VC
      */
     public async createCredential<T>(credential: T) {
-        try {
-        } catch (err) {
-            console.log(err)
-        }
+        const vc = new UNiDVC<T>(credential)
+
+        return await vc.sign({
+            did    : this.keyring.getIdentifier(),
+            context: this.keyring.getSignKeyPair(),
+        })
     }
+
+    /**
+     * Create: VP
+     */
+    public async createPresentation<T>() {}
 
     /**
      * To: SDS
@@ -65,9 +73,4 @@ export class UNiDDid {
      * From: SDS
      */
     public async getCredentials() {}
-
-    /**
-     * Create: VP
-     */
-    public async createPresentation<T>() {}
 }

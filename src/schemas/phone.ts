@@ -1,5 +1,5 @@
 import { Text } from 'schema-dts'
-import { UNiDVerifiableCredential } from '.'
+import { UNiDVC } from '.'
 
 // PhoneCredentialV1
 
@@ -15,7 +15,7 @@ export interface PhoneOrganization {
     telephone: Readonly<Text>
 }
 
-export type PhoneCredentialV1 = UNiDVerifiableCredential<
+export type PhoneCredentialV1 = UNiDVC<
     'https://docs.unid.plus/docs/2020/credentials/phone',
     'PhonePerson' | 'PhoneOrganization',
     PhonePerson | PhoneOrganization

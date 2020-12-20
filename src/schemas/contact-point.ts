@@ -1,5 +1,5 @@
 import { ContactPoint, Text } from 'schema-dts'
-import { UNiDVerifiableCredential } from '.'
+import { UNiDVC } from '.'
 
 // ContactPointCredentialV1
 
@@ -15,7 +15,7 @@ export interface ContactPointOrganization {
     contactPoint: ContactPoint,
 }
 
-export type ContactPointCredentialV1 = UNiDVerifiableCredential<
+export type ContactPointCredentialV1 = UNiDVC<
     'https://docs.unid.plus/docs/2020/credentials/contactPoint',
     'ContactPointPerson' | 'ContactPointOrganization',
     ContactPointPerson | ContactPointOrganization

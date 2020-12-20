@@ -1,5 +1,5 @@
 import { PostalAddress, Text } from 'schema-dts'
-import { UNiDVerifiableCredential } from '.';
+import { UNiDVC } from '.';
 
 // AddressCredentialV1
 
@@ -15,7 +15,7 @@ export interface AddressOrganization {
     address: PostalAddress,
 }
 
-export type AddressCredentialV1 = UNiDVerifiableCredential<
+export type AddressCredentialV1 = UNiDVC<
     'https://docs.unid.plus/docs/2020/credentials/address',
     'AddressPerson' | 'AddressOrganization',
     AddressPerson | AddressOrganization

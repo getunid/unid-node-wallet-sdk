@@ -1,5 +1,5 @@
 import { Text } from 'schema-dts'
-import { UNiDVerifiableCredential } from '.'
+import { UNiDVC } from '.'
 
 // NameCredentialV1
 
@@ -19,7 +19,7 @@ export interface NameOrganization {
     familyName: Readonly<Text>,
 }
 
-export type NameCredentialV1 = UNiDVerifiableCredential<
+export type NameCredentialV1 = UNiDVC<
     'https://docs.unid.plus/docs/2020/credentials/name',
     'NamePerson' | 'NameOrganization',
     NamePerson | NameOrganization
