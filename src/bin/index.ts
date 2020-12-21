@@ -1,4 +1,5 @@
 // import { KeyRingType } from "src/keyring"
+import { AddressCredentialV1 } from "src/schemas/address"
 import { UNiD } from ".."
 import { MongoDBClient } from "../adapters/mongodb"
 import { MongoDBConnector } from "../connector/mongodb"
@@ -21,9 +22,30 @@ import { MongoDBConnector } from "../connector/mongodb"
             did: 'did:unid:test:EiBtzgWy130lNOyO3JsHkR75YFeSgU7h4p6zYvfQxrAXeA',
         })
 
+        const signedCred = await DID.createCredential(
+            new AddressCredentialV1({
+                type: [ 'VerifiableCredential', 'AddressPerson' ],
+                credentialSubject: {
+                    '@id': '',
+                    '@type': 'AddressPerson',
+                    address: {
+                        '@type': 'PostalAddress',
+                    }
+                },
+            }, {
+                // issuanceDate  : new Date(), // Optional (default: NOW())
+                // expirationDate: new Date(), // Optional
+            })
+        )
+
         console.log(DID.getIdentifier())
         console.log(DID.getSeedPhrase())
         console.log(JSON.stringify(await DID.getDidDocument(), null, 2))
+        console.log(signedCred)
+
+        const verified = await UNiD.validateCredential(signedCred)
+
+        console.log(verified)
 
         MongoDBClient.kill()
     } catch (err) {

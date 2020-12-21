@@ -1,5 +1,5 @@
 import { Text } from 'schema-dts'
-import { UNiDVC } from '.'
+import { UNiDVC, UNiDVCBase, UNiDVCContext, UNiDVCOptions } from '.'
 
 // EmailCredentialV1
 
@@ -15,8 +15,26 @@ export interface EmailOrganization {
     email  : Readonly<Text>,
 }
 
-export type EmailCredentialV1 = UNiDVC<
-    'https://docs.unid.plus/docs/2020/credentials/email',
+type CredentialV1 = UNiDVC<
     'EmailPerson' | 'EmailOrganization',
     EmailPerson | EmailOrganization
 >
+
+type CredentialV1Context = UNiDVCContext<
+    'https://docs.unid.plus/docs/2020/credentials/email'
+>
+
+export type EmailCredentialV1Schema = CredentialV1 & CredentialV1Context
+
+export class EmailCredentialV1 extends UNiDVCBase<EmailCredentialV1Schema> {
+    public constructor(credential: CredentialV1, options?: UNiDVCOptions) {
+        super(options)
+
+        this.credential = Object.assign<CredentialV1Context, CredentialV1>({
+            '@context': [
+                'https://www.w3.org/2018/credentials/v1',
+                'https://docs.unid.plus/docs/2020/credentials/email',
+            ],
+        }, credential)
+    }
+}

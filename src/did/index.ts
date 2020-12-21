@@ -1,6 +1,8 @@
 import { MnemonicKeyring } from '../keyring/mnemonic'
 import { UNiDDidOperator } from '@unid/did-operator'
 import { UNiDVC } from './credential'
+import { UNiDVCBase, UNiDVCMeta, VC_ID } from '../schemas'
+import { DateTimeTypes, DateTimeUtils } from '../utils/datetime'
 
 interface UNiDDidContext {
     keyring : MnemonicKeyring
@@ -45,10 +47,23 @@ export class UNiDDid {
     /**
      * Create: VC
      */
-    public async createCredential<T>(credential: T) {
-        const vc = new UNiDVC<T>(credential)
+    public async createCredential<T>(credential: UNiDVCBase<T>) {
+        const iss = (new DateTimeUtils(credential.getIssuanceDate())).$toString(DateTimeTypes.default)
+        const exp = (new DateTimeUtils(credential.getExpirationDate())).toString(DateTimeTypes.default)
 
-        return await vc.sign({
+        const data: T & UNiDVCMeta = Object.assign<UNiDVCMeta, T>({
+            id    : VC_ID,
+            issuer: this.getIdentifier(),
+            issuanceDate  : iss,
+        }, credential.toVC())
+
+        if (exp !== undefined) {
+            data.expirationDate = exp
+        }
+
+        const verifiableCredential = new UNiDVC<T & UNiDVCMeta>(data)
+
+        return await verifiableCredential.sign({
             did    : this.keyring.getIdentifier(),
             context: this.keyring.getSignKeyPair(),
         })

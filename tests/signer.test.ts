@@ -3,7 +3,6 @@ import { Secp256k1 as Context } from '../src/keyring/secp256k1'
 import { UNiDVC } from '../src/did/credential'
 import { AddressCredentialV1 } from '../src/schemas/address'
 import secp256k1 from 'secp256k1'
-import { DateTimeTypes, DateTimeUtils } from '../src/utils/datetime'
 
 const DID: string = 'did:unid:test:EiBtzgWy130lNOyO3JsHkR75YFeSgU7h4p6zYvfQxrAXeA'
 const XY: Buffer = Buffer.from('04da5cd2e20091a7e030905c495241ca5ede8f1e2b2a04c3c628f0335986317c246621aed82210ed73daf5222682a4acd87f2d42a42cb1834fccd36ed3bb555092', 'hex')
@@ -120,14 +119,7 @@ test('Signer - 5', async () => {
         private: D,
     })
  
-    const credential = new UNiDVC<AddressCredentialV1>({
-        '@context': [
-            'https://www.w3.org/2018/credentials/v1',
-            'https://docs.unid.plus/docs/2020/credentials/address',
-        ],
-        id: DID,
-        issuer: DID,
-        issuanceDate: (new DateTimeUtils(new Date())).$toString(DateTimeTypes.default),
+    const credential = new AddressCredentialV1({
         type: [ 'VerifiableCredential', 'AddressOrganization' ],
         credentialSubject: {
             '@id': DID,
@@ -138,12 +130,14 @@ test('Signer - 5', async () => {
         }
     })
 
-    const signed = await credential.sign({
+    const verifiableCredential = new UNiDVC(credential)
+
+    const signed = await verifiableCredential.sign({
         did    : DID,
         context: context,
     })
-    const verified = await UNiDVC.verify<AddressCredentialV1>(signed)
+    const verified = await UNiDVC.verify(signed)
 
     expect(true).toEqual(verified.isValid)
-    expect(credential.getVerifiableCredential()).toEqual(verified.payload)
+    expect(credential.credential).toEqual(verified.payload.credential)
 })
