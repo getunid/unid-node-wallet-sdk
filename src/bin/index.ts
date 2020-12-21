@@ -1,4 +1,5 @@
 // import { KeyRingType } from "src/keyring"
+import { Cipher } from "src/cipher/cipher"
 import { AddressCredentialV1 } from "src/schemas/address"
 import { UNiD } from ".."
 import { MongoDBClient } from "../adapters/mongodb"
@@ -38,29 +39,9 @@ import { MongoDBConnector } from "../connector/mongodb"
             })
         )
 
-        console.log(DID.getIdentifier())
-        console.log(DID.getSeedPhrase())
-        console.log(JSON.stringify(await DID.getDidDocument(), null, 2))
-        console.log(signedCred)
+        const encrypted = await Cipher.encrypt(Buffer.from(JSON.stringify(signedCred), 'utf-8'), Buffer.from('password'))
 
-        const verified = await UNiD.validateCredential(signedCred)
-
-        console.log(verified)
-
-        const request = await DID.generateAuthenticationRequest({
-            callbackUri: 'https://www.google.com',
-            claims: {
-                requiredCredentialTypes: [
-                    'AddressPerson',
-                    'EmailPerson',
-                ],
-                optionalCredentialTypes: [
-                    'GenderPerson',
-                ],
-            }
-        })
-
-        console.log(request)
+        console.log(encrypted.toString('base64'))
 
         MongoDBClient.kill()
     } catch (err) {

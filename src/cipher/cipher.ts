@@ -27,27 +27,25 @@ export class Cipher {
         }))
 
         const cipher = crypto.createCipheriv(this.ALGORITHM, key, iv)
+        const buffer = cipher.update(data)
 
-        cipher.update(data)
-
-        const final  = cipher.final()
-        const buffer = Buffer.concat([ salt, iv, final ])
-
-        return buffer
+        return Buffer.concat([
+            salt, iv, Buffer.concat([ buffer, cipher.final() ])
+        ])
     }
 
     /**
      * @param buffer 
      * @param secret 
      */
-    public static async decrypt(buffer: Buffer, secret: Buffer): Promise<Buffer> {
-        if (buffer.length < (this.SALT_LENGTH + this.IV_LENGTH)) {
+    public static async decrypt(data: Buffer, secret: Buffer): Promise<Buffer> {
+        if (data.length < (this.SALT_LENGTH + this.IV_LENGTH)) {
             throw new Error()
         }
 
-        const salt  = buffer.slice(0, this.SALT_LENGTH)
-        const iv    = buffer.slice(this.SALT_LENGTH, this.SALT_LENGTH + this.IV_LENGTH)
-        const final = buffer.slice(this.SALT_LENGTH + this.IV_LENGTH)
+        const salt  = data.slice(0, this.SALT_LENGTH)
+        const iv    = data.slice(this.SALT_LENGTH, this.SALT_LENGTH + this.IV_LENGTH)
+        const final = data.slice(this.SALT_LENGTH + this.IV_LENGTH)
         const key   = await (new Promise<Buffer>((resolve, reject) => {
             crypto.scrypt(secret, salt, this.PASS_LENGTH, (err, key) => {
                 if (err) {
@@ -58,11 +56,10 @@ export class Cipher {
         }))
 
         const cipher = crypto.createDecipheriv(this.ALGORITHM, key, iv)
+        const buffer = cipher.update(final)
 
-        cipher.update(final)
-
-        const data = cipher.final()
-
-        return data
+        return Buffer.concat([
+            buffer, cipher.final()
+        ])
     }
 }
