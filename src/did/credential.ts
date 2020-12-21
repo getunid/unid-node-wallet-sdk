@@ -4,7 +4,7 @@ import { UNiD } from '../unid'
 
 /**
  */
-export class UNiDVC<T> {
+export class UNiDVerifiableCredential<T> {
     private credential: T
 
     /**

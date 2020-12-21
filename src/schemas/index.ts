@@ -2,7 +2,7 @@ import { ProofContext } from "../cipher/signer"
 
 export const VC_ID: string = 'https://sds.getunid.io/api/v1'
 
-export type UNiDVCSchema =
+export type UNiDVerifiableCredentialSchema =
     | 'AddressPerson'
     | 'AddressOrganization'
     | 'AlumniOfOrganization'
@@ -17,19 +17,19 @@ export type UNiDVCSchema =
     | 'PhoneOrganization'
     | 'QualificationPerson'
 
-export class UNiDVCBase<T> {
+export class UNiDVerifiableCredentialBase<T> {
     public credential?: T
     private issuanceDate?: Date
     private expirationDate?: Date
 
-    public constructor(options?: UNiDVCOptions) {
+    public constructor(options?: UNiDVerifiableCredentialOptions) {
         if (options) {
             this.issuanceDate   = options.issuanceDate
             this.expirationDate = options.expirationDate
         }
     }
 
-    public toVC(): T {
+    public toVerifiableCredential(): T {
         if (this.credential === undefined) {
             throw new Error()
         }
@@ -50,23 +50,23 @@ export class UNiDVCBase<T> {
     }
 }
 
-export interface UNiDVCMeta extends ProofContext {
+export interface UNiDVerifiableCredentialMeta extends ProofContext {
     id: string,
     issuer: string,
     issuanceDate: string,
     expirationDate?: string,
 }
 
-export interface UNiDVCContext<T> {
+export interface UNiDVerifiableCredentialContext<T> {
     '@context': Array<'https://www.w3.org/2018/credentials/v1' | T>,
 }
 
-export interface UNiDVC<T1, T2> {
+export interface UNiDVerifiableCredential<T1, T2> {
     type: Array<'VerifiableCredential' | T1>,
     credentialSubject: T2,
 }
 
-export interface UNiDVCOptions {
+export interface UNiDVerifiableCredentialOptions {
     issuanceDate?: Date,
     expirationDate?: Date,
 }

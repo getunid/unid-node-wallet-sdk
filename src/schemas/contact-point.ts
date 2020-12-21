@@ -1,5 +1,5 @@
 import { ContactPoint, Text } from 'schema-dts'
-import { UNiDVC, UNiDVCBase, UNiDVCContext, UNiDVCOptions } from '.'
+import { UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
 
 // ContactPointCredentialV1
 
@@ -15,19 +15,19 @@ export interface ContactPointOrganization {
     contactPoint: ContactPoint,
 }
 
-type CredentialV1 = UNiDVC<
+type CredentialV1 = UNiDVerifiableCredential<
     'ContactPointPerson' | 'ContactPointOrganization',
     ContactPointPerson | ContactPointOrganization
 >
 
-type CredentialV1Context = UNiDVCContext<
+type CredentialV1Context = UNiDVerifiableCredentialContext<
     'https://docs.unid.plus/docs/2020/credentials/contactPoint'
 >
 
 export type ContactPointCredentialV1Schema = CredentialV1 & CredentialV1Context
 
-export class ContactPointCredentialV1 extends UNiDVCBase<ContactPointCredentialV1Schema> {
-    public constructor(credential: CredentialV1, options?: UNiDVCOptions) {
+export class ContactPointCredentialV1 extends UNiDVerifiableCredentialBase<ContactPointCredentialV1Schema> {
+    public constructor(credential: CredentialV1, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
         this.credential = Object.assign<CredentialV1Context, CredentialV1>({

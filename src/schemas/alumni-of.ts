@@ -1,5 +1,5 @@
 import { Organization, Text } from 'schema-dts'
-import { UNiDVC, UNiDVCBase, UNiDVCContext, UNiDVCOptions } from '.'
+import { UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
 
 // AlumniOfCredentialV1
 
@@ -9,19 +9,19 @@ export interface AlumniOfOrganization {
     alumniOf: Array<Organization>,
 }
 
-type CredentialV1 = UNiDVC<
+type CredentialV1 = UNiDVerifiableCredential<
     'AlumniOfOrganization',
     AlumniOfOrganization
 >
 
-type CredentialV1Context = UNiDVCContext<
+type CredentialV1Context = UNiDVerifiableCredentialContext<
     'https://docs.unid.plus/docs/2020/credentials/alumniOf'
 >
 
 export type AlumniOfCredentialV1Schema = CredentialV1 & CredentialV1Context
 
-export class AlumniOfCredentialV1 extends UNiDVCBase<AlumniOfCredentialV1Schema> {
-    public constructor(credential: CredentialV1, options?: UNiDVCOptions) {
+export class AlumniOfCredentialV1 extends UNiDVerifiableCredentialBase<AlumniOfCredentialV1Schema> {
+    public constructor(credential: CredentialV1, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
         this.credential = Object.assign<CredentialV1Context, CredentialV1>({

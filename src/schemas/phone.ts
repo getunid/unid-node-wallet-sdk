@@ -1,5 +1,5 @@
 import { Text } from 'schema-dts'
-import { UNiDVC, UNiDVCBase, UNiDVCContext, UNiDVCOptions } from '.'
+import { UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
 
 // PhoneCredentialV1
 
@@ -15,19 +15,19 @@ export interface PhoneOrganization {
     telephone: Readonly<Text>
 }
 
-type CredentialV1 = UNiDVC<
+type CredentialV1 = UNiDVerifiableCredential<
     'PhonePerson' | 'PhoneOrganization',
     PhonePerson | PhoneOrganization
 >
 
-type CredentialV1Context = UNiDVCContext<
+type CredentialV1Context = UNiDVerifiableCredentialContext<
     'https://docs.unid.plus/docs/2020/credentials/phone'
 >
 
 export type PhoneCredentialV1Schema = CredentialV1 & CredentialV1Context
 
-export class PhoneCredentialV1 extends UNiDVCBase<PhoneCredentialV1Schema> {
-    public constructor(credential: CredentialV1, options?: UNiDVCOptions) {
+export class PhoneCredentialV1 extends UNiDVerifiableCredentialBase<PhoneCredentialV1Schema> {
+    public constructor(credential: CredentialV1, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
         this.credential = Object.assign<CredentialV1Context, CredentialV1>({

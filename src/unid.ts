@@ -3,7 +3,7 @@ import { ProofContext } from './cipher/signer'
 import { ConfigManager } from './config'
 import { BaseConnector } from './connector/base'
 import { UNiDDid } from './did'
-import { UNiDVC } from './did/credential'
+import { UNiDVerifiableCredential } from './did/credential'
 import { UNiDNotImplementedError } from "./error"
 import { KeyRingType } from './keyring'
 import { MnemonicKeyring, MnemonicKeyringOptions } from './keyring/mnemonic'
@@ -105,13 +105,20 @@ class UNiDKlass {
 
     /**
      */
-    public async validateCredential<T>(credential: T & ProofContext): Promise<{ payload: T, isValid: boolean }> {
-        return await UNiDVC.verify<T>(credential)
+    public async validateCredential<T>(credential: T & ProofContext): Promise<{
+        payload: T,
+        isValid: boolean,
+    }> {
+        return await UNiDVerifiableCredential.verify<T>(credential)
     }
 
     /**
      */
-    public async validateAuthenticationRequest() {
+    public async validateAuthenticationRequest<T>(request: T & ProofContext): Promise<{
+        payload: T,
+        isValid: boolean,
+    }> {
+        return await UNiDVerifiableCredential.verify<T>(request)
     }
 }
 

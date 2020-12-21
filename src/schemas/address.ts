@@ -1,5 +1,5 @@
 import { PostalAddress, Text } from 'schema-dts'
-import { UNiDVC, UNiDVCBase, UNiDVCContext, UNiDVCOptions } from '.';
+import { UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.';
 
 // AddressCredentialV1
 
@@ -15,19 +15,19 @@ interface AddressOrganization {
     address: PostalAddress,
 }
 
-type CredentialV1 = UNiDVC<
+type CredentialV1 = UNiDVerifiableCredential<
     'AddressPerson' | 'AddressOrganization',
     AddressPerson | AddressOrganization
 >
 
-type CredentialV1Context = UNiDVCContext<
+type CredentialV1Context = UNiDVerifiableCredentialContext<
     'https://docs.unid.plus/docs/2020/credentials/address'
 >
 
 export type AddressCredentialV1Schema = CredentialV1 & CredentialV1Context
 
-export class AddressCredentialV1 extends UNiDVCBase<AddressCredentialV1Schema> {
-    public constructor(credential: CredentialV1, options?: UNiDVCOptions) {
+export class AddressCredentialV1 extends UNiDVerifiableCredentialBase<AddressCredentialV1Schema> {
+    public constructor(credential: CredentialV1, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
         this.credential = Object.assign<CredentialV1Context, CredentialV1>({
