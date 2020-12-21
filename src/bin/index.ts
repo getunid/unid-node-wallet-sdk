@@ -47,6 +47,21 @@ import { MongoDBConnector } from "../connector/mongodb"
 
         console.log(verified)
 
+        const request = await DID.generateAuthenticationRequest({
+            callbackUri: 'https://www.google.com',
+            claims: {
+                requiredCredentialTypes: [
+                    'AddressPerson',
+                    'EmailPerson',
+                ],
+                optionalCredentialTypes: [
+                    'GenderPerson',
+                ],
+            }
+        })
+
+        console.log(request)
+
         MongoDBClient.kill()
     } catch (err) {
         console.log(err)

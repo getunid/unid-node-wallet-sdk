@@ -2,6 +2,21 @@ import { ProofContext } from "../cipher/signer"
 
 export const VC_ID: string = 'https://sds.getunid.io/api/v1'
 
+export type UNiDVCSchema =
+    | 'AddressPerson'
+    | 'AddressOrganization'
+    | 'AlumniOfOrganization'
+    | 'ContactPointPerson'
+    | 'ContactPointOrganization'
+    | 'EmailPerson'
+    | 'EmailOrganization'
+    | 'GenderPerson'
+    | 'NamePerson'
+    | 'NameOrganization'
+    | 'PhonePerson'
+    | 'PhoneOrganization'
+    | 'QualificationPerson'
+
 export class UNiDVCBase<T> {
     public credential?: T
     private issuanceDate?: Date

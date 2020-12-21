@@ -108,6 +108,11 @@ class UNiDKlass {
     public async validateCredential<T>(credential: T & ProofContext): Promise<{ payload: T, isValid: boolean }> {
         return await UNiDVC.verify<T>(credential)
     }
+
+    /**
+     */
+    public async validateAuthenticationRequest() {
+    }
 }
 
 export const UNiD = new UNiDKlass()

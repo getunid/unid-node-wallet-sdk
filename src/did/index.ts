@@ -1,12 +1,24 @@
 import { MnemonicKeyring } from '../keyring/mnemonic'
 import { UNiDDidOperator } from '@unid/did-operator'
 import { UNiDVC } from './credential'
-import { UNiDVCBase, UNiDVCMeta, VC_ID } from '../schemas'
+import { UNiDVCBase, UNiDVCMeta, UNiDVCSchema, VC_ID } from '../schemas'
 import { DateTimeTypes, DateTimeUtils } from '../utils/datetime'
 
 interface UNiDDidContext {
     keyring : MnemonicKeyring
     operator: UNiDDidOperator
+}
+
+interface UNiDDidAuthRequestClaims {
+    requiredCredentialTypes: Array<UNiDVCSchema>,
+    optionalCredentialTypes: Array<UNiDVCSchema>,
+}
+
+interface UNiDDidAuthRequestPayload {
+    iss: string,
+    response_type: 'callback',
+    callback_uri: string,
+    claims: UNiDDidAuthRequestClaims,
 }
 
 export class UNiDDid {
@@ -88,4 +100,24 @@ export class UNiDDid {
      * From: SDS
      */
     public async getCredentials() {}
+
+    /**
+     */
+    public async generateAuthenticationRequest(params: {
+        claims     : UNiDDidAuthRequestClaims,
+        callbackUri: string,
+    }) {
+        const payload: UNiDDidAuthRequestPayload = {
+            iss          : this.getIdentifier(),
+            response_type: 'callback',
+            callback_uri : params.callbackUri,
+            claims       : params.claims,
+        }
+        const request = new UNiDVC<UNiDDidAuthRequestPayload>(payload)
+
+        return await request.sign({
+            did    : this.keyring.getIdentifier(),
+            context: this.keyring.getSignKeyPair(),
+        })
+    }
 }
