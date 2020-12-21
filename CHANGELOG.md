@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.8](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.7...v0.0.8) (2020-12-21)
+
+
+### Features
+
+* Added generateAuthenticationRequest function ([d61953d](https://github.com/getunid/unid-nodejs-sdk/commit/d61953d391bbad587929556c49b25997dfda95e6))
+* Schema integration ([a1bd526](https://github.com/getunid/unid-nodejs-sdk/commit/a1bd5260322efe3eb700ada0643bf64808212e2c))
+
 ### [0.0.7](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.6...v0.0.7) (2020-12-20)
 
 
