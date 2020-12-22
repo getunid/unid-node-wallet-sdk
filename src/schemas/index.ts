@@ -17,6 +17,7 @@ export type UNiDVerifiableCredentialSchema =
     | 'PhoneOrganization'
     | 'QualificationPerson'
 
+// VC
 export class UNiDVerifiableCredentialBase<T> {
     public credential?: T
     private issuanceDate?: Date
@@ -70,3 +71,5 @@ export interface UNiDVerifiableCredentialOptions {
     issuanceDate?: Date,
     expirationDate?: Date,
 }
+
+// VP

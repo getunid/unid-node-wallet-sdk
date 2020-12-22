@@ -1,5 +1,5 @@
-// import { KeyRingType } from "src/keyring"
 import { Cipher } from "src/cipher/cipher"
+import { KeyRingType } from "src/keyring"
 import { AddressCredentialV1 } from "src/schemas/address"
 import { UNiD } from ".."
 import { MongoDBClient } from "../adapters/mongodb"
@@ -19,27 +19,26 @@ import { MongoDBConnector } from "../connector/mongodb"
             connector   : connector,
         })
 
-        const DID = await UNiD.loadDid({
-            did: 'did:unid:test:EiBtzgWy130lNOyO3JsHkR75YFeSgU7h4p6zYvfQxrAXeA',
-        })
+        const DID = await UNiD.createDid(KeyRingType.Mnemonic)
 
-        const signedCred = await DID.createCredential(
+        const signedVC = await DID.createCredential(
             new AddressCredentialV1({
                 type: [ 'VerifiableCredential', 'AddressPerson' ],
                 credentialSubject: {
-                    '@id': '',
+                    '@id'  : DID.getIdentifier(),
                     '@type': 'AddressPerson',
                     address: {
                         '@type': 'PostalAddress',
-                    }
-                },
+                        streetAddress: '北柏 3 - 18 - 15',
+                    },
+                }
             }, {
-                // issuanceDate  : new Date(), // Optional (default: NOW())
-                // expirationDate: new Date(), // Optional
+                issuanceDate: new Date(),
+                expirationDate: new Date(),
             })
         )
 
-        const encrypted = await Cipher.encrypt(Buffer.from(JSON.stringify(signedCred), 'utf-8'), Buffer.from('password'))
+        const encrypted = await Cipher.encrypt(Buffer.from(JSON.stringify(signedVC), 'utf-8'), Buffer.from('password'))
 
         console.log(encrypted.toString('base64'))
 
