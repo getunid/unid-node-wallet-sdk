@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.9](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.8...v0.0.9) (2020-12-22)
+
+
+### Bug Fixes
+
+* Fixed cipher usage ([a6c1829](https://github.com/getunid/unid-nodejs-sdk/commit/a6c1829cd87c2939673a5135207cf7ef4bfdd6b0))
+* Trivial fix ([76a863f](https://github.com/getunid/unid-nodejs-sdk/commit/76a863f3591e42373762a4837b8bc35f3e3966ef))
+
 ### [0.0.8](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.7...v0.0.8) (2020-12-21)
 
 
