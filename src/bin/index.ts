@@ -28,7 +28,7 @@ import { MongoDBConnector } from "../connector/mongodb"
                     '@type': 'AddressPerson',
                     address: {
                         '@type': 'PostalAddress',
-                        streetAddress: '北柏 3 - 18 - 15',
+                        streetAddress: '日本橋',
                     },
                 }
             }, {
