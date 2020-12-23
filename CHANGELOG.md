@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.10](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.9...v0.0.10) (2020-12-23)
+
+
+### Features
+
+* Added VP functions ([aa38f57](https://github.com/getunid/unid-nodejs-sdk/commit/aa38f574a973cd809e944455533be1080838f538))
+* Delete address ([4294515](https://github.com/getunid/unid-nodejs-sdk/commit/429451577a42ced09642c753249f323e0c84ab63))
+
 ### [0.0.9](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.8...v0.0.9) (2020-12-22)
 
 
