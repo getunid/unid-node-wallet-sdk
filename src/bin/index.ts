@@ -1,4 +1,3 @@
-import { Cipher } from "src/cipher/cipher"
 import { KeyRingType } from "src/keyring"
 import { AddressCredentialV1 } from "src/schemas/address"
 import { UNiD } from ".."
@@ -38,9 +37,9 @@ import { MongoDBConnector } from "../connector/mongodb"
             })
         )
 
-        const encrypted = await Cipher.encrypt(Buffer.from(JSON.stringify(signedVC), 'utf-8'), Buffer.from('password'))
+        const signedVP = await DID.createPresentation([ signedVC ])
 
-        console.log(encrypted.toString('base64'))
+        console.log(signedVP)
 
         MongoDBClient.kill()
     } catch (err) {

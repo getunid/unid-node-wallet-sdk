@@ -4,27 +4,27 @@ import { UNiD } from '../unid'
 
 /**
  */
-export class UNiDVerifiablePresentation<T> {
-    private presentation: T
+export class UNiDVerifiablePresentation {
+    private presentation: Object
 
     /**
      * @param presentation 
      */
-    constructor(presentation: T) {
+    constructor(presentation: Object) {
         this.presentation = presentation
     }
 
     /**
      */
-    public getVerifiablePresentation(): T {
+    public getVerifiablePresentation(): Object {
         return this.presentation
     }
 
     /**
      * @param suite 
      */
-    public async sign(suite: { did: string, context: Secp256k1 }): Promise<T> {
-        return await CredentialSigner.sign<T>(this.presentation, {
+    public async sign(suite: { did: string, context: Secp256k1 }): Promise<Object & ProofContext> {
+        return await CredentialSigner.sign<Object>(this.presentation, {
             did    : suite.did,
             context: suite.context,
         })
@@ -33,16 +33,16 @@ export class UNiDVerifiablePresentation<T> {
     /**
      * @param credential 
      */
-    public static async verify<T>(credential: T & ProofContext): Promise<{ payload: T, isValid: boolean }> {
-        if (credential.proof === undefined) {
+    public static async verify(presentation: Object & ProofContext): Promise<{ isValid: boolean }> {
+        if (presentation.proof === undefined) {
             throw new Error()
         }
 
         const did = await UNiD.getDidDocument({
-            did: credential.proof.verificationMethod,
+            did: presentation.proof.verificationMethod,
         })
 
-        return await CredentialSigner.verify<T>(credential, {
+        return await CredentialSigner.verify<Object>(presentation, {
             context: Secp256k1.fromJwk(did.publicKeyJwk),
         })
     }

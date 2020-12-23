@@ -1,8 +1,18 @@
 import { MnemonicKeyring } from '../keyring/mnemonic'
 import { UNiDDidOperator } from '@unid/did-operator'
 import { UNiDVerifiableCredential } from './credential'
-import { UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMeta, UNiDVerifiableCredentialSchema, VC_ID } from '../schemas'
+import {
+    UNiDVerifiableCredentialBase,
+    UNiDVerifiableCredentialMeta,
+    UNiDVerifiablePresentation as UNiDVP,
+    UNiDVerifiablePresentationContext,
+    UNiDVerifiablePresentationMeta,
+    UNiDVerifiableCredentialSchema,
+    VC_ID,
+} from '../schemas'
 import { DateTimeTypes, DateTimeUtils } from '../utils/datetime'
+import { UNiDNotImplementedError } from 'src/error'
+import { UNiDVerifiablePresentation } from './presentation'
 
 interface UNiDDidContext {
     keyring : MnemonicKeyring
@@ -57,7 +67,7 @@ export class UNiDDid {
     }
 
     /**
-     * Create: VC
+     * Create: Verifiable Credential
      */
     public async createCredential<T>(credential: UNiDVerifiableCredentialBase<T>) {
         const iss = (new DateTimeUtils(credential.getIssuanceDate())).$toString(DateTimeTypes.default)
@@ -66,7 +76,7 @@ export class UNiDDid {
         const data: T & UNiDVerifiableCredentialMeta = Object.assign<UNiDVerifiableCredentialMeta, T>({
             id    : VC_ID,
             issuer: this.getIdentifier(),
-            issuanceDate  : iss,
+            issuanceDate: iss,
         }, credential.toVerifiableCredential())
 
         if (exp !== undefined) {
@@ -82,24 +92,50 @@ export class UNiDDid {
     }
 
     /**
-     * Create: VP
+     * Create: Verifiable Presentation
      */
-    public async createPresentation<T>() {}
+    public async createPresentation(credentials: Array<Object & UNiDVerifiableCredentialMeta>) {
+        const iss = (new DateTimeUtils(new Date())).$toString(DateTimeTypes.default)
+
+        const data: Object & UNiDVerifiablePresentationMeta & UNiDVerifiablePresentationContext<Object> & UNiDVP<Object, Object> = {
+            '@context': [
+                'https://www.w3.org/2018/credentials/v1',
+            ],
+            type  : [ 'VerifiablePresentation' ],
+            id    : VC_ID,
+            issuer: this.getIdentifier(),
+            issuanceDate: iss,
+            verifiableCredential: credentials,
+        }
+
+        const verifiablePresentation = new UNiDVerifiablePresentation(data)
+
+        return await verifiablePresentation.sign({
+            did    : this.keyring.getIdentifier(),
+            context: this.keyring.getSignKeyPair(),
+        })
+    }
 
     /**
      * To: SDS
      */
-    public async postCredential() {}
+    public async postCredential() {
+        throw new UNiDNotImplementedError()
+    }
 
     /**
      * From: SDS
      */
-    public async getCredential() {}
+    public async getCredential() {
+        throw new UNiDNotImplementedError()
+    }
 
     /**
      * From: SDS
      */
-    public async getCredentials() {}
+    public async getCredentials() {
+        throw new UNiDNotImplementedError()
+    }
 
     /**
      */

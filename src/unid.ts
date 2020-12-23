@@ -4,6 +4,7 @@ import { ConfigManager } from './config'
 import { BaseConnector } from './connector/base'
 import { UNiDDid } from './did'
 import { UNiDVerifiableCredential } from './did/credential'
+import { UNiDVerifiablePresentation } from './did/presentation'
 import { UNiDNotImplementedError } from "./error"
 import { KeyRingType } from './keyring'
 import { MnemonicKeyring, MnemonicKeyringOptions } from './keyring/mnemonic'
@@ -110,6 +111,15 @@ class UNiDKlass {
         isValid: boolean,
     }> {
         return await UNiDVerifiableCredential.verify<T>(credential)
+    }
+
+    /**
+     * @param presentation 
+     */
+    public async validatePresentation(presentation: ProofContext): Promise<{
+        isValid: boolean,
+    }> {
+        return await UNiDVerifiablePresentation.verify(presentation)
     }
 
     /**
