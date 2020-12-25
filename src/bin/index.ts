@@ -1,5 +1,5 @@
-import { KeyRingType } from "src/keyring"
-import { AddressCredentialV1 } from "src/schemas/address"
+import { KeyRingType } from "../keyring"
+import { AddressCredentialV1 } from "../schemas/address"
 import { UNiD } from ".."
 import { MongoDBClient } from "../adapters/mongodb"
 import { MongoDBConnector } from "../connector/mongodb"

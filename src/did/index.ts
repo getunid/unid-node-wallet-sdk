@@ -11,7 +11,7 @@ import {
     VC_ID,
 } from '../schemas'
 import { DateTimeTypes, DateTimeUtils } from '../utils/datetime'
-import { UNiDNotImplementedError } from 'src/error'
+import { UNiDNotImplementedError } from '../error'
 import { UNiDVerifiablePresentation } from './presentation'
 
 interface UNiDDidContext {
