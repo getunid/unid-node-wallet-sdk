@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.11](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.10...v0.0.11) (2020-12-25)
+
+
+### Bug Fixes
+
+* Fixed import path ([dc80d16](https://github.com/getunid/unid-nodejs-sdk/commit/dc80d1681175d45746e921c08e1bf49479bdee14))
+
 ### [0.0.10](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.9...v0.0.10) (2020-12-23)
 
 
