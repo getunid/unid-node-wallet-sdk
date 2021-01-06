@@ -57,7 +57,7 @@ export class AddressCredentialV1 extends UNiDVerifiableCredentialBase<AddressCre
     /**
      * @param input 
      */
-    public static isCompatible(input: any): input is AddressCredentialV1Schema {
+    private static isCompatible(input: any): input is AddressCredentialV1Schema {
         if (typeof input !== 'object') {
             return false
         }

@@ -49,7 +49,7 @@ export class AlumniOfCredentialV1 extends UNiDVerifiableCredentialBase<AlumniOfC
     /**
      * @param input 
      */
-    public static isCompatible(input: any): input is AlumniOfCredentialV1Schema {
+    private static isCompatible(input: any): input is AlumniOfCredentialV1Schema {
         if (typeof input !== 'object') {
             return false
         }

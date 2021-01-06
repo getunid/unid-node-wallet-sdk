@@ -57,7 +57,7 @@ export class ContactPointCredentialV1 extends UNiDVerifiableCredentialBase<Conta
     /**
      * @param input 
      */
-    public static isCompatible(input: any): input is ContactPointCredentialV1Schema {
+    private static isCompatible(input: any): input is ContactPointCredentialV1Schema {
         if (typeof input !== 'object') {
             return false
         }

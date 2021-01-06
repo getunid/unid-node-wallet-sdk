@@ -57,7 +57,7 @@ export class EmailCredentialV1 extends UNiDVerifiableCredentialBase<EmailCredent
     /**
      * @param input 
      */
-    public static isCompatible(input: any): input is EmailCredentialV1Schema {
+    private static isCompatible(input: any): input is EmailCredentialV1Schema {
         if (typeof input !== 'object') {
             return false
         }

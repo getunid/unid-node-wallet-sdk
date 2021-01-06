@@ -57,7 +57,7 @@ export class PhoneCredentialV1 extends UNiDVerifiableCredentialBase<PhoneCredent
     /**
      * @param input 
      */
-    public static isCompatible(input: any): input is PhoneCredentialV1Schema {
+    private static isCompatible(input: any): input is PhoneCredentialV1Schema {
         if (typeof input !== 'object') {
             return false
         }

@@ -49,7 +49,7 @@ export class GenderCredentialV1 extends UNiDVerifiableCredentialBase<GenderCrede
     /**
      * @param input 
      */
-    public static isCompatible(input: any): input is GenderCredentialV1Schema {
+    private static isCompatible(input: any): input is GenderCredentialV1Schema {
         if (typeof input !== 'object') {
             return false
         }

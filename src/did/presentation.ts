@@ -31,7 +31,7 @@ export class UNiDVerifiablePresentation<T> {
     }
 
     /**
-     * @param credential 
+     * @param presentation 
      */
     public static async verify<T>(presentation: T & ProofContext): Promise<{ isValid: boolean }> {
         if (presentation.proof === undefined) {
@@ -42,8 +42,12 @@ export class UNiDVerifiablePresentation<T> {
             did: presentation.proof.verificationMethod,
         })
 
-        return await CredentialSigner.verify<T>(presentation, {
+        const result = await CredentialSigner.verify<T>(presentation, {
             context: Secp256k1.fromJwk(did.publicKeyJwk),
         })
+
+        return {
+            isValid: result.isValid,
+        }
     }
 }

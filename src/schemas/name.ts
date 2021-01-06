@@ -61,7 +61,7 @@ export class NameCredentialV1 extends UNiDVerifiableCredentialBase<NameCredentia
     /**
      * @param input 
      */
-    public static isCompatible(input: any): input is NameCredentialV1Schema {
+    private static isCompatible(input: any): input is NameCredentialV1Schema {
         if (typeof input !== 'object') {
             return false
         }
