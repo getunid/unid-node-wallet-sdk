@@ -25,6 +25,9 @@ export class UNiDVerifiableCredentialBase<T> {
     private issuanceDate?: Date
     private expirationDate?: Date
 
+    /**
+     * @param options 
+     */
     public constructor(options?: UNiDVerifiableCredentialOptions) {
         if (options) {
             this.issuanceDate   = options.issuanceDate
@@ -32,6 +35,8 @@ export class UNiDVerifiableCredentialBase<T> {
         }
     }
 
+    /**
+     */
     public toVerifiableCredential(): T {
         if (this.credential === undefined) {
             throw new Error()
@@ -40,6 +45,8 @@ export class UNiDVerifiableCredentialBase<T> {
         return this.credential
     }
 
+    /**
+     */
     public getIssuanceDate(): Date {
         if (this.issuanceDate === undefined) {
             return (new Date())
@@ -48,11 +55,15 @@ export class UNiDVerifiableCredentialBase<T> {
         return this.issuanceDate
     }
 
+    /**
+     */
     public getExpirationDate(): Date | undefined {
         return this.expirationDate
     }
 }
 
+/**
+ */
 export interface UNiDVerifiableCredentialMeta extends ProofContext {
     id: string,
     issuer: string,
@@ -60,15 +71,21 @@ export interface UNiDVerifiableCredentialMeta extends ProofContext {
     expirationDate?: string,
 }
 
+/**
+ */
 export interface UNiDVerifiableCredentialContext<T> {
     '@context': Array<'https://www.w3.org/2018/credentials/v1' | T>,
 }
 
+/**
+ */
 export interface UNiDVerifiableCredential<T1, T2> {
     type: Array<'VerifiableCredential' | T1>,
     credentialSubject: T2,
 }
 
+/**
+ */
 export interface UNiDVerifiableCredentialOptions {
     issuanceDate?: Date,
     expirationDate?: Date,
@@ -82,6 +99,9 @@ export class UNiDVerifiablePresentationBase {
     private issuanceDate?: Date
     private expirationDate?: Date
 
+    /**
+     * @param options 
+     */
     public constructor(options?: UNiDVerifiablePresentationOptions) {
         if (options) {
             this.issuanceDate   = options.issuanceDate
@@ -89,6 +109,8 @@ export class UNiDVerifiablePresentationBase {
         }
     }
 
+    /**
+     */
     public toVerifiablePresentation(): Object {
         if (this.presentation === undefined) {
             throw new Error()
@@ -97,6 +119,8 @@ export class UNiDVerifiablePresentationBase {
         return this.presentation
     }
 
+    /**
+     */
     public getIssuanceDate(): Date {
         if (this.issuanceDate === undefined) {
             return (new Date())
@@ -105,11 +129,15 @@ export class UNiDVerifiablePresentationBase {
         return this.issuanceDate
     }
 
+    /**
+     */
     public getExpirationDate(): Date | undefined {
         return this.expirationDate
     }
 }
 
+/**
+ */
 export interface UNiDVerifiablePresentationMeta extends ProofContext {
     id: string,
     issuer: string,
@@ -117,15 +145,21 @@ export interface UNiDVerifiablePresentationMeta extends ProofContext {
     expirationDate?: string,
 }
 
+/**
+ */
 export interface UNiDVerifiablePresentationContext<T> {
     '@context': Array<'https://www.w3.org/2018/credentials/v1' | T>,
 }
 
+/**
+ */
 export interface UNiDVerifiablePresentation<T1, T2> {
     type: Array<'VerifiablePresentation' | T1>,
     verifiableCredential: Array<T2>,
 }
 
+/**
+ */
 export interface UNiDVerifiablePresentationOptions {
     issuanceDate?: Date,
     expirationDate?: Date,

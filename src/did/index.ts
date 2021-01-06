@@ -94,10 +94,10 @@ export class UNiDDid {
     /**
      * Create: Verifiable Presentation
      */
-    public async createPresentation(credentials: Array<Object & UNiDVerifiableCredentialMeta>) {
+    public async createPresentation<T>(credentials: Array<T & UNiDVerifiableCredentialMeta>) {
         const iss = (new DateTimeUtils(new Date())).$toString(DateTimeTypes.default)
 
-        const data: Object & UNiDVerifiablePresentationMeta & UNiDVerifiablePresentationContext<Object> & UNiDVP<Object, Object> = {
+        const data: Object & UNiDVerifiablePresentationMeta & UNiDVerifiablePresentationContext<Object> & UNiDVP<Object, T> = {
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
             ],
