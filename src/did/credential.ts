@@ -1,4 +1,4 @@
-import { UNiDVerifiableCredentialMeta } from "src/schemas"
+import { UNiDVerifiableCredentialMeta } from "../schemas"
 import { CredentialSigner, ProofContext } from "../cipher/signer"
 import { Secp256k1 } from "../keyring/secp256k1"
 import { UNiD } from '../unid'
