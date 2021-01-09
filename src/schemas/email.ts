@@ -1,20 +1,18 @@
 import { Text } from 'schema-dts'
-import { UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
 
 // EmailCredentialV1
 
 /**
  */
-export interface EmailPerson {
-    '@id'  : Readonly<Text>,
+export interface EmailPerson extends UNiDCredentialSubjectMeta {
     '@type': 'EmailPerson',
     email  : Readonly<Text>,
 }
 
 /**
  */
-export interface EmailOrganization {
-    '@id'  : Readonly<Text>,
+export interface EmailOrganization extends UNiDCredentialSubjectMeta {
     '@type': 'EmailOrganization',
     email  : Readonly<Text>,
 }
@@ -43,10 +41,15 @@ export class EmailCredentialV1 extends UNiDVerifiableCredentialBase<EmailCredent
      * @param credential 
      * @param options 
      */
-    public constructor(credential: CredentialV1, options?: UNiDVerifiableCredentialOptions) {
+    public constructor(credentialSubject: EmailPerson | EmailOrganization, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        this.credential = Object.assign<CredentialV1Context, CredentialV1>({
+        const credential: CredentialV1 = {
+            type: [ 'VerifiableCredential', 'EmailCredentialV1' ],
+            credentialSubject: credentialSubject,
+        }
+
+        this.$credential = Object.assign<CredentialV1Context, CredentialV1>({
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/email',
@@ -81,6 +84,30 @@ export class EmailCredentialV1 extends UNiDVerifiableCredentialBase<EmailCredent
             throw new Error()
         }
 
-        return new EmailCredentialV1(input)
+        return new EmailCredentialV1(input.credentialSubject)
+    }
+
+    /**
+     * @param vcs 
+     */
+    public static select(vcs: Array<any>): EmailCredentialV1 | undefined {
+        const selected = vcs.filter((vc) => {
+            return EmailCredentialV1.isCompatible(vc)
+        })
+
+        if (1 < selected.length) {
+            throw new Error()
+        }
+
+        const select = selected.shift()
+
+        if (select === undefined) {
+            return undefined
+        }
+        if (! EmailCredentialV1.isCompatible(select)) {
+            return undefined
+        }
+
+        return new EmailCredentialV1(select.credentialSubject)
     }
 }

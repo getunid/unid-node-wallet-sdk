@@ -1,20 +1,18 @@
-import { ContactPoint, Text } from 'schema-dts'
-import { UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
+import { ContactPoint } from 'schema-dts'
+import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
 
 // ContactPointCredentialV1
 
 /**
  */
-export interface ContactPointPerson {
-    '@id'  : Readonly<Text>,
+export interface ContactPointPerson extends UNiDCredentialSubjectMeta {
     '@type': 'ContactPointPerson',
     contactPoint: ContactPoint
 }
 
 /**
  */
-export interface ContactPointOrganization {
-    '@id'  : Readonly<Text>,
+export interface ContactPointOrganization extends UNiDCredentialSubjectMeta {
     '@type': 'ContactPointOrganization',
     contactPoint: ContactPoint,
 }
@@ -43,10 +41,15 @@ export class ContactPointCredentialV1 extends UNiDVerifiableCredentialBase<Conta
      * @param credential 
      * @param options 
      */
-    public constructor(credential: CredentialV1, options?: UNiDVerifiableCredentialOptions) {
+    public constructor(credentialSubject: ContactPointPerson | ContactPointOrganization, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        this.credential = Object.assign<CredentialV1Context, CredentialV1>({
+        const credential: CredentialV1 = {
+            type: [ 'VerifiableCredential', 'ContactPointCredentialV1' ],
+            credentialSubject: credentialSubject,
+        }
+
+        this.$credential = Object.assign<CredentialV1Context, CredentialV1>({
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/contactPoint',
@@ -81,6 +84,30 @@ export class ContactPointCredentialV1 extends UNiDVerifiableCredentialBase<Conta
             throw new Error()
         }
 
-        return new ContactPointCredentialV1(input)
+        return new ContactPointCredentialV1(input.credentialSubject)
+    }
+
+    /**
+     * @param vcs 
+     */
+    public static select(vcs: Array<any>): ContactPointCredentialV1 | undefined {
+        const selected = vcs.filter((vc) => {
+            return ContactPointCredentialV1.isCompatible(vc)
+        })
+
+        if (1 < selected.length) {
+            throw new Error()
+        }
+
+        const select = selected.shift()
+
+        if (select === undefined) {
+            return undefined
+        }
+        if (! ContactPointCredentialV1.isCompatible(select)) {
+            return undefined
+        }
+
+        return new ContactPointCredentialV1(select.credentialSubject)
     }
 }

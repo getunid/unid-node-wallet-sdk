@@ -2,7 +2,7 @@ import { UNiDDidOperator, PublicKeyPurpose, UNiDDidDocument } from '@unid/did-op
 import { ProofContext } from './cipher/signer'
 import { ConfigManager } from './config'
 import { BaseConnector } from './connector/base'
-import { UNiDDid } from './did'
+import { UNiDDid, UNiDVPSchema } from './did'
 import { UNiDVerifiableCredential } from './did/credential'
 import { UNiDVerifiablePresentation } from './did/presentation'
 import { UNiDNotImplementedError } from "./error"
@@ -106,7 +106,7 @@ class UNiDKlass {
 
     /**
      */
-    public async validateCredential<T>(credential: T & ProofContext): Promise<{
+    public async verifyCredential<T>(credential: T & ProofContext): Promise<{
         payload: T,
         isValid: boolean,
     }> {
@@ -116,7 +116,8 @@ class UNiDKlass {
     /**
      * @param presentation 
      */
-    public async validatePresentation(presentation: ProofContext): Promise<{
+    public async verifyPresentation(presentation: UNiDVPSchema<object> & ProofContext): Promise<{
+        payload: UNiDVPSchema<object>,
         isValid: boolean,
     }> {
         return await UNiDVerifiablePresentation.verify(presentation)

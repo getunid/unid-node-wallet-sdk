@@ -1,20 +1,18 @@
 import { Text } from 'schema-dts'
-import { UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
 
 // PhoneCredentialV1
 
 /**
  */
-export interface PhonePerson {
-    '@id'  : Readonly<Text>,
+export interface PhonePerson extends UNiDCredentialSubjectMeta {
     '@type': 'PhonePerson',
     telephone: Readonly<Text>
 }
 
 /**
  */
-export interface PhoneOrganization {
-    '@id'  : Readonly<Text>,
+export interface PhoneOrganization extends UNiDCredentialSubjectMeta {
     '@type': 'PhoneOrganization',
     telephone: Readonly<Text>
 }
@@ -43,10 +41,15 @@ export class PhoneCredentialV1 extends UNiDVerifiableCredentialBase<PhoneCredent
      * @param credential 
      * @param options 
      */
-    public constructor(credential: CredentialV1, options?: UNiDVerifiableCredentialOptions) {
+    public constructor(credentialSubject: PhonePerson | PhoneOrganization, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        this.credential = Object.assign<CredentialV1Context, CredentialV1>({
+        const credential: CredentialV1 = {
+            type: [ 'VerifiableCredential', 'PhoneCredentialV1' ],
+            credentialSubject: credentialSubject,
+        }
+
+        this.$credential = Object.assign<CredentialV1Context, CredentialV1>({
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/phone',
@@ -81,6 +84,30 @@ export class PhoneCredentialV1 extends UNiDVerifiableCredentialBase<PhoneCredent
             throw new Error()
         }
 
-        return new PhoneCredentialV1(input)
+        return new PhoneCredentialV1(input.credentialSubject)
+    }
+
+    /**
+     * @param vcs 
+     */
+    public static select(vcs: Array<any>): PhoneCredentialV1 | undefined {
+        const selected = vcs.filter((vc) => {
+            return PhoneCredentialV1.isCompatible(vc)
+        })
+
+        if (1 < selected.length) {
+            throw new Error()
+        }
+
+        const select = selected.shift()
+
+        if (select === undefined) {
+            return undefined
+        }
+        if (! PhoneCredentialV1.isCompatible(select)) {
+            return undefined
+        }
+
+        return new PhoneCredentialV1(select.credentialSubject)
     }
 }

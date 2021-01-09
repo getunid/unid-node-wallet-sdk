@@ -1,12 +1,11 @@
 import { Text } from 'schema-dts'
-import { UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
 
 // NameCredentialV1
 
 /**
  */
-export interface NamePerson {
-    '@id'  : Readonly<Text>,
+export interface NamePerson extends UNiDCredentialSubjectMeta {
     '@type': 'NamePerson',
     name: Readonly<Text>,
     giveName: Readonly<Text>,
@@ -15,8 +14,7 @@ export interface NamePerson {
 
 /**
  */
-export interface NameOrganization {
-    '@id'  : Readonly<Text>,
+export interface NameOrganization extends UNiDCredentialSubjectMeta {
     '@type': 'NameOrganization',
     name: Readonly<Text>,
     giveName: Readonly<Text>,
@@ -47,10 +45,15 @@ export class NameCredentialV1 extends UNiDVerifiableCredentialBase<NameCredentia
      * @param credential 
      * @param options 
      */
-    public constructor(credential: CredentialV1, options?: UNiDVerifiableCredentialOptions) {
+    public constructor(credentialSubject: NamePerson | NameOrganization, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        this.credential = Object.assign<CredentialV1Context, CredentialV1>({
+        const credential: CredentialV1 = {
+            type: [ 'VerifiableCredential', 'NameCredentialV1' ],
+            credentialSubject: credentialSubject,
+        }
+
+        this.$credential = Object.assign<CredentialV1Context, CredentialV1>({
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/name',
@@ -85,6 +88,30 @@ export class NameCredentialV1 extends UNiDVerifiableCredentialBase<NameCredentia
             throw new Error()
         }
 
-        return new NameCredentialV1(input)
+        return new NameCredentialV1(input.credentialSubject)
+    }
+
+    /**
+     * @param vcs 
+     */
+    public static select(vcs: Array<any>): NameCredentialV1 | undefined {
+        const selected = vcs.filter((vc) => {
+            return NameCredentialV1.isCompatible(vc)
+        })
+
+        if (1 < selected.length) {
+            throw new Error()
+        }
+
+        const select = selected.shift()
+
+        if (select === undefined) {
+            return undefined
+        }
+        if (! NameCredentialV1.isCompatible(select)) {
+            return undefined
+        }
+
+        return new NameCredentialV1(select.credentialSubject)
     }
 }

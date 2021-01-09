@@ -1,20 +1,18 @@
-import { PostalAddress, Text } from 'schema-dts'
-import { UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.';
+import { PostalAddress } from 'schema-dts'
+import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.';
 
 // AddressCredentialV1
 
 /**
  */
-interface AddressPerson {
-    '@id'  : Readonly<Text>,
+interface AddressPerson extends UNiDCredentialSubjectMeta {
     '@type': 'AddressPerson',
     address: PostalAddress,
 }
 
 /**
  */
-interface AddressOrganization {
-    '@id'  : Readonly<Text>,
+interface AddressOrganization extends UNiDCredentialSubjectMeta {
     '@type': 'AddressOrganization',
     address: PostalAddress,
 }
@@ -40,13 +38,18 @@ export type AddressCredentialV1Schema = CredentialV1 & CredentialV1Context
  */
 export class AddressCredentialV1 extends UNiDVerifiableCredentialBase<AddressCredentialV1Schema> {
     /**
-     * @param credential 
+     * @param credentialSubject 
      * @param options 
      */
-    public constructor(credential: CredentialV1, options?: UNiDVerifiableCredentialOptions) {
+    public constructor(credentialSubject: AddressPerson | AddressOrganization, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        this.credential = Object.assign<CredentialV1Context, CredentialV1>({
+        const credential: CredentialV1 = {
+            type: [ 'VerifiableCredential', 'AddressCredentialV1' ],
+            credentialSubject: credentialSubject,
+        }
+
+        this.$credential = Object.assign<CredentialV1Context, CredentialV1>({
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/address',
@@ -57,7 +60,7 @@ export class AddressCredentialV1 extends UNiDVerifiableCredentialBase<AddressCre
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is AddressCredentialV1Schema {
+    private static isCompatible(input: any): input is CredentialV1 {
         if (typeof input !== 'object') {
             return false
         }
@@ -81,6 +84,30 @@ export class AddressCredentialV1 extends UNiDVerifiableCredentialBase<AddressCre
             throw new Error()
         }
 
-        return new AddressCredentialV1(input)
+        return new AddressCredentialV1(input.credentialSubject)
+    }
+
+    /**
+     * @param vcs 
+     */
+    public static select(vcs: Array<any>): AddressCredentialV1 | undefined {
+        const selected = vcs.filter((vc) => {
+            return AddressCredentialV1.isCompatible(vc)
+        })
+
+        if (1 < selected.length) {
+            throw new Error()
+        }
+
+        const select = selected.shift()
+
+        if (select === undefined) {
+            return undefined
+        }
+        if (! AddressCredentialV1.isCompatible(select)) {
+            return undefined
+        }
+
+        return new AddressCredentialV1(select.credentialSubject)
     }
 }

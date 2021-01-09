@@ -5,10 +5,12 @@ import {
     UNiDVerifiableCredentialBase,
     UNiDVerifiableCredentialMeta,
     UNiDVerifiablePresentation as UNiDVP,
+    UNiDVerifiableCredential as UNiDVC,
     UNiDVerifiablePresentationContext,
     UNiDVerifiablePresentationMeta,
     UNiDVerifiableCredentialSchema,
     VC_ID,
+    UNiDCredentialSubjectMeta,
 } from '../schemas'
 import { DateTimeTypes, DateTimeUtils } from '../utils/datetime'
 import { UNiDNotImplementedError } from '../error'
@@ -30,6 +32,8 @@ interface UNiDDidAuthRequest {
     callback_uri : string,
     claims       : UNiDDidAuthRequestClaims,
 }
+
+export interface UNiDVPSchema<T> extends Object, UNiDVerifiablePresentationMeta, UNiDVerifiablePresentationContext<Object>, UNiDVP<Object, T> {}
 
 export class UNiDDid {
     private readonly keyring : MnemonicKeyring
@@ -70,14 +74,14 @@ export class UNiDDid {
      * Create: Verifiable Credential
      */
     public async createCredential<T>(credential: UNiDVerifiableCredentialBase<T>) {
-        const iss = (new DateTimeUtils(credential.getIssuanceDate())).$toString(DateTimeTypes.default)
-        const exp = (new DateTimeUtils(credential.getExpirationDate())).toString(DateTimeTypes.default)
+        const iss = (new DateTimeUtils(credential.issuanceDate)).$toString(DateTimeTypes.default)
+        const exp = (new DateTimeUtils(credential.expirationDate)).toString(DateTimeTypes.default)
 
         const data: T & UNiDVerifiableCredentialMeta = Object.assign<UNiDVerifiableCredentialMeta, T>({
             id    : VC_ID,
             issuer: this.getIdentifier(),
             issuanceDate: iss,
-        }, credential.toVerifiableCredential())
+        }, credential.verifiableCredential)
 
         if (exp !== undefined) {
             data.expirationDate = exp
@@ -94,10 +98,28 @@ export class UNiDDid {
     /**
      * Create: Verifiable Presentation
      */
-    public async createPresentation<T>(credentials: Array<T & UNiDVerifiableCredentialMeta>) {
+    public async createPresentation<T>(credentials: Array<T & UNiDVC<string, UNiDCredentialSubjectMeta>>) {
         const iss = (new DateTimeUtils(new Date())).$toString(DateTimeTypes.default)
+        const types: Array<string> = []
 
-        const data: Object & UNiDVerifiablePresentationMeta & UNiDVerifiablePresentationContext<Object> & UNiDVP<Object, T> = {
+        credentials.forEach((credential) => {
+            credential.type.forEach((type) => {
+                // [TODO]: 'VerifiableCredential' should be a constant
+                if (type !== 'VerifiableCredential') {
+                    types.push(type)
+                }
+            })
+        })
+
+        const duplicated = types.filter((type, index, self) => {
+            return self.indexOf(type) !== self.lastIndexOf(type)
+        })
+
+        if (0 < duplicated.length) {
+            throw new Error()
+        }
+
+        const data: UNiDVPSchema<T> = {
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
             ],

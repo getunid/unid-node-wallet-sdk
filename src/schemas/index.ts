@@ -18,48 +18,11 @@ export type UNiDVerifiableCredentialSchema =
     | 'QualificationPerson'
 
 /**
- * Verifiable Credential
+ * 
  */
-export class UNiDVerifiableCredentialBase<T> {
-    public  credential?: T
-    private issuanceDate?: Date
-    private expirationDate?: Date
-
-    /**
-     * @param options 
-     */
-    public constructor(options?: UNiDVerifiableCredentialOptions) {
-        if (options) {
-            this.issuanceDate   = options.issuanceDate
-            this.expirationDate = options.expirationDate
-        }
-    }
-
-    /**
-     */
-    public toVerifiableCredential(): T {
-        if (this.credential === undefined) {
-            throw new Error()
-        }
-
-        return this.credential
-    }
-
-    /**
-     */
-    public getIssuanceDate(): Date {
-        if (this.issuanceDate === undefined) {
-            return (new Date())
-        }
-
-        return this.issuanceDate
-    }
-
-    /**
-     */
-    public getExpirationDate(): Date | undefined {
-        return this.expirationDate
-    }
+export interface UNiDCredentialSubjectMeta {
+    '@id'  : string,
+    '@type': string,
 }
 
 /**
@@ -92,51 +55,6 @@ export interface UNiDVerifiableCredentialOptions {
 }
 
 /**
- * Verifiable Presentation
- */
-export class UNiDVerifiablePresentationBase {
-    public  presentation?: Object
-    private issuanceDate?: Date
-    private expirationDate?: Date
-
-    /**
-     * @param options 
-     */
-    public constructor(options?: UNiDVerifiablePresentationOptions) {
-        if (options) {
-            this.issuanceDate   = options.issuanceDate
-            this.expirationDate = options.expirationDate
-        }
-    }
-
-    /**
-     */
-    public toVerifiablePresentation(): Object {
-        if (this.presentation === undefined) {
-            throw new Error()
-        }
-
-        return this.presentation
-    }
-
-    /**
-     */
-    public getIssuanceDate(): Date {
-        if (this.issuanceDate === undefined) {
-            return (new Date())
-        }
-
-        return this.issuanceDate
-    }
-
-    /**
-     */
-    public getExpirationDate(): Date | undefined {
-        return this.expirationDate
-    }
-}
-
-/**
  */
 export interface UNiDVerifiablePresentationMeta extends ProofContext {
     id: string,
@@ -163,4 +81,94 @@ export interface UNiDVerifiablePresentation<T1, T2> {
 export interface UNiDVerifiablePresentationOptions {
     issuanceDate?: Date,
     expirationDate?: Date,
+}
+
+/**
+ * Verifiable Credential
+ */
+export class UNiDVerifiableCredentialBase<T> {
+    protected $credential?: T
+    private   $issuanceDate?: Date
+    private   $expirationDate?: Date
+
+    /**
+     * @param options 
+     */
+    public constructor(options?: UNiDVerifiableCredentialOptions) {
+        if (options) {
+            this.$issuanceDate   = options.issuanceDate
+            this.$expirationDate = options.expirationDate
+        }
+    }
+
+    /**
+     */
+    public get verifiableCredential(): T {
+        if (this.$credential === undefined) {
+            throw new Error()
+        }
+
+        return this.$credential
+    }
+
+    /**
+     */
+    public get issuanceDate(): Date {
+        if (this.$issuanceDate === undefined) {
+            return (new Date())
+        }
+
+        return this.$issuanceDate
+    }
+
+    /**
+     */
+    public get expirationDate(): Date | undefined {
+        return this.$expirationDate
+    }
+}
+
+/**
+ * Verifiable Presentation
+ */
+export class UNiDVerifiablePresentationBase {
+    public  presentation?: object
+    private issuanceDate?: Date
+    private expirationDate?: Date
+
+    /**
+     * @param options 
+     */
+    public constructor(options?: UNiDVerifiablePresentationOptions) {
+        if (options) {
+            this.issuanceDate   = options.issuanceDate
+            this.expirationDate = options.expirationDate
+        }
+    }
+
+    /**
+     */
+    public verifiablePresentation(): object {
+        if (this.presentation === undefined) {
+            throw new Error()
+        }
+
+        return this.presentation
+    }
+
+    /**
+     */
+    public getIssuanceDate(): Date {
+        if (this.issuanceDate === undefined) {
+            return (new Date())
+        }
+
+        return this.issuanceDate
+    }
+
+    /**
+     */
+    public getExpirationDate(): Date | undefined {
+        return this.expirationDate
+    }
 }

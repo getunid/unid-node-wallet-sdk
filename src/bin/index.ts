@@ -22,15 +22,12 @@ import { MongoDBConnector } from "../connector/mongodb"
 
         const signedVC = await DID.createCredential(
             new AddressCredentialV1({
-                type: [ 'VerifiableCredential', 'AddressCredentialV1' ],
-                credentialSubject: {
-                    '@id'  : DID.getIdentifier(),
-                    '@type': 'AddressPerson',
-                    address: {
-                        '@type': 'PostalAddress',
-                        streetAddress: '日本橋',
-                    },
-                }
+                '@id'  : DID.getIdentifier(),
+                '@type': 'AddressPerson',
+                address: {
+                    '@type': 'PostalAddress',
+                    streetAddress: '日本橋',
+                },
             }, {
                 issuanceDate: new Date(),
                 expirationDate: new Date(),
@@ -38,9 +35,13 @@ import { MongoDBConnector } from "../connector/mongodb"
         )
 
         const signedVP    = await DID.createPresentation([ signedVC ])
-        const validatedVP = await UNiD.validatePresentation(signedVP)
+        const validatedVP = await UNiD.verifyPresentation(signedVP)
 
-        console.log(validatedVP)
+        const address = AddressCredentialV1.select(validatedVP.payload.verifiableCredential)
+
+        if (address) {
+            console.log(address)
+        }
 
         MongoDBClient.kill()
     } catch (err) {

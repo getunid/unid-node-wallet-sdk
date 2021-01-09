@@ -1,12 +1,11 @@
 import { Text } from 'schema-dts'
-import { UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
 
 // GenderCredentialV1
 
 /**
  */
-export interface GenderPerson {
-    '@id'  : Readonly<Text>,
+export interface GenderPerson extends UNiDCredentialSubjectMeta {
     '@type': 'GenderPerson',
     gender : Readonly<Text>,
 }
@@ -35,10 +34,15 @@ export class GenderCredentialV1 extends UNiDVerifiableCredentialBase<GenderCrede
      * @param credential 
      * @param options 
      */
-    public constructor(credential: CredentialV1, options?: UNiDVerifiableCredentialOptions) {
+    public constructor(credentialSubject: GenderPerson, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        this.credential = Object.assign<CredentialV1Context, CredentialV1>({
+        const credential: CredentialV1 = {
+            type: [ 'VerifiableCredential', 'GenderCredentialV1' ],
+            credentialSubject: credentialSubject,
+        }
+
+        this.$credential = Object.assign<CredentialV1Context, CredentialV1>({
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/gender',
@@ -73,6 +77,30 @@ export class GenderCredentialV1 extends UNiDVerifiableCredentialBase<GenderCrede
             throw new Error()
         }
 
-        return new GenderCredentialV1(input)
+        return new GenderCredentialV1(input.credentialSubject)
+    }
+
+    /**
+     * @param vcs 
+     */
+    public static select(vcs: Array<any>): GenderCredentialV1 | undefined {
+        const selected = vcs.filter((vc) => {
+            return GenderCredentialV1.isCompatible(vc)
+        })
+
+        if (1 < selected.length) {
+            throw new Error()
+        }
+
+        const select = selected.shift()
+
+        if (select === undefined) {
+            return undefined
+        }
+        if (! GenderCredentialV1.isCompatible(select)) {
+            return undefined
+        }
+
+        return new GenderCredentialV1(select.credentialSubject)
     }
 }

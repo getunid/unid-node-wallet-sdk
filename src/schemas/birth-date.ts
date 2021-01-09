@@ -1,12 +1,11 @@
-import { Text, Date } from 'schema-dts'
-import { UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
+import { Date } from 'schema-dts'
+import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
 
 // BirthDateCredentialV1
 
 /**
  */
-export interface BirthDatePerson {
-    '@id'  : Readonly<Text>,
+export interface BirthDatePerson extends UNiDCredentialSubjectMeta {
     '@type': 'BirthDatePerson',
     birthDate: Date,
 }
@@ -35,10 +34,15 @@ export class BirthDateCredentialV1 extends UNiDVerifiableCredentialBase<BirthDat
      * @param credential 
      * @param options 
      */
-    public constructor(credential: CredentialV1, options?: UNiDVerifiableCredentialOptions) {
+    public constructor(credentialSubject: BirthDatePerson, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        this.credential = Object.assign<CredentialV1Context, CredentialV1>({
+        const credential: CredentialV1 = {
+            type: [ 'VerifiableCredential', 'BirthDateCredentialV1' ],
+            credentialSubject: credentialSubject,
+        }
+
+        this.$credential = Object.assign<CredentialV1Context, CredentialV1>({
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/birthDate',
@@ -73,6 +77,30 @@ export class BirthDateCredentialV1 extends UNiDVerifiableCredentialBase<BirthDat
             throw new Error()
         }
 
-        return new BirthDateCredentialV1(input)
+        return new BirthDateCredentialV1(input.credentialSubject)
+    }
+
+    /**
+     * @param vcs 
+     */
+    public static select(vcs: Array<any>): BirthDateCredentialV1 | undefined {
+        const selected = vcs.filter((vc) => {
+            return BirthDateCredentialV1.isCompatible(vc)
+        })
+
+        if (1 < selected.length) {
+            throw new Error()
+        }
+
+        const select = selected.shift()
+
+        if (select === undefined) {
+            return undefined
+        }
+        if (! BirthDateCredentialV1.isCompatible(select)) {
+            return undefined
+        }
+
+        return new BirthDateCredentialV1(select.credentialSubject)
     }
 }
