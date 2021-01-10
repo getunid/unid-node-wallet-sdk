@@ -18,6 +18,16 @@ export type UNiDVerifiableCredentialSchema =
     | 'QualificationPerson'
 
 /**
+ */
+export type Weaken<T, K extends keyof T> = {
+    [P in keyof T]: P extends K ? any : T[P]
+}
+
+/**
+ */
+export type PickType<T, K extends keyof T> = T[K]
+
+/**
  * 
  */
 export interface UNiDCredentialSubjectMeta {
@@ -27,11 +37,21 @@ export interface UNiDCredentialSubjectMeta {
 
 /**
  */
-export interface UNiDVerifiableCredentialMeta extends ProofContext {
+export interface UNiDVerifiableCredentialMetaInternal extends ProofContext {
+    // [REQUIRED FIELDS]:
     id: string,
     issuer: string,
     issuanceDate: string,
+
+    // [OPTIONAL FIELDS]:
     expirationDate?: string,
+}
+
+/**
+ */
+export interface UNiDVerifiableCredentialMetaExternal extends Weaken<UNiDVerifiableCredentialMetaInternal, 'issuanceDate' | 'expirationDate'> {
+    issuanceDate: Date,
+    expirationDate?: Date,
 }
 
 /**

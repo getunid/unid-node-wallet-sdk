@@ -8,6 +8,7 @@ import { UNiDVerifiablePresentation } from './did/presentation'
 import { UNiDNotImplementedError } from "./error"
 import { KeyRingType } from './keyring'
 import { MnemonicKeyring, MnemonicKeyringOptions } from './keyring/mnemonic'
+import { UNiDVerifiableCredentialMetaExternal, UNiDVerifiableCredentialMetaInternal } from './schemas'
 
 export enum UNiDNetworkType {
     Mainnet,
@@ -106,11 +107,18 @@ class UNiDKlass {
 
     /**
      */
-    public async verifyCredential<T>(credential: T & ProofContext): Promise<{
-        payload: T,
-        isValid: boolean,
+    public async verifyCredential<T>(credential: T & UNiDVerifiableCredentialMetaInternal): Promise<{
+        isValid : boolean,
+        payload : T,
+        metadata: UNiDVerifiableCredentialMetaExternal,
     }> {
-        return await UNiDVerifiableCredential.verify<T>(credential)
+        const verified = await UNiDVerifiableCredential.verify(credential)
+
+        return {
+            isValid : verified.isValid,
+            payload : verified.payload,
+            metadata: verified.metadata,
+        }
     }
 
     /**
@@ -125,11 +133,11 @@ class UNiDKlass {
 
     /**
      */
-    public async validateAuthenticationRequest<T>(request: T & ProofContext): Promise<{
+    public async validateAuthenticationRequest<T>(request: T & UNiDVerifiableCredentialMetaInternal): Promise<{
         payload: T,
         isValid: boolean,
     }> {
-        return await UNiDVerifiableCredential.verify<T>(request)
+        return await UNiDVerifiableCredential.verify(request)
     }
 }
 

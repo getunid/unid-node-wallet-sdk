@@ -3,7 +3,7 @@ import { UNiDDidOperator } from '@unid/did-operator'
 import { UNiDVerifiableCredential } from './credential'
 import {
     UNiDVerifiableCredentialBase,
-    UNiDVerifiableCredentialMeta,
+    UNiDVerifiableCredentialMetaInternal,
     UNiDVerifiablePresentation as UNiDVP,
     UNiDVerifiableCredential as UNiDVC,
     UNiDVerifiablePresentationContext,
@@ -31,6 +31,10 @@ interface UNiDDidAuthRequest {
     response_type: 'callback',
     callback_uri : string,
     claims       : UNiDDidAuthRequestClaims,
+}
+
+export type Weaken<T, K extends keyof T> = {
+    [P in keyof T]: P extends K ? any : T[P]
 }
 
 export interface UNiDVPSchema<T> extends Object, UNiDVerifiablePresentationMeta, UNiDVerifiablePresentationContext<Object>, UNiDVP<Object, T> {}
@@ -77,7 +81,7 @@ export class UNiDDid {
         const iss = (new DateTimeUtils(credential.issuanceDate)).$toString(DateTimeTypes.default)
         const exp = (new DateTimeUtils(credential.expirationDate)).toString(DateTimeTypes.default)
 
-        const data: T & UNiDVerifiableCredentialMeta = Object.assign<UNiDVerifiableCredentialMeta, T>({
+        const data: T & UNiDVerifiableCredentialMetaInternal = Object.assign<UNiDVerifiableCredentialMetaInternal, T>({
             id    : VC_ID,
             issuer: this.getIdentifier(),
             issuanceDate: iss,
@@ -87,7 +91,7 @@ export class UNiDDid {
             data.expirationDate = exp
         }
 
-        const verifiableCredential = new UNiDVerifiableCredential<T & UNiDVerifiableCredentialMeta>(data)
+        const verifiableCredential = new UNiDVerifiableCredential<T & UNiDVerifiableCredentialMetaInternal>(data)
 
         return await verifiableCredential.sign({
             did    : this.keyring.getIdentifier(),

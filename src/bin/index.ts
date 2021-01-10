@@ -35,13 +35,16 @@ import { MongoDBConnector } from "../connector/mongodb"
         )
 
         const signedVP   = await DID.createPresentation([ signedVC ])
-        const verifiedVC = await UNiD.verifyCredential(signedVC)
-
-        console.log(verifiedVC)
-
         const verifiedVP = await UNiD.verifyPresentation(signedVP)
+        const filterd    = AddressCredentialV1.select(verifiedVP.payload.verifiableCredential)
 
-        console.log(verifiedVP)
+        console.log(verifiedVP.payload)
+
+        if (filterd) {
+            const x = await UNiD.verifyCredential(filterd)
+
+            console.log(x)
+        }
 
         MongoDBClient.kill()
     } catch (err) {
