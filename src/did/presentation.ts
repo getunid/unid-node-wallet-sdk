@@ -5,6 +5,44 @@ import { UNiD } from '../unid'
 
 /**
  */
+class VerifyContainer<T> {
+    private $payload: UNiDVPSchema<object>
+    private $isValid: boolean
+
+    constructor(validated: { payload: any, isValid: boolean }) {
+        this.$payload = validated.payload
+        this.$isValid = validated.isValid
+    }
+
+    /**
+     */
+    public get isValid(): boolean {
+        return this.$isValid
+    }
+
+    /**
+     */
+    public get payload(): UNiDVPSchema<object> {
+        return this.$payload
+    }
+
+    /**
+     */
+    public get metadata(): any {
+        return ''
+        // const meta: UNiDVerifiableCredentialMetaExternal = {
+        //     id    : this.$payload.id,
+        //     issuer: this.$payload.issuer,
+        //     issuanceDate  : (new DateTimeUtils(this.$payload.issuanceDate)).$toDate(),
+        //     expirationDate: (new DateTimeUtils(this.$payload.expirationDate)).toDate(),
+        // }
+
+        // return meta
+    }
+}
+
+/**
+ */
 export class UNiDVerifiablePresentation<T> {
     private presentation: T
 
@@ -34,7 +72,7 @@ export class UNiDVerifiablePresentation<T> {
     /**
      * @param presentation 
      */
-    public static async verify<T>(presentation: UNiDVPSchema<T> & ProofContext): Promise<{ payload: UNiDVPSchema<T>, isValid: boolean }> {
+    public static async verify<T>(presentation: UNiDVPSchema<T> & ProofContext): Promise<VerifyContainer<T>> {
         if (presentation.proof === undefined) {
             throw new Error()
         }
@@ -43,16 +81,11 @@ export class UNiDVerifiablePresentation<T> {
             did: presentation.proof.verificationMethod,
         })
 
-        const result = await CredentialSigner.verify<UNiDVPSchema<T>>(presentation, {
+        const validated = await CredentialSigner.verify(presentation, {
             context: Secp256k1.fromJwk(did.publicKeyJwk),
         })
 
-        const payload: UNiDVPSchema<T> = result.payload
-
-        return {
-            payload: payload,
-            isValid: result.isValid,
-        }
+        return new VerifyContainer(validated)
     }
 
     /**

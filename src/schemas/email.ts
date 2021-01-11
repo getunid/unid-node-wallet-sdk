@@ -1,5 +1,5 @@
 import { Text } from 'schema-dts'
-import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetaInternal, UNiDVerifiableCredentialOptions } from '.'
 
 // EmailCredentialV1
 
@@ -60,7 +60,7 @@ export class EmailCredentialV1 extends UNiDVerifiableCredentialBase<EmailCredent
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is EmailCredentialV1Schema {
+    private static isCompatible(input: any): input is EmailCredentialV1Schema & UNiDVerifiableCredentialMetaInternal {
         if (typeof input !== 'object') {
             return false
         }
@@ -90,7 +90,7 @@ export class EmailCredentialV1 extends UNiDVerifiableCredentialBase<EmailCredent
     /**
      * @param vcs 
      */
-    public static select(vcs: Array<any>): EmailCredentialV1 | undefined {
+    public static select(vcs: Array<any>): EmailCredentialV1Schema & UNiDVerifiableCredentialMetaInternal | undefined {
         const selected = vcs.filter((vc) => {
             return EmailCredentialV1.isCompatible(vc)
         })
@@ -108,6 +108,6 @@ export class EmailCredentialV1 extends UNiDVerifiableCredentialBase<EmailCredent
             return undefined
         }
 
-        return new EmailCredentialV1(select.credentialSubject)
+        return select
     }
 }

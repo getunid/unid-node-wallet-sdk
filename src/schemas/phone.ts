@@ -1,5 +1,5 @@
 import { Text } from 'schema-dts'
-import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetaInternal, UNiDVerifiableCredentialOptions } from '.'
 
 // PhoneCredentialV1
 
@@ -60,7 +60,7 @@ export class PhoneCredentialV1 extends UNiDVerifiableCredentialBase<PhoneCredent
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is PhoneCredentialV1Schema {
+    private static isCompatible(input: any): input is PhoneCredentialV1Schema & UNiDVerifiableCredentialMetaInternal {
         if (typeof input !== 'object') {
             return false
         }
@@ -90,7 +90,7 @@ export class PhoneCredentialV1 extends UNiDVerifiableCredentialBase<PhoneCredent
     /**
      * @param vcs 
      */
-    public static select(vcs: Array<any>): PhoneCredentialV1 | undefined {
+    public static select(vcs: Array<any>): PhoneCredentialV1Schema & UNiDVerifiableCredentialMetaInternal | undefined {
         const selected = vcs.filter((vc) => {
             return PhoneCredentialV1.isCompatible(vc)
         })
@@ -108,6 +108,6 @@ export class PhoneCredentialV1 extends UNiDVerifiableCredentialBase<PhoneCredent
             return undefined
         }
 
-        return new PhoneCredentialV1(select.credentialSubject)
+        return select
     }
 }

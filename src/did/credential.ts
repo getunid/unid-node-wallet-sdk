@@ -85,9 +85,6 @@ export class UNiDVerifiableCredential<T> {
             context: Secp256k1.fromJwk(did.publicKeyJwk),
         })
 
-        return new VerifyContainer({
-            payload: validated.payload,
-            isValid: validated.isValid,
-        })
+        return new VerifyContainer(validated)
     }
 }

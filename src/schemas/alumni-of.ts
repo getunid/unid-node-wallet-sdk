@@ -1,5 +1,5 @@
 import { Organization } from 'schema-dts'
-import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetaInternal, UNiDVerifiableCredentialOptions } from '.'
 
 // AlumniOfCredentialV1
 
@@ -53,7 +53,7 @@ export class AlumniOfCredentialV1 extends UNiDVerifiableCredentialBase<AlumniOfC
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is CredentialV1 {
+    private static isCompatible(input: any): input is AlumniOfCredentialV1Schema & UNiDVerifiableCredentialMetaInternal {
         if (typeof input !== 'object') {
             return false
         }
@@ -83,7 +83,7 @@ export class AlumniOfCredentialV1 extends UNiDVerifiableCredentialBase<AlumniOfC
     /**
      * @param vcs 
      */
-    public static select(vcs: Array<any>): AlumniOfCredentialV1 | undefined {
+    public static select(vcs: Array<any>): AlumniOfCredentialV1Schema & UNiDVerifiableCredentialMetaInternal | undefined {
         const selected = vcs.filter((vc) => {
             return AlumniOfCredentialV1.isCompatible(vc)
         })
@@ -100,7 +100,7 @@ export class AlumniOfCredentialV1 extends UNiDVerifiableCredentialBase<AlumniOfC
         if (! AlumniOfCredentialV1.isCompatible(select)) {
             return undefined
         }
-
-        return new AlumniOfCredentialV1(select.credentialSubject)
+        
+        return select
     }
 }

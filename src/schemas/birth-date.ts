@@ -1,5 +1,5 @@
 import { Date } from 'schema-dts'
-import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetaInternal, UNiDVerifiableCredentialOptions } from '.'
 
 // BirthDateCredentialV1
 
@@ -53,7 +53,7 @@ export class BirthDateCredentialV1 extends UNiDVerifiableCredentialBase<BirthDat
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is BirthDateCredentialV1Schema {
+    private static isCompatible(input: any): input is BirthDateCredentialV1Schema & UNiDVerifiableCredentialMetaInternal {
         if (typeof input !== 'object') {
             return false
         }
@@ -83,7 +83,7 @@ export class BirthDateCredentialV1 extends UNiDVerifiableCredentialBase<BirthDat
     /**
      * @param vcs 
      */
-    public static select(vcs: Array<any>): BirthDateCredentialV1 | undefined {
+    public static select(vcs: Array<any>): BirthDateCredentialV1Schema & UNiDVerifiableCredentialMetaInternal | undefined {
         const selected = vcs.filter((vc) => {
             return BirthDateCredentialV1.isCompatible(vc)
         })
@@ -101,6 +101,6 @@ export class BirthDateCredentialV1 extends UNiDVerifiableCredentialBase<BirthDat
             return undefined
         }
 
-        return new BirthDateCredentialV1(select.credentialSubject)
+        return select
     }
 }

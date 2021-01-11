@@ -1,5 +1,5 @@
 import { EducationalOccupationalCredential } from 'schema-dts'
-import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetaInternal, UNiDVerifiableCredentialOptions } from '.'
 
 // QualificationCredentialV1
 
@@ -53,7 +53,7 @@ export class QualificationCredentialV1 extends UNiDVerifiableCredentialBase<Qual
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is QualificationCredentialV1Schema {
+    private static isCompatible(input: any): input is QualificationCredentialV1Schema & UNiDVerifiableCredentialMetaInternal {
         if (typeof input !== 'object') {
             return false
         }
@@ -83,7 +83,7 @@ export class QualificationCredentialV1 extends UNiDVerifiableCredentialBase<Qual
     /**
      * @param vcs 
      */
-    public static select(vcs: Array<any>): QualificationCredentialV1 | undefined {
+    public static select(vcs: Array<any>): QualificationCredentialV1Schema & UNiDVerifiableCredentialMetaInternal | undefined {
         const selected = vcs.filter((vc) => {
             return QualificationCredentialV1.isCompatible(vc)
         })
@@ -101,6 +101,6 @@ export class QualificationCredentialV1 extends UNiDVerifiableCredentialBase<Qual
             return undefined
         }
 
-        return new QualificationCredentialV1(select.credentialSubject)
+        return select
     }
 }

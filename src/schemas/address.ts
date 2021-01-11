@@ -107,6 +107,7 @@ export class AddressCredentialV1 extends UNiDVerifiableCredentialBase<AddressCre
         if (! AddressCredentialV1.isCompatible(select)) {
             return undefined
         }
+
         return select
     }
 }

@@ -1,5 +1,5 @@
 import { Text } from 'schema-dts'
-import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetaInternal, UNiDVerifiableCredentialOptions } from '.'
 
 // NameCredentialV1
 
@@ -64,7 +64,7 @@ export class NameCredentialV1 extends UNiDVerifiableCredentialBase<NameCredentia
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is NameCredentialV1Schema {
+    private static isCompatible(input: any): input is NameCredentialV1Schema & UNiDVerifiableCredentialMetaInternal {
         if (typeof input !== 'object') {
             return false
         }
@@ -94,7 +94,7 @@ export class NameCredentialV1 extends UNiDVerifiableCredentialBase<NameCredentia
     /**
      * @param vcs 
      */
-    public static select(vcs: Array<any>): NameCredentialV1 | undefined {
+    public static select(vcs: Array<any>): NameCredentialV1Schema & UNiDVerifiableCredentialMetaInternal | undefined {
         const selected = vcs.filter((vc) => {
             return NameCredentialV1.isCompatible(vc)
         })
@@ -112,6 +112,6 @@ export class NameCredentialV1 extends UNiDVerifiableCredentialBase<NameCredentia
             return undefined
         }
 
-        return new NameCredentialV1(select.credentialSubject)
+        return select
     }
 }

@@ -10,11 +10,15 @@ import { KeyRingType } from './keyring'
 import { MnemonicKeyring, MnemonicKeyringOptions } from './keyring/mnemonic'
 import { UNiDVerifiableCredentialMetaExternal, UNiDVerifiableCredentialMetaInternal } from './schemas'
 
+/**
+ */
 export enum UNiDNetworkType {
     Mainnet,
     Testnet
 }
 
+/**
+ */
 export interface UNiDContext {
     clientId    : string,
     clientSecret: string,
@@ -22,7 +26,25 @@ export interface UNiDContext {
     envNetwork? : UNiDNetworkType
 }
 
+/**
+ */
 const SIGNING_KEY_ID = 'signingKey'
+
+/**
+ */
+export interface VerifyCredentialResponse<T> {
+    isValid : boolean,
+    payload : T,
+    metadata: UNiDVerifiableCredentialMetaExternal,
+}
+
+/**
+ */
+export interface VerifyPresentationResponse {
+    isValid : boolean,
+    payload : UNiDVPSchema<object>,
+    metadata: object,
+}
 
 /**
  */
@@ -106,28 +128,16 @@ class UNiDKlass {
     }
 
     /**
+     * @param credential 
      */
-    public async verifyCredential<T>(credential: T & UNiDVerifiableCredentialMetaInternal): Promise<{
-        isValid : boolean,
-        payload : T,
-        metadata: UNiDVerifiableCredentialMetaExternal,
-    }> {
-        const verified = await UNiDVerifiableCredential.verify(credential)
-
-        return {
-            isValid : verified.isValid,
-            payload : verified.payload,
-            metadata: verified.metadata,
-        }
+    public async verifyCredential<T>(credential: T & UNiDVerifiableCredentialMetaInternal): Promise<VerifyCredentialResponse<T>> {
+        return await UNiDVerifiableCredential.verify(credential)
     }
 
     /**
      * @param presentation 
      */
-    public async verifyPresentation(presentation: UNiDVPSchema<object> & ProofContext): Promise<{
-        payload: UNiDVPSchema<object>,
-        isValid: boolean,
-    }> {
+    public async verifyPresentation(presentation: UNiDVPSchema<object> & ProofContext): Promise<VerifyPresentationResponse> {
         return await UNiDVerifiablePresentation.verify(presentation)
     }
 

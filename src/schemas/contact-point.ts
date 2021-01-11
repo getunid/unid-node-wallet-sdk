@@ -1,5 +1,5 @@
 import { ContactPoint } from 'schema-dts'
-import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetaInternal, UNiDVerifiableCredentialOptions } from '.'
 
 // ContactPointCredentialV1
 
@@ -60,7 +60,7 @@ export class ContactPointCredentialV1 extends UNiDVerifiableCredentialBase<Conta
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is ContactPointCredentialV1Schema {
+    private static isCompatible(input: any): input is ContactPointCredentialV1Schema & UNiDVerifiableCredentialMetaInternal {
         if (typeof input !== 'object') {
             return false
         }
@@ -90,7 +90,7 @@ export class ContactPointCredentialV1 extends UNiDVerifiableCredentialBase<Conta
     /**
      * @param vcs 
      */
-    public static select(vcs: Array<any>): ContactPointCredentialV1 | undefined {
+    public static select(vcs: Array<any>): ContactPointCredentialV1Schema & UNiDVerifiableCredentialMetaInternal | undefined {
         const selected = vcs.filter((vc) => {
             return ContactPointCredentialV1.isCompatible(vc)
         })
@@ -108,6 +108,6 @@ export class ContactPointCredentialV1 extends UNiDVerifiableCredentialBase<Conta
             return undefined
         }
 
-        return new ContactPointCredentialV1(select.credentialSubject)
+        return select
     }
 }
