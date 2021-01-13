@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.12](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.11...v0.0.12) (2021-01-13)
+
+
+### Features
+
+* Added credentialTypes property ([7f1346a](https://github.com/getunid/unid-nodejs-sdk/commit/7f1346a19dcfa5a671c8d0cfe2080e9fac24409b))
+* Added schemas ([27817fe](https://github.com/getunid/unid-nodejs-sdk/commit/27817fe307052659da66a58db8c5e838af081fc3))
+* Refactoring of schemas and added birthDate schema ([9327396](https://github.com/getunid/unid-nodejs-sdk/commit/9327396275df48f7b6a5d81a92c5f0389c1d61a8))
+* Refactoring schemas and modified architecture ([3a75bd1](https://github.com/getunid/unid-nodejs-sdk/commit/3a75bd14dde2097504a4c380cdc6004a6fc99cd3))
+
+
+### Bug Fixes
+
+* Modified module reference ([6c2983c](https://github.com/getunid/unid-nodejs-sdk/commit/6c2983c6b192940a9807b24eea8b6f705fff3613))
+* Refactoring architecture ([48e2738](https://github.com/getunid/unid-nodejs-sdk/commit/48e2738d8b1589dac86e3bd6d80cbd3b232a5fac))
+
 ### [0.0.11](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.10...v0.0.11) (2020-12-25)
 
 
