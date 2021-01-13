@@ -1,22 +1,22 @@
 import { Organization } from 'schema-dts'
-import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
 // AlumniOfCredentialV1
 
 /**
  */
-export interface AlumniOfOrganization extends UNiDCredentialSubjectMetadata {
+interface AlumniOfOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'AlumniOfOrganization',
     alumniOf: Array<Organization>,
 }
 
 /**
  */
-export type AlumniOfCredentialV1Schema = UNiDVerifiableCredential<
+export interface AlumniOfCredentialV1Schema extends UNiDVerifiableCredential<
     'https://docs.getunid.io/docs/2020/credentials/alumniOf',
     'AlumniOfCredentialV1',
     AlumniOfOrganization
->
+> {}
 
 /**
  */
@@ -69,10 +69,10 @@ export class AlumniOfCredentialV1 extends UNiDVerifiableCredentialBase<AlumniOfC
     }
 
     /**
-     * @param vcs 
+     * @param vp 
      */
-    public static select(vcs: Array<any>): AlumniOfCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
-        const selected = vcs.filter((vc) => {
+    public static select<T>(vp: UNiDVerifiablePresentation<T>): AlumniOfCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
+        const selected = vp.verifiableCredential.filter((vc) => {
             return AlumniOfCredentialV1.isCompatible(vc)
         })
 
@@ -88,7 +88,7 @@ export class AlumniOfCredentialV1 extends UNiDVerifiableCredentialBase<AlumniOfC
         if (! AlumniOfCredentialV1.isCompatible(select)) {
             return undefined
         }
-        
+
         return select
     }
 }

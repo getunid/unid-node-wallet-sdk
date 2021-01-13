@@ -1,8 +1,8 @@
-import { UNiDExportedVerifiableCredentialMetadata, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredential } from "../schemas"
+import { UNiDExportedVerifiableCredentialMetadata, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialContext } from "../schemas"
 import { CredentialSigner } from "../cipher/signer"
 import { Secp256k1 } from "../keyring/secp256k1"
 import { UNiD } from '../unid'
-import { DateTimeUtils } from "src/utils/datetime"
+import { DateTimeUtils } from "../utils/datetime"
 
 /**
  */
@@ -29,8 +29,8 @@ class VerifyContainer<T1, T2, T3> {
 
     /**
      */
-    public get metadata(): UNiDExportedVerifiableCredentialMetadata<T1, T2> {
-        const meta: UNiDExportedVerifiableCredentialMetadata<T1, T2> = {
+    public get metadata(): UNiDVerifiableCredentialContext<T1, T2> & UNiDExportedVerifiableCredentialMetadata {
+        const meta: UNiDVerifiableCredentialContext<T1, T2> & UNiDExportedVerifiableCredentialMetadata = {
             '@context': this.$payload["@context"],
             type      : this.$payload.type,
             id        : this.$payload.id,

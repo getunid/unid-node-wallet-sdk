@@ -1,22 +1,22 @@
 import { Date } from 'schema-dts'
-import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
 // BirthDateCredentialV1
 
 /**
  */
-export interface BirthDatePerson extends UNiDCredentialSubjectMetadata {
+interface BirthDatePerson extends UNiDCredentialSubjectMetadata {
     '@type': 'BirthDatePerson',
     birthDate: Date,
 }
 
 /**
  */
-export type BirthDateCredentialV1Schema = UNiDVerifiableCredential<
+export interface BirthDateCredentialV1Schema extends UNiDVerifiableCredential<
     'https://docs.getunid.io/docs/2020/credentials/birthDate',
     'BirthDateCredentialV1',
     BirthDatePerson
->
+> {}
 
 /**
  */
@@ -69,10 +69,10 @@ export class BirthDateCredentialV1 extends UNiDVerifiableCredentialBase<BirthDat
     }
 
     /**
-     * @param vcs 
+     * @param vp 
      */
-    public static select(vcs: Array<any>): BirthDateCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
-        const selected = vcs.filter((vc) => {
+    public static select<T>(vp: UNiDVerifiablePresentation<T>): BirthDateCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
+        const selected = vp.verifiableCredential.filter((vc) => {
             return BirthDateCredentialV1.isCompatible(vc)
         })
 

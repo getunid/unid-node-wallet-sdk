@@ -1,5 +1,5 @@
 import { PostalAddress } from 'schema-dts'
-import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions } from '.';
+import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.';
 
 // AddressCredentialV1
 
@@ -19,11 +19,11 @@ interface AddressOrganization extends UNiDCredentialSubjectMetadata {
 
 /**
  */
-export type AddressCredentialV1Schema = UNiDVerifiableCredential<
+export interface AddressCredentialV1Schema extends UNiDVerifiableCredential<
     'https://docs.getunid.io/docs/2020/credentials/address',
     'AddressCredentialV1',
     AddressPerson | AddressOrganization
->
+> {}
 
 /**
  */
@@ -76,10 +76,10 @@ export class AddressCredentialV1 extends UNiDVerifiableCredentialBase<AddressCre
     }
 
     /**
-     * @param vcs 
+     * @param vp 
      */
-    public static select(vcs: Array<any>): AddressCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
-        const selected = vcs.filter((vc) => {
+    public static select<T>(vp: UNiDVerifiablePresentation<T>): AddressCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
+        const selected = vp.verifiableCredential.filter((vc) => {
             return AddressCredentialV1.isCompatible(vc)
         })
 

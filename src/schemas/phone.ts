@@ -1,29 +1,29 @@
 import { Text } from 'schema-dts'
-import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
 // PhoneCredentialV1
 
 /**
  */
-export interface PhonePerson extends UNiDCredentialSubjectMetadata {
+interface PhonePerson extends UNiDCredentialSubjectMetadata {
     '@type': 'PhonePerson',
     telephone: Readonly<Text>
 }
 
 /**
  */
-export interface PhoneOrganization extends UNiDCredentialSubjectMetadata {
+interface PhoneOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'PhoneOrganization',
     telephone: Readonly<Text>
 }
 
 /**
  */
-export type PhoneCredentialV1Schema = UNiDVerifiableCredential<
+export interface PhoneCredentialV1Schema extends UNiDVerifiableCredential<
     'https://docs.getunid.io/docs/2020/credentials/phone',
     'PhoneCredentialV1',
     PhonePerson | PhoneOrganization
->
+> {}
 
 /**
  */
@@ -76,10 +76,10 @@ export class PhoneCredentialV1 extends UNiDVerifiableCredentialBase<PhoneCredent
     }
 
     /**
-     * @param vcs 
+     * @param vp 
      */
-    public static select(vcs: Array<any>): PhoneCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
-        const selected = vcs.filter((vc) => {
+    public static select<T>(vp: UNiDVerifiablePresentation<T>): PhoneCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
+        const selected = vp.verifiableCredential.filter((vc) => {
             return PhoneCredentialV1.isCompatible(vc)
         })
 

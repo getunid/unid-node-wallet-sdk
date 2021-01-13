@@ -13,8 +13,8 @@ interface JwsHeader {
 
 export interface ProofContext {
     proof?: {
-        type: 'EcdsaSecp256k1Signature2019',
-        proofPurpose: 'authentication',
+        type: 'EcdsaSecp256k1Signature2019' | string,
+        proofPurpose: 'authentication' | string,
         created: string,
         verificationMethod: string,
         jws: string

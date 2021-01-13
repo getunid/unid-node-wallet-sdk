@@ -7,7 +7,6 @@ import {
     UNiDVerifiableCredentialMetadata,
     UNiDVerifiableCredential,
     UNiDVerifiableCredentialSchema,
-    UNiDCredentialSubjectMetadata,
     UNiDVerifiablePresentationV1,
 } from '../schemas'
 import { DateTimeTypes, DateTimeUtils } from '../utils/datetime'

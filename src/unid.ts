@@ -1,5 +1,4 @@
 import { UNiDDidOperator, PublicKeyPurpose, UNiDDidDocument } from '@unid/did-operator'
-import { ProofContext } from './cipher/signer'
 import { ConfigManager } from './config'
 import { BaseConnector } from './connector/base'
 import { UNiDDid } from './did'
@@ -8,7 +7,7 @@ import { VerifiablePresentation } from './did/presentation'
 import { UNiDNotImplementedError } from "./error"
 import { KeyRingType } from './keyring'
 import { MnemonicKeyring, MnemonicKeyringOptions } from './keyring/mnemonic'
-import { UNiDExportedVerifiableCredentialMetadata, UNiDExportedVerifiablePresentationMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialMetadata, UNiDVerifiablePresentation, UNiDVerifiablePresentationMetadata } from './schemas'
+import { UNiDExportedVerifiableCredentialMetadata, UNiDExportedVerifiablePresentationMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiablePresentation, UNiDVerifiablePresentationContext, UNiDVerifiablePresentationMetadata, UNiDWithoutProofVerifiableCredentialMetadata, UNiDWithoutProofVerifiablePresentationMetadata } from './schemas'
 
 /**
  */
@@ -34,16 +33,16 @@ const SIGNING_KEY_ID = 'signingKey'
  */
 export interface VerifyCredentialResponse<T1, T2, T3> {
     isValid : boolean,
-    payload : UNiDVerifiableCredential<T1, T2, T3>,
-    metadata: UNiDExportedVerifiableCredentialMetadata<T1, T2>,
+    payload : UNiDVerifiableCredential<T1, T2, T3> & UNiDWithoutProofVerifiableCredentialMetadata,
+    metadata: UNiDVerifiableCredentialContext<T1, T2> & UNiDExportedVerifiableCredentialMetadata
 }
 
 /**
  */
 export interface VerifyPresentationResponse<T1> {
     isValid : boolean,
-    payload : UNiDVerifiablePresentation<T1>,
-    metadata: UNiDExportedVerifiablePresentationMetadata,
+    payload : UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDWithoutProofVerifiablePresentationMetadata
+    metadata: UNiDVerifiablePresentationContext & UNiDExportedVerifiablePresentationMetadata,
 }
 
 /**
@@ -137,7 +136,7 @@ class UNiDKlass {
     /**
      * @param presentation 
      */
-    public async verifyPresentation<T1>(presentation: UNiDVerifiablePresentation<T1> & UNiDVerifiablePresentationMetadata): Promise<VerifyPresentationResponse<T1>> {
+    public async verifyPresentation<T1>(presentation: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata): Promise<VerifyPresentationResponse<T1>> {
         return await VerifiablePresentation.verify(presentation)
     }
 
@@ -145,6 +144,44 @@ class UNiDKlass {
      */
     public async validateAuthenticationRequest<T1, T2, T3>(request: UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata): Promise<VerifyCredentialResponse<T1, T2, T3>> {
         return await VerifiableCredential.verify(request)
+    }
+
+    /**
+     * @param input 
+     */
+    public isVerifiableCredential(input: any): input is UNiDVerifiableCredential<string, string, object> & UNiDVerifiableCredentialMetadata {
+        if (typeof(input) !== 'object') {
+            return false
+        }
+
+        if ((Object.keys(input).indexOf('@context') < 0) ||
+            (Object.keys(input).indexOf('type') < 0) ||
+            (Object.keys(input).indexOf('credentialSubject') < 0) ||
+            (Object.keys(input).indexOf('proof') < 0)
+        ) {
+            return false
+        }
+
+        return true
+    }
+
+    /**
+     * @param input 
+     */
+    public isVerifiablePresentation(input: any): input is UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, object>> & UNiDVerifiablePresentationMetadata {
+        if (typeof(input) !== 'object') {
+            return false
+        }
+
+        if ((Object.keys(input).indexOf('@context') < 0) ||
+            (Object.keys(input).indexOf('type') < 0) ||
+            (Object.keys(input).indexOf('verifiableCredential') < 0) ||
+            (Object.keys(input).indexOf('proof') < 0)
+        ) {
+            return false
+        }
+
+        return true
     }
 }
 

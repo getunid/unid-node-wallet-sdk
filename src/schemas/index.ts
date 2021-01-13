@@ -1,4 +1,3 @@
-import { VerifiableCredential } from "src/did/credential"
 import { ProofContext } from "../cipher/signer"
 
 export const VC_ID: string = 'https://sds.getunid.io/api/v1'
@@ -23,10 +22,6 @@ export type UNiDVerifiableCredentialSchema =
 export type Weaken<T, K extends keyof T> = {
     [P in keyof T]: P extends K ? any : T[P]
 }
-
-/**
- */
-export type PickType<T, K extends keyof T> = T[K]
 
 /**
  * 
@@ -57,10 +52,15 @@ export interface UNiDVerifiableCredentialContext<T1, T2> {
 
 /**
  */
-export interface UNiDExportedVerifiableCredentialMetadata<T1, T2> extends
-    Omit<Weaken<UNiDVerifiableCredentialMetadata, 'issuanceDate' | 'expirationDate'>, 'proof'>,
-    UNiDVerifiableCredentialContext<T1, T2> {
-    issuanceDate: Date,
+export interface UNiDWithoutProofVerifiableCredentialMetadata extends
+    Omit<UNiDVerifiableCredentialMetadata, 'proof'> {
+}
+
+/**
+ */
+export interface UNiDExportedVerifiableCredentialMetadata extends
+    Weaken<UNiDWithoutProofVerifiableCredentialMetadata, 'issuanceDate' | 'expirationDate'> {
+    issuanceDate   : Date,
     expirationDate?: Date,
 }
 
@@ -98,11 +98,17 @@ export interface UNiDVerifiablePresentationContext {
 
 /**
  */
+export interface UNiDWithoutProofVerifiablePresentationMetadata extends
+    Omit<UNiDVerifiablePresentationMetadata, 'proof'> {
+}
+
+/**
+ */
 export interface UNiDExportedVerifiablePresentationMetadata extends
-    Omit<Weaken<UNiDVerifiablePresentationMetadata, 'issuanceDate' | 'expirationDate'>, 'proof'>,
-    UNiDVerifiablePresentationContext {
-    issuanceDate: Date,
+    Weaken<UNiDWithoutProofVerifiablePresentationMetadata, 'issuanceDate' | 'expirationDate'> {
+    issuanceDate   : Date,
     expirationDate?: Date,
+    credentialTypes: Array<string>,
 }
 
 /**
@@ -167,7 +173,7 @@ export class UNiDVerifiableCredentialBase<T> {
  * Verifiable Presentation
  */
 class UNiDVerifiablePresentationBase<T1> {
-    protected $presentation?: UNiDVerifiablePresentation<T1>
+    protected $presentation?: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>>
     private   $issuanceDate?: Date
     private   $expirationDate?: Date
 
@@ -183,12 +189,12 @@ class UNiDVerifiablePresentationBase<T1> {
 
     /**
      */
-    public getVerifiablePresentation(metadata: UNiDVerifiablePresentationMetadata): UNiDVerifiablePresentation<T1> & UNiDVerifiablePresentationMetadata {
+    public getVerifiablePresentation(metadata: UNiDVerifiablePresentationMetadata): UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string,T1>> & UNiDVerifiablePresentationMetadata {
         if (this.$presentation === undefined) {
             throw new Error()
         }
 
-        return Object.assign<UNiDVerifiablePresentationMetadata, UNiDVerifiablePresentation<T1>>(metadata, this.$presentation)
+        return Object.assign<UNiDVerifiablePresentationMetadata, UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string,T1>>>(metadata, this.$presentation)
     }
 
     /**

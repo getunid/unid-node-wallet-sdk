@@ -1,29 +1,29 @@
 import { Text } from 'schema-dts'
-import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
 // EmailCredentialV1
 
 /**
  */
-export interface EmailPerson extends UNiDCredentialSubjectMetadata {
+interface EmailPerson extends UNiDCredentialSubjectMetadata {
     '@type': 'EmailPerson',
     email  : Readonly<Text>,
 }
 
 /**
  */
-export interface EmailOrganization extends UNiDCredentialSubjectMetadata {
+interface EmailOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'EmailOrganization',
     email  : Readonly<Text>,
 }
 
 /**
  */
-export type EmailCredentialV1Schema = UNiDVerifiableCredential<
+export interface EmailCredentialV1Schema extends UNiDVerifiableCredential<
     'https://docs.getunid.io/docs/2020/credentials/email',
     'EmailCredentialV1',
     EmailPerson | EmailOrganization
->
+> {}
 
 /**
  */
@@ -76,10 +76,10 @@ export class EmailCredentialV1 extends UNiDVerifiableCredentialBase<EmailCredent
     }
 
     /**
-     * @param vcs 
+     * @param vp 
      */
-    public static select(vcs: Array<any>): EmailCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
-        const selected = vcs.filter((vc) => {
+    public static select<T>(vp: UNiDVerifiablePresentation<T>): EmailCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
+        const selected = vp.verifiableCredential.filter((vc) => {
             return EmailCredentialV1.isCompatible(vc)
         })
 

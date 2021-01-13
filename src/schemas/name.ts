@@ -1,11 +1,11 @@
 import { Text } from 'schema-dts'
-import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
 // NameCredentialV1
 
 /**
  */
-export interface NamePerson extends UNiDCredentialSubjectMetadata {
+interface NamePerson extends UNiDCredentialSubjectMetadata {
     '@type': 'NamePerson',
     name: Readonly<Text>,
     giveName: Readonly<Text>,
@@ -14,7 +14,7 @@ export interface NamePerson extends UNiDCredentialSubjectMetadata {
 
 /**
  */
-export interface NameOrganization extends UNiDCredentialSubjectMetadata {
+interface NameOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'NameOrganization',
     name: Readonly<Text>,
     giveName: Readonly<Text>,
@@ -23,11 +23,11 @@ export interface NameOrganization extends UNiDCredentialSubjectMetadata {
 
 /**
  */
-export type NameCredentialV1Schema = UNiDVerifiableCredential<
+export interface NameCredentialV1Schema extends UNiDVerifiableCredential<
     'https://docs.getunid.io/docs/2020/credentials/name',
     'NameCredentialV1',
     NamePerson | NameOrganization
->
+> {}
 
 /**
  */
@@ -80,10 +80,10 @@ export class NameCredentialV1 extends UNiDVerifiableCredentialBase<NameCredentia
     }
 
     /**
-     * @param vcs 
+     * @param vp 
      */
-    public static select(vcs: Array<any>): NameCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
-        const selected = vcs.filter((vc) => {
+    public static select<T>(vp: UNiDVerifiablePresentation<T>): NameCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
+        const selected = vp.verifiableCredential.filter((vc) => {
             return NameCredentialV1.isCompatible(vc)
         })
 

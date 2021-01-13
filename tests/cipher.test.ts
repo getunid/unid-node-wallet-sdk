@@ -8,7 +8,7 @@ test('Cipher#enc/dec - 1', async () => {
     const enc = await Cipher.encrypt(data, secret)
     const dec = await Cipher.decrypt(enc, secret)
 
-    expect(data).toEqual(dec)
+    expect(dec).toEqual(data)
 })
 
 test('Cipher#enc/dec - 2', async () => {
@@ -24,7 +24,7 @@ test('Cipher#enc/dec - 2', async () => {
     const enc = await Cipher.encrypt(data, secret)
     const dec = await Cipher.decrypt(enc, secret)
 
-    expect(data).toEqual(dec)
+    expect(dec).toEqual(data)
 })
 
 test('Cipher#enc/dec - 3', async () => {

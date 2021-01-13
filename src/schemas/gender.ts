@@ -1,22 +1,22 @@
 import { Text } from 'schema-dts'
-import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
 // GenderCredentialV1
 
 /**
  */
-export interface GenderPerson extends UNiDCredentialSubjectMetadata {
+interface GenderPerson extends UNiDCredentialSubjectMetadata {
     '@type': 'GenderPerson',
     gender : Readonly<Text>,
 }
 
 /**
  */
-export type GenderCredentialV1Schema = UNiDVerifiableCredential<
+export interface GenderCredentialV1Schema extends UNiDVerifiableCredential<
     'https://docs.getunid.io/docs/2020/credentials/gender',
     'GenderCredentialV1',
     GenderPerson
->
+> {}
 
 /**
  */
@@ -69,10 +69,10 @@ export class GenderCredentialV1 extends UNiDVerifiableCredentialBase<GenderCrede
     }
 
     /**
-     * @param vcs 
+     * @param vp 
      */
-    public static select(vcs: Array<any>): GenderCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
-        const selected = vcs.filter((vc) => {
+    public static select<T>(vp: UNiDVerifiablePresentation<T>): GenderCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
+        const selected = vp.verifiableCredential.filter((vc) => {
             return GenderCredentialV1.isCompatible(vc)
         })
 

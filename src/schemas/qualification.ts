@@ -1,22 +1,22 @@
 import { EducationalOccupationalCredential } from 'schema-dts'
-import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
 // QualificationCredentialV1
 
 /**
  */
-export interface QualificationPerson extends UNiDCredentialSubjectMetadata {
+interface QualificationPerson extends UNiDCredentialSubjectMetadata {
     '@type': 'QualificationPerson',
     hasCredential: Array<EducationalOccupationalCredential>,
 }
 
 /**
  */
-export type QualificationCredentialV1Schema = UNiDVerifiableCredential<
+export interface QualificationCredentialV1Schema extends UNiDVerifiableCredential<
     'https://docs.getunid.io/docs/2020/credentials/qualification',
     'QualificationCredentialV1',
     QualificationPerson
->
+> {}
 
 /**
  */
@@ -69,10 +69,10 @@ export class QualificationCredentialV1 extends UNiDVerifiableCredentialBase<Qual
     }
 
     /**
-     * @param vcs 
+     * @param vp 
      */
-    public static select(vcs: Array<any>): QualificationCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
-        const selected = vcs.filter((vc) => {
+    public static select<T>(vp: UNiDVerifiablePresentation<T>): QualificationCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
+        const selected = vp.verifiableCredential.filter((vc) => {
             return QualificationCredentialV1.isCompatible(vc)
         })
 

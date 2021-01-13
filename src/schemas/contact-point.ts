@@ -1,29 +1,29 @@
 import { ContactPoint } from 'schema-dts'
-import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
 // ContactPointCredentialV1
 
 /**
  */
-export interface ContactPointPerson extends UNiDCredentialSubjectMetadata {
+interface ContactPointPerson extends UNiDCredentialSubjectMetadata {
     '@type': 'ContactPointPerson',
     contactPoint: ContactPoint
 }
 
 /**
  */
-export interface ContactPointOrganization extends UNiDCredentialSubjectMetadata {
+interface ContactPointOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'ContactPointOrganization',
     contactPoint: ContactPoint,
 }
 
 /**
  */
-export type ContactPointCredentialV1Schema = UNiDVerifiableCredential<
+export interface ContactPointCredentialV1Schema extends UNiDVerifiableCredential<
     'https://docs.getunid.io/docs/2020/credentials/contactPoint',
     'ContactPointCredentialV1',
     ContactPointPerson | ContactPointOrganization
->
+> {}
 
 /**
  */
@@ -76,10 +76,10 @@ export class ContactPointCredentialV1 extends UNiDVerifiableCredentialBase<Conta
     }
 
     /**
-     * @param vcs 
+     * @param vp 
      */
-    public static select(vcs: Array<any>): ContactPointCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
-        const selected = vcs.filter((vc) => {
+    public static select<T>(vp: UNiDVerifiablePresentation<T>): ContactPointCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
+        const selected = vp.verifiableCredential.filter((vc) => {
             return ContactPointCredentialV1.isCompatible(vc)
         })
 
