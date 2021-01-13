@@ -1,38 +1,29 @@
 import { ContactPoint } from 'schema-dts'
-import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetaInternal, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions } from '.'
 
 // ContactPointCredentialV1
 
 /**
  */
-export interface ContactPointPerson extends UNiDCredentialSubjectMeta {
+export interface ContactPointPerson extends UNiDCredentialSubjectMetadata {
     '@type': 'ContactPointPerson',
     contactPoint: ContactPoint
 }
 
 /**
  */
-export interface ContactPointOrganization extends UNiDCredentialSubjectMeta {
+export interface ContactPointOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'ContactPointOrganization',
     contactPoint: ContactPoint,
 }
 
 /**
  */
-type CredentialV1 = UNiDVerifiableCredential<
+export type ContactPointCredentialV1Schema = UNiDVerifiableCredential<
+    'https://docs.getunid.io/docs/2020/credentials/contactPoint',
     'ContactPointCredentialV1',
     ContactPointPerson | ContactPointOrganization
 >
-
-/**
- */
-type CredentialV1Context = UNiDVerifiableCredentialContext<
-    'https://docs.getunid.io/docs/2020/credentials/contactPoint'
->
-
-/**
- */
-export type ContactPointCredentialV1Schema = CredentialV1 & CredentialV1Context
 
 /**
  */
@@ -44,23 +35,20 @@ export class ContactPointCredentialV1 extends UNiDVerifiableCredentialBase<Conta
     public constructor(credentialSubject: ContactPointPerson | ContactPointOrganization, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        const credential: CredentialV1 = {
-            type: [ 'VerifiableCredential', 'ContactPointCredentialV1' ],
-            credentialSubject: credentialSubject,
-        }
-
-        this.$credential = Object.assign<CredentialV1Context, CredentialV1>({
+        this.$credential = {
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/contactPoint',
             ],
-        }, credential)
+            type: [ 'VerifiableCredential', 'ContactPointCredentialV1' ],
+            credentialSubject: credentialSubject,
+        }
     }
 
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is ContactPointCredentialV1Schema & UNiDVerifiableCredentialMetaInternal {
+    private static isCompatible(input: any): input is ContactPointCredentialV1Schema & UNiDVerifiableCredentialMetadata {
         if (typeof input !== 'object') {
             return false
         }
@@ -90,7 +78,7 @@ export class ContactPointCredentialV1 extends UNiDVerifiableCredentialBase<Conta
     /**
      * @param vcs 
      */
-    public static select(vcs: Array<any>): ContactPointCredentialV1Schema & UNiDVerifiableCredentialMetaInternal | undefined {
+    public static select(vcs: Array<any>): ContactPointCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
         const selected = vcs.filter((vc) => {
             return ContactPointCredentialV1.isCompatible(vc)
         })

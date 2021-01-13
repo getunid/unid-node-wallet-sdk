@@ -1,38 +1,29 @@
 import { PostalAddress } from 'schema-dts'
-import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetaInternal, UNiDVerifiableCredentialOptions } from '.';
+import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions } from '.';
 
 // AddressCredentialV1
 
 /**
  */
-interface AddressPerson extends UNiDCredentialSubjectMeta {
+interface AddressPerson extends UNiDCredentialSubjectMetadata {
     '@type': 'AddressPerson',
     address: PostalAddress,
 }
 
 /**
  */
-interface AddressOrganization extends UNiDCredentialSubjectMeta {
+interface AddressOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'AddressOrganization',
     address: PostalAddress,
 }
 
 /**
  */
-type CredentialV1 = UNiDVerifiableCredential<
+export type AddressCredentialV1Schema = UNiDVerifiableCredential<
+    'https://docs.getunid.io/docs/2020/credentials/address',
     'AddressCredentialV1',
     AddressPerson | AddressOrganization
 >
-
-/**
- */
-type CredentialV1Context = UNiDVerifiableCredentialContext<
-    'https://docs.getunid.io/docs/2020/credentials/address'
->
-
-/**
- */
-export type AddressCredentialV1Schema = CredentialV1 & CredentialV1Context
 
 /**
  */
@@ -44,23 +35,20 @@ export class AddressCredentialV1 extends UNiDVerifiableCredentialBase<AddressCre
     public constructor(credentialSubject: AddressPerson | AddressOrganization, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        const credential: CredentialV1 = {
-            type: [ 'VerifiableCredential', 'AddressCredentialV1' ],
-            credentialSubject: credentialSubject,
-        }
-
-        this.$credential = Object.assign<CredentialV1Context, CredentialV1>({
+        this.$credential = {
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/address',
             ],
-        }, credential)
+            type: [ 'VerifiableCredential', 'AddressCredentialV1' ],
+            credentialSubject: credentialSubject,
+        }
     }
 
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is AddressCredentialV1Schema & UNiDVerifiableCredentialMetaInternal {
+    private static isCompatible(input: any): input is AddressCredentialV1Schema & UNiDVerifiableCredentialMetadata {
         if (typeof input !== 'object') {
             return false
         }
@@ -90,7 +78,7 @@ export class AddressCredentialV1 extends UNiDVerifiableCredentialBase<AddressCre
     /**
      * @param vcs 
      */
-    public static select(vcs: Array<any>): AddressCredentialV1Schema & UNiDVerifiableCredentialMetaInternal | undefined {
+    public static select(vcs: Array<any>): AddressCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
         const selected = vcs.filter((vc) => {
             return AddressCredentialV1.isCompatible(vc)
         })

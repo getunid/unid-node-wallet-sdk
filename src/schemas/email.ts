@@ -1,38 +1,29 @@
 import { Text } from 'schema-dts'
-import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetaInternal, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions } from '.'
 
 // EmailCredentialV1
 
 /**
  */
-export interface EmailPerson extends UNiDCredentialSubjectMeta {
+export interface EmailPerson extends UNiDCredentialSubjectMetadata {
     '@type': 'EmailPerson',
     email  : Readonly<Text>,
 }
 
 /**
  */
-export interface EmailOrganization extends UNiDCredentialSubjectMeta {
+export interface EmailOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'EmailOrganization',
     email  : Readonly<Text>,
 }
 
 /**
  */
-type CredentialV1 = UNiDVerifiableCredential<
+export type EmailCredentialV1Schema = UNiDVerifiableCredential<
+    'https://docs.getunid.io/docs/2020/credentials/email',
     'EmailCredentialV1',
     EmailPerson | EmailOrganization
 >
-
-/**
- */
-type CredentialV1Context = UNiDVerifiableCredentialContext<
-    'https://docs.getunid.io/docs/2020/credentials/email'
->
-
-/**
- */
-export type EmailCredentialV1Schema = CredentialV1 & CredentialV1Context
 
 /**
  */
@@ -44,23 +35,20 @@ export class EmailCredentialV1 extends UNiDVerifiableCredentialBase<EmailCredent
     public constructor(credentialSubject: EmailPerson | EmailOrganization, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        const credential: CredentialV1 = {
-            type: [ 'VerifiableCredential', 'EmailCredentialV1' ],
-            credentialSubject: credentialSubject,
-        }
-
-        this.$credential = Object.assign<CredentialV1Context, CredentialV1>({
+        this.$credential = {
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/email',
             ],
-        }, credential)
+            type: [ 'VerifiableCredential', 'EmailCredentialV1' ],
+            credentialSubject: credentialSubject,
+        }
     }
 
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is EmailCredentialV1Schema & UNiDVerifiableCredentialMetaInternal {
+    private static isCompatible(input: any): input is EmailCredentialV1Schema & UNiDVerifiableCredentialMetadata {
         if (typeof input !== 'object') {
             return false
         }
@@ -90,7 +78,7 @@ export class EmailCredentialV1 extends UNiDVerifiableCredentialBase<EmailCredent
     /**
      * @param vcs 
      */
-    public static select(vcs: Array<any>): EmailCredentialV1Schema & UNiDVerifiableCredentialMetaInternal | undefined {
+    public static select(vcs: Array<any>): EmailCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
         const selected = vcs.filter((vc) => {
             return EmailCredentialV1.isCompatible(vc)
         })

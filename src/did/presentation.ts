@@ -1,15 +1,16 @@
-import { UNiDVPSchema } from "."
+import { UNiDExportedVerifiablePresentationMetadata, UNiDVerifiablePresentation, UNiDVerifiablePresentationMetadata } from "src/schemas"
+import { DateTimeUtils } from "src/utils/datetime"
 import { CredentialSigner, ProofContext } from "../cipher/signer"
 import { Secp256k1 } from "../keyring/secp256k1"
 import { UNiD } from '../unid'
 
 /**
  */
-class VerifyContainer<T> {
-    private $payload: UNiDVPSchema<object>
+class VerifyContainer<T1> {
+    private $payload: UNiDVerifiablePresentation<T1> & UNiDVerifiablePresentationMetadata
     private $isValid: boolean
 
-    constructor(validated: { payload: any, isValid: boolean }) {
+    constructor(validated: { payload: UNiDVerifiablePresentation<T1> & UNiDVerifiablePresentationMetadata, isValid: boolean }) {
         this.$payload = validated.payload
         this.$isValid = validated.isValid
     }
@@ -22,48 +23,49 @@ class VerifyContainer<T> {
 
     /**
      */
-    public get payload(): UNiDVPSchema<object> {
+    public get payload(): UNiDVerifiablePresentation<T1> & UNiDVerifiablePresentationMetadata {
         return this.$payload
     }
 
     /**
      */
-    public get metadata(): any {
-        return ''
-        // const meta: UNiDVerifiableCredentialMetaExternal = {
-        //     id    : this.$payload.id,
-        //     issuer: this.$payload.issuer,
-        //     issuanceDate  : (new DateTimeUtils(this.$payload.issuanceDate)).$toDate(),
-        //     expirationDate: (new DateTimeUtils(this.$payload.expirationDate)).toDate(),
-        // }
+    public get metadata(): UNiDExportedVerifiablePresentationMetadata {
+        const meta: UNiDExportedVerifiablePresentationMetadata = {
+            '@context': this.payload["@context"],
+            type      : this.payload.type,
+            id        : this.$payload.id,
+            issuer    : this.$payload.issuer,
+            issuanceDate  : (new DateTimeUtils(this.$payload.issuanceDate)).$toDate(),
+            expirationDate: (new DateTimeUtils(this.$payload.expirationDate)).toDate(),
+        }
 
-        // return meta
+        return meta
     }
 }
 
 /**
  */
-export class UNiDVerifiablePresentation<T> {
-    private presentation: T
+export class VerifiablePresentation<T1> {
+    private presentation: T1
 
     /**
      * @param presentation 
      */
-    constructor(presentation: T) {
+    constructor(presentation: T1) {
         this.presentation = presentation
     }
 
     /**
      */
-    public getVerifiablePresentation(): T {
+    public getVerifiablePresentation(): T1 {
         return this.presentation
     }
 
     /**
      * @param suite 
      */
-    public async sign(suite: { did: string, context: Secp256k1 }): Promise<T & ProofContext> {
-        return await CredentialSigner.sign<T>(this.presentation, {
+    public async sign(suite: { did: string, context: Secp256k1 }): Promise<T1 & ProofContext> {
+        return await CredentialSigner.sign<T1>(this.presentation, {
             did    : suite.did,
             context: suite.context,
         })
@@ -72,7 +74,7 @@ export class UNiDVerifiablePresentation<T> {
     /**
      * @param presentation 
      */
-    public static async verify<T>(presentation: UNiDVPSchema<T> & ProofContext): Promise<VerifyContainer<T>> {
+    public static async verify<T1>(presentation: UNiDVerifiablePresentation<T1> & UNiDVerifiablePresentationMetadata): Promise<VerifyContainer<T1>> {
         if (presentation.proof === undefined) {
             throw new Error()
         }
@@ -92,9 +94,9 @@ export class UNiDVerifiablePresentation<T> {
      * @param vcs 
      * @param checker 
      */
-    public static filter<T>(vcs: Array<any>, checker: (input: any) => boolean): Array<T> {
+    public static filter<T1>(vcs: Array<any>, checker: (input: any) => boolean): Array<T1> {
         return vcs.filter((vc) => {
             return checker(vc)
-        }) as Array<T>
+        }) as Array<T1>
     }
 }

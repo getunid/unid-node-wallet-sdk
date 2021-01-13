@@ -1,38 +1,29 @@
 import { Text } from 'schema-dts'
-import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetaInternal, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions } from '.'
 
 // PhoneCredentialV1
 
 /**
  */
-export interface PhonePerson extends UNiDCredentialSubjectMeta {
+export interface PhonePerson extends UNiDCredentialSubjectMetadata {
     '@type': 'PhonePerson',
     telephone: Readonly<Text>
 }
 
 /**
  */
-export interface PhoneOrganization extends UNiDCredentialSubjectMeta {
+export interface PhoneOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'PhoneOrganization',
     telephone: Readonly<Text>
 }
 
 /**
  */
-type CredentialV1 = UNiDVerifiableCredential<
+export type PhoneCredentialV1Schema = UNiDVerifiableCredential<
+    'https://docs.getunid.io/docs/2020/credentials/phone',
     'PhoneCredentialV1',
     PhonePerson | PhoneOrganization
 >
-
-/**
- */
-type CredentialV1Context = UNiDVerifiableCredentialContext<
-    'https://docs.getunid.io/docs/2020/credentials/phone'
->
-
-/**
- */
-export type PhoneCredentialV1Schema = CredentialV1 & CredentialV1Context
 
 /**
  */
@@ -44,23 +35,20 @@ export class PhoneCredentialV1 extends UNiDVerifiableCredentialBase<PhoneCredent
     public constructor(credentialSubject: PhonePerson | PhoneOrganization, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        const credential: CredentialV1 = {
-            type: [ 'VerifiableCredential', 'PhoneCredentialV1' ],
-            credentialSubject: credentialSubject,
-        }
-
-        this.$credential = Object.assign<CredentialV1Context, CredentialV1>({
+        this.$credential = {
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/phone',
             ],
-        }, credential)
+            type: [ 'VerifiableCredential', 'PhoneCredentialV1' ],
+            credentialSubject: credentialSubject,
+        }
     }
 
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is PhoneCredentialV1Schema & UNiDVerifiableCredentialMetaInternal {
+    private static isCompatible(input: any): input is PhoneCredentialV1Schema & UNiDVerifiableCredentialMetadata {
         if (typeof input !== 'object') {
             return false
         }
@@ -90,7 +78,7 @@ export class PhoneCredentialV1 extends UNiDVerifiableCredentialBase<PhoneCredent
     /**
      * @param vcs 
      */
-    public static select(vcs: Array<any>): PhoneCredentialV1Schema & UNiDVerifiableCredentialMetaInternal | undefined {
+    public static select(vcs: Array<any>): PhoneCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
         const selected = vcs.filter((vc) => {
             return PhoneCredentialV1.isCompatible(vc)
         })

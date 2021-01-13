@@ -1,31 +1,22 @@
 import { EducationalOccupationalCredential } from 'schema-dts'
-import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetaInternal, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions } from '.'
 
 // QualificationCredentialV1
 
 /**
  */
-export interface QualificationPerson extends UNiDCredentialSubjectMeta {
+export interface QualificationPerson extends UNiDCredentialSubjectMetadata {
     '@type': 'QualificationPerson',
     hasCredential: Array<EducationalOccupationalCredential>,
 }
 
 /**
  */
-type CredentialV1 = UNiDVerifiableCredential<
+export type QualificationCredentialV1Schema = UNiDVerifiableCredential<
+    'https://docs.getunid.io/docs/2020/credentials/qualification',
     'QualificationCredentialV1',
     QualificationPerson
 >
-
-/**
- */
-type CredentialV1Context = UNiDVerifiableCredentialContext<
-    'https://docs.getunid.io/docs/2020/credentials/qualification'
->
-
-/**
- */
-export type QualificationCredentialV1Schema = CredentialV1 & CredentialV1Context
 
 /**
  */
@@ -37,23 +28,20 @@ export class QualificationCredentialV1 extends UNiDVerifiableCredentialBase<Qual
     public constructor(credentialSubject: QualificationPerson, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        const credential: CredentialV1 = {
-            type: [ 'VerifiableCredential', 'QualificationCredentialV1' ],
-            credentialSubject: credentialSubject,
-        }
-
-        this.$credential = Object.assign<CredentialV1Context, CredentialV1>({
+        this.$credential = {
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/qualification',
             ],
-        }, credential)
+            type: [ 'VerifiableCredential', 'QualificationCredentialV1' ],
+            credentialSubject: credentialSubject,
+        }
     }
 
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is QualificationCredentialV1Schema & UNiDVerifiableCredentialMetaInternal {
+    private static isCompatible(input: any): input is QualificationCredentialV1Schema & UNiDVerifiableCredentialMetadata {
         if (typeof input !== 'object') {
             return false
         }
@@ -83,7 +71,7 @@ export class QualificationCredentialV1 extends UNiDVerifiableCredentialBase<Qual
     /**
      * @param vcs 
      */
-    public static select(vcs: Array<any>): QualificationCredentialV1Schema & UNiDVerifiableCredentialMetaInternal | undefined {
+    public static select(vcs: Array<any>): QualificationCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
         const selected = vcs.filter((vc) => {
             return QualificationCredentialV1.isCompatible(vc)
         })

@@ -1,20 +1,18 @@
 import { MnemonicKeyring } from '../keyring/mnemonic'
 import { UNiDDidOperator } from '@unid/did-operator'
-import { UNiDVerifiableCredential } from './credential'
+import { VerifiableCredential } from './credential'
 import {
-    UNiDVerifiableCredentialBase,
-    UNiDVerifiableCredentialMetaInternal,
-    UNiDVerifiablePresentation as UNiDVP,
-    UNiDVerifiableCredential as UNiDVC,
-    UNiDVerifiablePresentationContext,
-    UNiDVerifiablePresentationMeta,
-    UNiDVerifiableCredentialSchema,
     VC_ID,
-    UNiDCredentialSubjectMeta,
+    UNiDVerifiableCredentialBase,
+    UNiDVerifiableCredentialMetadata,
+    UNiDVerifiableCredential,
+    UNiDVerifiableCredentialSchema,
+    UNiDCredentialSubjectMetadata,
+    UNiDVerifiablePresentationV1,
 } from '../schemas'
 import { DateTimeTypes, DateTimeUtils } from '../utils/datetime'
 import { UNiDNotImplementedError } from '../error'
-import { UNiDVerifiablePresentation } from './presentation'
+import { VerifiablePresentation } from './presentation'
 
 interface UNiDDidContext {
     keyring : MnemonicKeyring
@@ -36,8 +34,6 @@ interface UNiDDidAuthRequest {
 export type Weaken<T, K extends keyof T> = {
     [P in keyof T]: P extends K ? any : T[P]
 }
-
-export interface UNiDVPSchema<T> extends Object, UNiDVerifiablePresentationMeta, UNiDVerifiablePresentationContext<Object>, UNiDVP<Object, T> {}
 
 export class UNiDDid {
     private readonly keyring : MnemonicKeyring
@@ -81,17 +77,17 @@ export class UNiDDid {
         const iss = (new DateTimeUtils(credential.issuanceDate)).$toString(DateTimeTypes.default)
         const exp = (new DateTimeUtils(credential.expirationDate)).toString(DateTimeTypes.default)
 
-        const data: T & UNiDVerifiableCredentialMetaInternal = Object.assign<UNiDVerifiableCredentialMetaInternal, T>({
+        const data = credential.getVerifiableCredential({
             id    : VC_ID,
             issuer: this.getIdentifier(),
             issuanceDate: iss,
-        }, credential.verifiableCredential)
+        })
 
         if (exp !== undefined) {
             data.expirationDate = exp
         }
 
-        const verifiableCredential = new UNiDVerifiableCredential<T & UNiDVerifiableCredentialMetaInternal>(data)
+        const verifiableCredential = new VerifiableCredential(data)
 
         return await verifiableCredential.sign({
             did    : this.keyring.getIdentifier(),
@@ -102,8 +98,7 @@ export class UNiDDid {
     /**
      * Create: Verifiable Presentation
      */
-    public async createPresentation<T>(credentials: Array<T & UNiDVC<string, UNiDCredentialSubjectMeta>>) {
-        const iss = (new DateTimeUtils(new Date())).$toString(DateTimeTypes.default)
+    public async createPresentation<T>(credentials: Array<UNiDVerifiableCredential<string, string, T> & UNiDVerifiableCredentialMetadata>) {
         const types: Array<string> = []
 
         credentials.forEach((credential) => {
@@ -123,18 +118,23 @@ export class UNiDDid {
             throw new Error()
         }
 
-        const data: UNiDVPSchema<T> = {
-            '@context': [
-                'https://www.w3.org/2018/credentials/v1',
-            ],
-            type  : [ 'VerifiablePresentation' ],
+        const presentation = new UNiDVerifiablePresentationV1(credentials, {
+        })
+
+        const iss = (new DateTimeUtils(presentation.issuanceDate)).$toString(DateTimeTypes.default)
+        const exp = (new DateTimeUtils(presentation.expirationDate)).toString(DateTimeTypes.default)
+
+        const data = presentation.getVerifiablePresentation({
             id    : VC_ID,
             issuer: this.getIdentifier(),
             issuanceDate: iss,
-            verifiableCredential: credentials,
+        })
+
+        if (exp !== undefined) {
+            data.expirationDate = exp
         }
 
-        const verifiablePresentation = new UNiDVerifiablePresentation(data)
+        const verifiablePresentation = new VerifiablePresentation(data)
 
         return await verifiablePresentation.sign({
             did    : this.keyring.getIdentifier(),
@@ -175,7 +175,7 @@ export class UNiDDid {
             callback_uri : params.callbackUri,
             claims       : params.claims,
         }
-        const request = new UNiDVerifiableCredential<UNiDDidAuthRequest>(payload)
+        const request = new VerifiableCredential<UNiDDidAuthRequest>(payload)
 
         return await request.sign({
             did    : this.keyring.getIdentifier(),

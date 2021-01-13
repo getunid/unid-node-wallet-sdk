@@ -1,4 +1,4 @@
-import { UNiDVerifiableCredentialMetaExternal, UNiDVerifiableCredentialMetaInternal } from "../schemas"
+import { UNiDExportedVerifiableCredentialMetadata, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredential } from "../schemas"
 import { CredentialSigner } from "../cipher/signer"
 import { Secp256k1 } from "../keyring/secp256k1"
 import { UNiD } from '../unid'
@@ -6,11 +6,11 @@ import { DateTimeUtils } from "src/utils/datetime"
 
 /**
  */
-class VerifyContainer<T> {
-    private $payload: T & UNiDVerifiableCredentialMetaInternal
+class VerifyContainer<T1, T2, T3> {
+    private $payload: UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata
     private $isValid: boolean
 
-    constructor(validated: { payload: T & UNiDVerifiableCredentialMetaInternal, isValid: boolean }) {
+    constructor(validated: { payload: UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata, isValid: boolean }) {
         this.$payload = validated.payload
         this.$isValid = validated.isValid
     }
@@ -23,16 +23,18 @@ class VerifyContainer<T> {
 
     /**
      */
-    public get payload(): T {
+    public get payload(): UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata {
         return this.$payload
     }
 
     /**
      */
-    public get metadata(): UNiDVerifiableCredentialMetaExternal {
-        const meta: UNiDVerifiableCredentialMetaExternal = {
-            id    : this.$payload.id,
-            issuer: this.$payload.issuer,
+    public get metadata(): UNiDExportedVerifiableCredentialMetadata<T1, T2> {
+        const meta: UNiDExportedVerifiableCredentialMetadata<T1, T2> = {
+            '@context': this.$payload["@context"],
+            type      : this.$payload.type,
+            id        : this.$payload.id,
+            issuer    : this.$payload.issuer,
             issuanceDate  : (new DateTimeUtils(this.$payload.issuanceDate)).$toDate(),
             expirationDate: (new DateTimeUtils(this.$payload.expirationDate)).toDate(),
         }
@@ -43,7 +45,7 @@ class VerifyContainer<T> {
 
 /**
  */
-export class UNiDVerifiableCredential<T> {
+export class VerifiableCredential<T> {
     private $credential: T
 
     /**
@@ -72,7 +74,7 @@ export class UNiDVerifiableCredential<T> {
     /**
      * @param credential 
      */
-    public static async verify<T>(credential: T & UNiDVerifiableCredentialMetaInternal): Promise<VerifyContainer<T>> {
+    public static async verify<T1, T2, T3>(credential: UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata): Promise<VerifyContainer<T1, T2, T3>> {
         if (credential.proof === undefined) {
             throw new Error()
         }

@@ -2,13 +2,13 @@ import { UNiDDidOperator, PublicKeyPurpose, UNiDDidDocument } from '@unid/did-op
 import { ProofContext } from './cipher/signer'
 import { ConfigManager } from './config'
 import { BaseConnector } from './connector/base'
-import { UNiDDid, UNiDVPSchema } from './did'
-import { UNiDVerifiableCredential } from './did/credential'
-import { UNiDVerifiablePresentation } from './did/presentation'
+import { UNiDDid } from './did'
+import { VerifiableCredential } from './did/credential'
+import { VerifiablePresentation } from './did/presentation'
 import { UNiDNotImplementedError } from "./error"
 import { KeyRingType } from './keyring'
 import { MnemonicKeyring, MnemonicKeyringOptions } from './keyring/mnemonic'
-import { UNiDVerifiableCredentialMetaExternal, UNiDVerifiableCredentialMetaInternal } from './schemas'
+import { UNiDExportedVerifiableCredentialMetadata, UNiDExportedVerifiablePresentationMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialMetadata, UNiDVerifiablePresentation, UNiDVerifiablePresentationMetadata } from './schemas'
 
 /**
  */
@@ -32,18 +32,18 @@ const SIGNING_KEY_ID = 'signingKey'
 
 /**
  */
-export interface VerifyCredentialResponse<T> {
+export interface VerifyCredentialResponse<T1, T2, T3> {
     isValid : boolean,
-    payload : T,
-    metadata: UNiDVerifiableCredentialMetaExternal,
+    payload : UNiDVerifiableCredential<T1, T2, T3>,
+    metadata: UNiDExportedVerifiableCredentialMetadata<T1, T2>,
 }
 
 /**
  */
-export interface VerifyPresentationResponse {
+export interface VerifyPresentationResponse<T1> {
     isValid : boolean,
-    payload : UNiDVPSchema<object>,
-    metadata: object,
+    payload : UNiDVerifiablePresentation<T1>,
+    metadata: UNiDExportedVerifiablePresentationMetadata,
 }
 
 /**
@@ -130,24 +130,21 @@ class UNiDKlass {
     /**
      * @param credential 
      */
-    public async verifyCredential<T>(credential: T & UNiDVerifiableCredentialMetaInternal): Promise<VerifyCredentialResponse<T>> {
-        return await UNiDVerifiableCredential.verify(credential)
+    public async verifyCredential<T1, T2, T3>(credential: UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata): Promise<VerifyCredentialResponse<T1, T2, T3>> {
+        return await VerifiableCredential.verify(credential)
     }
 
     /**
      * @param presentation 
      */
-    public async verifyPresentation(presentation: UNiDVPSchema<object> & ProofContext): Promise<VerifyPresentationResponse> {
-        return await UNiDVerifiablePresentation.verify(presentation)
+    public async verifyPresentation<T1>(presentation: UNiDVerifiablePresentation<T1> & UNiDVerifiablePresentationMetadata): Promise<VerifyPresentationResponse<T1>> {
+        return await VerifiablePresentation.verify(presentation)
     }
 
     /**
      */
-    public async validateAuthenticationRequest<T>(request: T & UNiDVerifiableCredentialMetaInternal): Promise<{
-        payload: T,
-        isValid: boolean,
-    }> {
-        return await UNiDVerifiableCredential.verify(request)
+    public async validateAuthenticationRequest<T1, T2, T3>(request: UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata): Promise<VerifyCredentialResponse<T1, T2, T3>> {
+        return await VerifiableCredential.verify(request)
     }
 }
 

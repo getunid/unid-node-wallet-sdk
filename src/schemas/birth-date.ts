@@ -1,31 +1,22 @@
 import { Date } from 'schema-dts'
-import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetaInternal, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions } from '.'
 
 // BirthDateCredentialV1
 
 /**
  */
-export interface BirthDatePerson extends UNiDCredentialSubjectMeta {
+export interface BirthDatePerson extends UNiDCredentialSubjectMetadata {
     '@type': 'BirthDatePerson',
     birthDate: Date,
 }
 
 /**
  */
-type CredentialV1 = UNiDVerifiableCredential<
+export type BirthDateCredentialV1Schema = UNiDVerifiableCredential<
+    'https://docs.getunid.io/docs/2020/credentials/birthDate',
     'BirthDateCredentialV1',
     BirthDatePerson
 >
-
-/**
- */
-type CredentialV1Context = UNiDVerifiableCredentialContext<
-    'https://docs.getunid.io/docs/2020/credentials/birthDate'
->
-
-/**
- */
-export type BirthDateCredentialV1Schema = CredentialV1 & CredentialV1Context
 
 /**
  */
@@ -37,23 +28,20 @@ export class BirthDateCredentialV1 extends UNiDVerifiableCredentialBase<BirthDat
     public constructor(credentialSubject: BirthDatePerson, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        const credential: CredentialV1 = {
-            type: [ 'VerifiableCredential', 'BirthDateCredentialV1' ],
-            credentialSubject: credentialSubject,
-        }
-
-        this.$credential = Object.assign<CredentialV1Context, CredentialV1>({
+        this.$credential = {
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/birthDate',
             ],
-        }, credential)
+            type: [ 'VerifiableCredential', 'BirthDateCredentialV1' ],
+            credentialSubject: credentialSubject,
+        }
     }
 
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is BirthDateCredentialV1Schema & UNiDVerifiableCredentialMetaInternal {
+    private static isCompatible(input: any): input is BirthDateCredentialV1Schema & UNiDVerifiableCredentialMetadata {
         if (typeof input !== 'object') {
             return false
         }
@@ -83,7 +71,7 @@ export class BirthDateCredentialV1 extends UNiDVerifiableCredentialBase<BirthDat
     /**
      * @param vcs 
      */
-    public static select(vcs: Array<any>): BirthDateCredentialV1Schema & UNiDVerifiableCredentialMetaInternal | undefined {
+    public static select(vcs: Array<any>): BirthDateCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
         const selected = vcs.filter((vc) => {
             return BirthDateCredentialV1.isCompatible(vc)
         })

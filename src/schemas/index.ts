@@ -1,3 +1,4 @@
+import { VerifiableCredential } from "src/did/credential"
 import { ProofContext } from "../cipher/signer"
 
 export const VC_ID: string = 'https://sds.getunid.io/api/v1'
@@ -30,14 +31,14 @@ export type PickType<T, K extends keyof T> = T[K]
 /**
  * 
  */
-export interface UNiDCredentialSubjectMeta {
+export interface UNiDCredentialSubjectMetadata {
     '@id'  : string,
     '@type': string,
 }
 
 /**
  */
-export interface UNiDVerifiableCredentialMetaInternal extends ProofContext {
+export interface UNiDVerifiableCredentialMetadata extends ProofContext {
     // [REQUIRED FIELDS]:
     id: string,
     issuer: string,
@@ -49,22 +50,24 @@ export interface UNiDVerifiableCredentialMetaInternal extends ProofContext {
 
 /**
  */
-export interface UNiDVerifiableCredentialMetaExternal extends Weaken<UNiDVerifiableCredentialMetaInternal, 'issuanceDate' | 'expirationDate'> {
+export interface UNiDVerifiableCredentialContext<T1, T2> {
+    '@context': Array<'https://www.w3.org/2018/credentials/v1' | T1>,
+    type: Array<'VerifiableCredential' | T2>,
+}
+
+/**
+ */
+export interface UNiDExportedVerifiableCredentialMetadata<T1, T2> extends
+    Omit<Weaken<UNiDVerifiableCredentialMetadata, 'issuanceDate' | 'expirationDate'>, 'proof'>,
+    UNiDVerifiableCredentialContext<T1, T2> {
     issuanceDate: Date,
     expirationDate?: Date,
 }
 
 /**
  */
-export interface UNiDVerifiableCredentialContext<T> {
-    '@context': Array<'https://www.w3.org/2018/credentials/v1' | T>,
-}
-
-/**
- */
-export interface UNiDVerifiableCredential<T1, T2> {
-    type: Array<'VerifiableCredential' | T1>,
-    credentialSubject: T2,
+export interface UNiDVerifiableCredential<T1, T2, T3> extends UNiDVerifiableCredentialContext<T1, T2> {
+    credentialSubject: T3,
 }
 
 /**
@@ -76,24 +79,36 @@ export interface UNiDVerifiableCredentialOptions {
 
 /**
  */
-export interface UNiDVerifiablePresentationMeta extends ProofContext {
+export interface UNiDVerifiablePresentationMetadata extends ProofContext {
+    // [REQUIRED FIELDS]:
     id: string,
     issuer: string,
     issuanceDate: string,
+
+    // [OPTIONAL FIELDS]:
     expirationDate?: string,
 }
 
 /**
  */
-export interface UNiDVerifiablePresentationContext<T> {
-    '@context': Array<'https://www.w3.org/2018/credentials/v1' | T>,
+export interface UNiDVerifiablePresentationContext {
+    '@context': Array<'https://www.w3.org/2018/credentials/v1'>,
+    type: Array<'VerifiablePresentation'>,
 }
 
 /**
  */
-export interface UNiDVerifiablePresentation<T1, T2> {
-    type: Array<'VerifiablePresentation' | T1>,
-    verifiableCredential: Array<T2>,
+export interface UNiDExportedVerifiablePresentationMetadata extends
+    Omit<Weaken<UNiDVerifiablePresentationMetadata, 'issuanceDate' | 'expirationDate'>, 'proof'>,
+    UNiDVerifiablePresentationContext {
+    issuanceDate: Date,
+    expirationDate?: Date,
+}
+
+/**
+ */
+export interface UNiDVerifiablePresentation<T> extends UNiDVerifiablePresentationContext {
+    verifiableCredential: Array<T>,
 }
 
 /**
@@ -123,12 +138,12 @@ export class UNiDVerifiableCredentialBase<T> {
 
     /**
      */
-    public get verifiableCredential(): T {
+    public getVerifiableCredential(metadata: UNiDVerifiableCredentialMetadata): T & UNiDVerifiableCredentialMetadata {
         if (this.$credential === undefined) {
             throw new Error()
         }
 
-        return this.$credential
+        return Object.assign<UNiDVerifiableCredentialMetadata, T>(metadata, this.$credential)
     }
 
     /**
@@ -151,44 +166,60 @@ export class UNiDVerifiableCredentialBase<T> {
 /**
  * Verifiable Presentation
  */
-export class UNiDVerifiablePresentationBase {
-    public  presentation?: object
-    private issuanceDate?: Date
-    private expirationDate?: Date
+class UNiDVerifiablePresentationBase<T1> {
+    protected $presentation?: UNiDVerifiablePresentation<T1>
+    private   $issuanceDate?: Date
+    private   $expirationDate?: Date
 
     /**
      * @param options 
      */
     public constructor(options?: UNiDVerifiablePresentationOptions) {
         if (options) {
-            this.issuanceDate   = options.issuanceDate
-            this.expirationDate = options.expirationDate
+            this.$issuanceDate   = options.issuanceDate
+            this.$expirationDate = options.expirationDate
         }
     }
 
     /**
      */
-    public verifiablePresentation(): object {
-        if (this.presentation === undefined) {
+    public getVerifiablePresentation(metadata: UNiDVerifiablePresentationMetadata): UNiDVerifiablePresentation<T1> & UNiDVerifiablePresentationMetadata {
+        if (this.$presentation === undefined) {
             throw new Error()
         }
 
-        return this.presentation
+        return Object.assign<UNiDVerifiablePresentationMetadata, UNiDVerifiablePresentation<T1>>(metadata, this.$presentation)
     }
 
     /**
      */
-    public getIssuanceDate(): Date {
-        if (this.issuanceDate === undefined) {
+    public get issuanceDate(): Date {
+        if (this.$issuanceDate === undefined) {
             return (new Date())
         }
 
-        return this.issuanceDate
+        return this.$issuanceDate
     }
 
     /**
      */
-    public getExpirationDate(): Date | undefined {
-        return this.expirationDate
+    public get expirationDate(): Date | undefined {
+        return this.$expirationDate
+    }
+}
+
+export class UNiDVerifiablePresentationV1 extends UNiDVerifiablePresentationBase<UNiDVerifiableCredential<string, string, UNiDCredentialSubjectMetadata>> {
+    /**
+     * @param credentialSubject 
+     * @param options 
+     */
+    public constructor(verifiableCredential: Array<UNiDVerifiableCredential<any, any, any> & UNiDVerifiableCredentialMetadata>, options?: UNiDVerifiableCredentialOptions) {
+        super(options)
+
+        this.$presentation = {
+            '@context': [ 'https://www.w3.org/2018/credentials/v1' ],
+            type: [ 'VerifiablePresentation' ],
+            verifiableCredential: verifiableCredential,
+        }
     }
 }

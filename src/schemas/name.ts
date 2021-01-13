@@ -1,11 +1,11 @@
 import { Text } from 'schema-dts'
-import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetaInternal, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions } from '.'
 
 // NameCredentialV1
 
 /**
  */
-export interface NamePerson extends UNiDCredentialSubjectMeta {
+export interface NamePerson extends UNiDCredentialSubjectMetadata {
     '@type': 'NamePerson',
     name: Readonly<Text>,
     giveName: Readonly<Text>,
@@ -14,7 +14,7 @@ export interface NamePerson extends UNiDCredentialSubjectMeta {
 
 /**
  */
-export interface NameOrganization extends UNiDCredentialSubjectMeta {
+export interface NameOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'NameOrganization',
     name: Readonly<Text>,
     giveName: Readonly<Text>,
@@ -23,20 +23,11 @@ export interface NameOrganization extends UNiDCredentialSubjectMeta {
 
 /**
  */
-type CredentialV1 = UNiDVerifiableCredential<
+export type NameCredentialV1Schema = UNiDVerifiableCredential<
+    'https://docs.getunid.io/docs/2020/credentials/name',
     'NameCredentialV1',
     NamePerson | NameOrganization
 >
-
-/**
- */
-type CredentialV1Context = UNiDVerifiableCredentialContext<
-    'https://docs.getunid.io/docs/2020/credentials/name'
->
-
-/**
- */
-export type NameCredentialV1Schema = CredentialV1 & CredentialV1Context
 
 /**
  */
@@ -48,23 +39,20 @@ export class NameCredentialV1 extends UNiDVerifiableCredentialBase<NameCredentia
     public constructor(credentialSubject: NamePerson | NameOrganization, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        const credential: CredentialV1 = {
-            type: [ 'VerifiableCredential', 'NameCredentialV1' ],
-            credentialSubject: credentialSubject,
-        }
-
-        this.$credential = Object.assign<CredentialV1Context, CredentialV1>({
+        this.$credential = {
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/name',
             ],
-        }, credential)
+            type: [ 'VerifiableCredential', 'NameCredentialV1' ],
+            credentialSubject: credentialSubject,
+        }
     }
 
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is NameCredentialV1Schema & UNiDVerifiableCredentialMetaInternal {
+    private static isCompatible(input: any): input is NameCredentialV1Schema & UNiDVerifiableCredentialMetadata {
         if (typeof input !== 'object') {
             return false
         }
@@ -94,7 +82,7 @@ export class NameCredentialV1 extends UNiDVerifiableCredentialBase<NameCredentia
     /**
      * @param vcs 
      */
-    public static select(vcs: Array<any>): NameCredentialV1Schema & UNiDVerifiableCredentialMetaInternal | undefined {
+    public static select(vcs: Array<any>): NameCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
         const selected = vcs.filter((vc) => {
             return NameCredentialV1.isCompatible(vc)
         })

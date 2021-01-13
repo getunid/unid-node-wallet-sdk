@@ -1,31 +1,22 @@
 import { Organization } from 'schema-dts'
-import { UNiDCredentialSubjectMeta, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetaInternal, UNiDVerifiableCredentialOptions } from '.'
+import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions } from '.'
 
 // AlumniOfCredentialV1
 
 /**
  */
-export interface AlumniOfOrganization extends UNiDCredentialSubjectMeta {
+export interface AlumniOfOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'AlumniOfOrganization',
     alumniOf: Array<Organization>,
 }
 
 /**
  */
-type CredentialV1 = UNiDVerifiableCredential<
+export type AlumniOfCredentialV1Schema = UNiDVerifiableCredential<
+    'https://docs.getunid.io/docs/2020/credentials/alumniOf',
     'AlumniOfCredentialV1',
     AlumniOfOrganization
 >
-
-/**
- */
-type CredentialV1Context = UNiDVerifiableCredentialContext<
-    'https://docs.getunid.io/docs/2020/credentials/alumniOf'
->
-
-/**
- */
-export type AlumniOfCredentialV1Schema = CredentialV1 & CredentialV1Context
 
 /**
  */
@@ -37,23 +28,20 @@ export class AlumniOfCredentialV1 extends UNiDVerifiableCredentialBase<AlumniOfC
     public constructor(credentialSubject: AlumniOfOrganization, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        const credential: CredentialV1 = {
-            type: [ 'VerifiableCredential', 'AlumniOfCredentialV1' ],
-            credentialSubject: credentialSubject,
-        }
-
-        this.$credential = Object.assign<CredentialV1Context, CredentialV1>({
+        this.$credential = {
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/alumniOf',
             ],
-        }, credential)
+            type: [ 'VerifiableCredential', 'AlumniOfCredentialV1' ],
+            credentialSubject: credentialSubject,
+        }
     }
 
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is AlumniOfCredentialV1Schema & UNiDVerifiableCredentialMetaInternal {
+    private static isCompatible(input: any): input is AlumniOfCredentialV1Schema & UNiDVerifiableCredentialMetadata {
         if (typeof input !== 'object') {
             return false
         }
@@ -83,7 +71,7 @@ export class AlumniOfCredentialV1 extends UNiDVerifiableCredentialBase<AlumniOfC
     /**
      * @param vcs 
      */
-    public static select(vcs: Array<any>): AlumniOfCredentialV1Schema & UNiDVerifiableCredentialMetaInternal | undefined {
+    public static select(vcs: Array<any>): AlumniOfCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
         const selected = vcs.filter((vc) => {
             return AlumniOfCredentialV1.isCompatible(vc)
         })

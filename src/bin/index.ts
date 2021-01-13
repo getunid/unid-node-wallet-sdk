@@ -38,11 +38,12 @@ import { MongoDBConnector } from "../connector/mongodb"
         const verifiedVP = await UNiD.verifyPresentation(signedVP)
         const filterd    = AddressCredentialV1.select(verifiedVP.payload.verifiableCredential)
 
-        console.log(verifiedVP)
+        console.log(verifiedVP.metadata)
 
         if (filterd) {
             const address = await UNiD.verifyCredential(filterd)
 
+            if (address.metadata)
             console.log(address.payload.credentialSubject)
         }
 
