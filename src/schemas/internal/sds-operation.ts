@@ -78,6 +78,9 @@ interface UpdateOperation extends UNiDCredentialSubjectMetadata {
     // [[ ID ]]
     id: Readonly<Text>,
 
+    // [[ PAYLOAD ]]
+    payload?: Readonly<Text>,
+
     // [[ METADATA ]]
     context?             : Readonly<Text>,
     type?                : Readonly<Text>,
