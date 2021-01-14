@@ -1,4 +1,5 @@
 import { Text } from 'schema-dts'
+import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
 // GenderCredentialV1
@@ -62,7 +63,7 @@ export class GenderCredentialV1 extends UNiDVerifiableCredentialBase<GenderCrede
      */
     public static fromObject(input: any): GenderCredentialV1 {
         if (! GenderCredentialV1.isCompatible(input)) {
-            throw new Error()
+            throw new UNiDNotCompatibleError()
         }
 
         return new GenderCredentialV1(input.credentialSubject)
@@ -77,7 +78,7 @@ export class GenderCredentialV1 extends UNiDVerifiableCredentialBase<GenderCrede
         })
 
         if (1 < selected.length) {
-            throw new Error()
+            throw new UNiDNotUniqueError()
         }
 
         const select = selected.shift()

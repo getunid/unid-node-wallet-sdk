@@ -4,7 +4,7 @@ import { BaseConnector } from './connector/base'
 import { UNiDDid } from './did'
 import { VerifiableCredential } from './did/credential'
 import { VerifiablePresentation } from './did/presentation'
-import { UNiDInvalidDataStructureError, UNiDNotImplementedError } from "./error"
+import { UNiDInvalidDataError, UNiDNotImplementedError } from "./error"
 import { KeyRingType } from './keyring'
 import { MnemonicKeyring, MnemonicKeyringOptions } from './keyring/mnemonic'
 import { UNiDExportedVerifiableCredentialMetadata, UNiDExportedVerifiablePresentationMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiablePresentation, UNiDVerifiablePresentationContext, UNiDVerifiablePresentationMetadata, UNiDWithoutProofVerifiableCredentialMetadata, UNiDWithoutProofVerifiablePresentationMetadata } from './schemas'
@@ -131,7 +131,7 @@ class UNiDKlass {
      */
     public async verifyCredential<T1, T2, T3>(credential: UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata): Promise<VerifyCredentialResponse<T1, T2, T3>> {
         if (! this.isVerifiableCredential<T1, T2, T3>(credential)) {
-            throw new UNiDInvalidDataStructureError()
+            throw new UNiDInvalidDataError()
         }
 
         return await VerifiableCredential.verify(credential)
@@ -142,7 +142,7 @@ class UNiDKlass {
      */
     public async verifyPresentation<T1>(presentation: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata): Promise<VerifyPresentationResponse<T1>> {
         if (! this.isVerifiablePresentation<T1>(presentation)) {
-            throw new UNiDInvalidDataStructureError()
+            throw new UNiDInvalidDataError()
         }
 
         return await VerifiablePresentation.verify(presentation)

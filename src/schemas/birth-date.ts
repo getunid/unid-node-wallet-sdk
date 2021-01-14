@@ -1,4 +1,5 @@
 import { Date } from 'schema-dts'
+import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
 // BirthDateCredentialV1
@@ -62,7 +63,7 @@ export class BirthDateCredentialV1 extends UNiDVerifiableCredentialBase<BirthDat
      */
     public static fromObject(input: any): BirthDateCredentialV1 {
         if (! BirthDateCredentialV1.isCompatible(input)) {
-            throw new Error()
+            throw new UNiDNotCompatibleError()
         }
 
         return new BirthDateCredentialV1(input.credentialSubject)
@@ -77,7 +78,7 @@ export class BirthDateCredentialV1 extends UNiDVerifiableCredentialBase<BirthDat
         })
 
         if (1 < selected.length) {
-            throw new Error()
+            throw new UNiDNotUniqueError()
         }
 
         const select = selected.shift()

@@ -30,7 +30,23 @@ export class UNiDNotImplementedError extends UNiDError {
 
 /**
  */
-export class UNiDInvalidDataStructureError extends UNiDError {
+export class UNiDInvalidDataError extends UNiDError {
+    constructor(message?: string) {
+        super(HttpStatus.BAD_REQUEST, message)
+    }
+}
+
+/**
+ */
+export class UNiDNotUniqueError extends UNiDError {
+    constructor(message?: string) {
+        super(HttpStatus.BAD_REQUEST, message)
+    }
+}
+
+/**
+ */
+export class UNiDNotCompatibleError extends UNiDError {
     constructor(message?: string) {
         super(HttpStatus.BAD_REQUEST, message)
     }

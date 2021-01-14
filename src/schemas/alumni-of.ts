@@ -1,4 +1,5 @@
 import { Organization } from 'schema-dts'
+import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
 // AlumniOfCredentialV1
@@ -62,7 +63,7 @@ export class AlumniOfCredentialV1 extends UNiDVerifiableCredentialBase<AlumniOfC
      */
     public static fromObject(input: any): AlumniOfCredentialV1 {
         if (! AlumniOfCredentialV1.isCompatible(input)) {
-            throw new Error()
+            throw new UNiDNotCompatibleError()
         }
 
         return new AlumniOfCredentialV1(input.credentialSubject)
@@ -77,7 +78,7 @@ export class AlumniOfCredentialV1 extends UNiDVerifiableCredentialBase<AlumniOfC
         })
 
         if (1 < selected.length) {
-            throw new Error()
+            throw new UNiDNotUniqueError()
         }
 
         const select = selected.shift()

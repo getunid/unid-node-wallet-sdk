@@ -1,4 +1,5 @@
 import { Text } from 'schema-dts'
+import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
 // EmailCredentialV1
@@ -69,7 +70,7 @@ export class EmailCredentialV1 extends UNiDVerifiableCredentialBase<EmailCredent
      */
     public static fromObject(input: any): EmailCredentialV1 {
         if (! EmailCredentialV1.isCompatible(input)) {
-            throw new Error()
+            throw new UNiDNotCompatibleError()
         }
 
         return new EmailCredentialV1(input.credentialSubject)
@@ -84,7 +85,7 @@ export class EmailCredentialV1 extends UNiDVerifiableCredentialBase<EmailCredent
         })
 
         if (1 < selected.length) {
-            throw new Error()
+            throw new UNiDNotUniqueError()
         }
 
         const select = selected.shift()

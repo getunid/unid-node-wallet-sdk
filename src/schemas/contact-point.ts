@@ -1,4 +1,5 @@
 import { ContactPoint } from 'schema-dts'
+import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
 // ContactPointCredentialV1
@@ -69,7 +70,7 @@ export class ContactPointCredentialV1 extends UNiDVerifiableCredentialBase<Conta
      */
     public static fromObject(input: any): ContactPointCredentialV1 {
         if (! ContactPointCredentialV1.isCompatible(input)) {
-            throw new Error()
+            throw new UNiDNotCompatibleError()
         }
 
         return new ContactPointCredentialV1(input.credentialSubject)
@@ -84,7 +85,7 @@ export class ContactPointCredentialV1 extends UNiDVerifiableCredentialBase<Conta
         })
 
         if (1 < selected.length) {
-            throw new Error()
+            throw new UNiDNotUniqueError()
         }
 
         const select = selected.shift()

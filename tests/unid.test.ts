@@ -4,6 +4,7 @@ import {
     MongoDBConnector,
     KeyRingType,
     AddressCredentialV1,
+    PhoneCredentialV1,
 } from '../src'
 
 beforeAll(() => {
@@ -88,6 +89,18 @@ test('UNiD - 3', async () => {
         const presentation = await UNiD.verifyPresentation(json)
 
         expect(presentation.isValid).toEqual(true)
+
+        const phone   = PhoneCredentialV1.select(presentation.payload)
+        const address = AddressCredentialV1.select(presentation.payload)
+
+        expect(phone).toBeUndefined()
+        expect(address).not.toBeUndefined()
+
+        if (address) {
+            const credential = await UNiD.verifyCredential(address)
+
+            expect(credential.isValid).toEqual(true)
+        }
     }
 })
 

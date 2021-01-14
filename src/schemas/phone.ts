@@ -1,4 +1,5 @@
 import { Text } from 'schema-dts'
+import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
 // PhoneCredentialV1
@@ -69,7 +70,7 @@ export class PhoneCredentialV1 extends UNiDVerifiableCredentialBase<PhoneCredent
      */
     public static fromObject(input: any): PhoneCredentialV1 {
         if (! PhoneCredentialV1.isCompatible(input)) {
-            throw new Error()
+            throw new UNiDNotCompatibleError()
         }
 
         return new PhoneCredentialV1(input.credentialSubject)
@@ -84,7 +85,7 @@ export class PhoneCredentialV1 extends UNiDVerifiableCredentialBase<PhoneCredent
         })
 
         if (1 < selected.length) {
-            throw new Error()
+            throw new UNiDNotUniqueError()
         }
 
         const select = selected.shift()

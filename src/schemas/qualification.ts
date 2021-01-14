@@ -1,4 +1,5 @@
 import { EducationalOccupationalCredential } from 'schema-dts'
+import { UNiDNotUniqueError, UNiDNotCompatibleError } from '../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
 // QualificationCredentialV1
@@ -62,7 +63,7 @@ export class QualificationCredentialV1 extends UNiDVerifiableCredentialBase<Qual
      */
     public static fromObject(input: any): QualificationCredentialV1 {
         if (! QualificationCredentialV1.isCompatible(input)) {
-            throw new Error()
+            throw new UNiDNotCompatibleError()
         }
 
         return new QualificationCredentialV1(input.credentialSubject)
@@ -77,7 +78,7 @@ export class QualificationCredentialV1 extends UNiDVerifiableCredentialBase<Qual
         })
 
         if (1 < selected.length) {
-            throw new Error()
+            throw new UNiDNotUniqueError()
         }
 
         const select = selected.shift()
