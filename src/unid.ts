@@ -4,7 +4,7 @@ import { BaseConnector } from './connector/base'
 import { UNiDDid } from './did'
 import { VerifiableCredential } from './did/credential'
 import { VerifiablePresentation } from './did/presentation'
-import { UNiDNotImplementedError } from "./error"
+import { UNiDInvalidDataStructureError, UNiDNotImplementedError } from "./error"
 import { KeyRingType } from './keyring'
 import { MnemonicKeyring, MnemonicKeyringOptions } from './keyring/mnemonic'
 import { UNiDExportedVerifiableCredentialMetadata, UNiDExportedVerifiablePresentationMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiablePresentation, UNiDVerifiablePresentationContext, UNiDVerifiablePresentationMetadata, UNiDWithoutProofVerifiableCredentialMetadata, UNiDWithoutProofVerifiablePresentationMetadata } from './schemas'
@@ -130,6 +130,10 @@ class UNiDKlass {
      * @param credential 
      */
     public async verifyCredential<T1, T2, T3>(credential: UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata): Promise<VerifyCredentialResponse<T1, T2, T3>> {
+        if (! this.isVerifiableCredential<T1, T2, T3>(credential)) {
+            throw new UNiDInvalidDataStructureError()
+        }
+
         return await VerifiableCredential.verify(credential)
     }
 
@@ -137,6 +141,10 @@ class UNiDKlass {
      * @param presentation 
      */
     public async verifyPresentation<T1>(presentation: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata): Promise<VerifyPresentationResponse<T1>> {
+        if (! this.isVerifiablePresentation<T1>(presentation)) {
+            throw new UNiDInvalidDataStructureError()
+        }
+
         return await VerifiablePresentation.verify(presentation)
     }
 
@@ -149,7 +157,7 @@ class UNiDKlass {
     /**
      * @param input 
      */
-    public isVerifiableCredential(input: any): input is UNiDVerifiableCredential<string, string, object> & UNiDVerifiableCredentialMetadata {
+    public isVerifiableCredential<T1 = string, T2 = string, T3 = object>(input: any): input is UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata {
         if (typeof(input) !== 'object') {
             return false
         }
@@ -168,7 +176,7 @@ class UNiDKlass {
     /**
      * @param input 
      */
-    public isVerifiablePresentation(input: any): input is UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, object>> & UNiDVerifiablePresentationMetadata {
+    public isVerifiablePresentation<T1 = object>(input: any): input is UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata {
         if (typeof(input) !== 'object') {
             return false
         }

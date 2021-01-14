@@ -90,3 +90,21 @@ test('UNiD - 3', async () => {
         expect(presentation.isValid).toEqual(true)
     }
 })
+
+test('UNiD - 4', async () => {
+    const text = '{}'
+    const json = JSON.parse(text)
+
+    await expect(async () => {
+        await UNiD.verifyCredential(json)
+    }).rejects.toThrow('[code: 400]')
+})
+
+test('UNiD - 5', async () => {
+    const text = '{}'
+    const json = JSON.parse(text)
+
+    await expect(async () => {
+        await UNiD.verifyPresentation(json)
+    }).rejects.toThrow('[code: 400]')
+})
