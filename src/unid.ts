@@ -7,7 +7,16 @@ import { VerifiablePresentation } from './did/presentation'
 import { UNiDInvalidDataError, UNiDNotImplementedError } from "./error"
 import { KeyRingType } from './keyring'
 import { MnemonicKeyring, MnemonicKeyringOptions } from './keyring/mnemonic'
-import { UNiDExportedVerifiableCredentialMetadata, UNiDExportedVerifiablePresentationMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialContext, UNiDVerifiableCredentialMetadata, UNiDVerifiablePresentation, UNiDVerifiablePresentationContext, UNiDVerifiablePresentationMetadata, UNiDWithoutProofVerifiableCredentialMetadata, UNiDWithoutProofVerifiablePresentationMetadata } from './schemas'
+import {
+    UNiDExportedVerifiableCredentialMetadata,
+    UNiDExportedVerifiablePresentationMetadata,
+    UNiDVerifiableCredential,
+    UNiDVerifiableCredentialMetadata,
+    UNiDVerifiablePresentation,
+    UNiDVerifiablePresentationMetadata,
+    UNiDWithoutProofVerifiableCredentialMetadata,
+    UNiDWithoutProofVerifiablePresentationMetadata,
+} from './schemas'
 
 /**
  */
@@ -31,18 +40,20 @@ const SIGNING_KEY_ID = 'signingKey'
 
 /**
  */
-export interface VerifyCredentialResponse<T1, T2, T3> {
+export interface UNiDVerifyCredentialResponse<T1, T2, T3> {
     isValid : boolean,
     payload : UNiDVerifiableCredential<T1, T2, T3> & UNiDWithoutProofVerifiableCredentialMetadata,
-    metadata: UNiDVerifiableCredentialContext<T1, T2> & UNiDExportedVerifiableCredentialMetadata
+    metadata: UNiDExportedVerifiableCredentialMetadata
+    toJSON(): string
 }
 
 /**
  */
-export interface VerifyPresentationResponse<T1> {
+export interface UNiDVerifyPresentationResponse<T1> {
     isValid : boolean,
     payload : UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDWithoutProofVerifiablePresentationMetadata
-    metadata: UNiDVerifiablePresentationContext & UNiDExportedVerifiablePresentationMetadata,
+    metadata: UNiDExportedVerifiablePresentationMetadata,
+    toJSON(): string
 }
 
 /**
@@ -129,7 +140,7 @@ class UNiDKlass {
     /**
      * @param credential 
      */
-    public async verifyCredential<T1, T2, T3>(credential: UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata): Promise<VerifyCredentialResponse<T1, T2, T3>> {
+    public async verifyCredential<T1, T2, T3>(credential: UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata): Promise<UNiDVerifyCredentialResponse<T1, T2, T3>> {
         if (! this.isVerifiableCredential<T1, T2, T3>(credential)) {
             throw new UNiDInvalidDataError()
         }
@@ -140,7 +151,7 @@ class UNiDKlass {
     /**
      * @param presentation 
      */
-    public async verifyPresentation<T1>(presentation: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata): Promise<VerifyPresentationResponse<T1>> {
+    public async verifyPresentation<T1>(presentation: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata): Promise<UNiDVerifyPresentationResponse<T1>> {
         if (! this.isVerifiablePresentation<T1>(presentation)) {
             throw new UNiDInvalidDataError()
         }
@@ -150,7 +161,7 @@ class UNiDKlass {
 
     /**
      */
-    public async validateAuthenticationRequest<T1, T2, T3>(request: UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata): Promise<VerifyCredentialResponse<T1, T2, T3>> {
+    public async validateAuthenticationRequest<T1, T2, T3>(request: UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata): Promise<UNiDVerifyCredentialResponse<T1, T2, T3>> {
         return await VerifiableCredential.verify(request)
     }
 

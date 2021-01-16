@@ -12,17 +12,27 @@ import {
 import { DateTimeTypes, DateTimeUtils } from '../utils/datetime'
 import { UNiDNotImplementedError } from '../error'
 import { VerifiablePresentation } from './presentation'
+import { UNiDVerifyCredentialResponse } from '../unid'
+import { Cipher } from '../cipher/cipher'
+import { SDSOperationCredentialV1 } from '../schemas/internal/sds-operation'
+import { ConfigManager } from '../config'
 
+/**
+ */
 interface UNiDDidContext {
     keyring : MnemonicKeyring
     operator: UNiDDidOperator
 }
 
+/**
+ */
 interface UNiDDidAuthRequestClaims {
     requiredCredentialTypes: Array<UNiDVerifiableCredentialSchema>,
     optionalCredentialTypes: Array<UNiDVerifiableCredentialSchema>,
 }
 
+/**
+ */
 interface UNiDDidAuthRequest {
     iss          : string,
     response_type: 'callback',
@@ -30,14 +40,26 @@ interface UNiDDidAuthRequest {
     claims       : UNiDDidAuthRequestClaims,
 }
 
+/**
+ */
 export type Weaken<T, K extends keyof T> = {
     [P in keyof T]: P extends K ? any : T[P]
 }
 
+/**
+ */
 export class UNiDDid {
+    /**
+     */
     private readonly keyring : MnemonicKeyring
+
+    /**
+     */
     private readonly operator: UNiDDidOperator
 
+    /**
+     * @param context 
+     */
     constructor(context: UNiDDidContext) {
         this.keyring  = context.keyring
         this.operator = context.operator
@@ -144,8 +166,32 @@ export class UNiDDid {
     /**
      * To: SDS
      */
-    public async postCredential() {
-        throw new UNiDNotImplementedError()
+    public async postCredential<T1, T2, T3>(credential: UNiDVerifyCredentialResponse<T1, T2, T3>) {
+        const data: Buffer   = Buffer.from(credential.toJSON(), 'utf-8')
+        const secret: Buffer = this.keyring.getEncryptKeyPair().getPrivateKey()
+
+        const metadata   = credential.metadata
+        const encrypted  = (await Cipher.encrypt(data, secret)).toString('base64')
+        const issuance   = (new DateTimeUtils(metadata.issuanceDate)).$toString(DateTimeTypes.iso8601)
+        const expiration = (new DateTimeUtils(metadata.expirationDate)).toString(DateTimeTypes.iso8601)
+        const createData = (await this.createCredential(
+            new SDSOperationCredentialV1({
+                '@id'   : this.getIdentifier(),
+                '@type' : 'CreateOperation',
+                tenantId: ConfigManager.context.clientId,
+
+                payload: encrypted,
+
+                context             : metadata['@context'],
+                type                : metadata.type,
+                issuerDid           : metadata.issuerDid,
+                credentialSubjectDid: metadata.credentialSubjectDid,
+                issuanceDate        : issuance,
+                expirationDate      : expiration,
+            })
+        ))
+
+        // throw new UNiDNotImplementedError()
     }
 
     /**

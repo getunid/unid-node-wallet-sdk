@@ -62,6 +62,8 @@ test('UNiD - 1', async () => {
 
         expect(address.isValid).toEqual(true)
     }
+
+    DID.postCredential(verifiedVC)
 })
 
 test('UNiD - 2', async () => {

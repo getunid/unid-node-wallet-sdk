@@ -27,20 +27,23 @@ interface MnemonicKeyringContext {
     sign     : Secp256k1
     update   : Secp256k1
     recovery : Secp256k1
+    encrypt  : Secp256k1
 }
 
 export class MnemonicKeyring {
     private static readonly baseDerivationPath: string = 'm/44\'/0\'/0\'/0'
 
-    public static readonly signDerivationPath: string     = `${ MnemonicKeyring.baseDerivationPath }/0`
-    public static readonly updateDerivationPath: string   = `${ MnemonicKeyring.baseDerivationPath }/1`
-    public static readonly recoveryDerivationPath: string = `${ MnemonicKeyring.baseDerivationPath }/2`
+    public static readonly signDerivationPath: string     = `${ MnemonicKeyring.baseDerivationPath }/10`
+    public static readonly updateDerivationPath: string   = `${ MnemonicKeyring.baseDerivationPath }/20`
+    public static readonly recoveryDerivationPath: string = `${ MnemonicKeyring.baseDerivationPath }/30`
+    public static readonly encryptDerivationPath: string  = `${ MnemonicKeyring.baseDerivationPath }/40`
 
     private connector: BaseConnector
     private context  : BIP39Context
     private sign     : Secp256k1
     private update   : Secp256k1
     private recovery : Secp256k1
+    private encrypt  : Secp256k1
     private keyring? : MnemonicKeyringModel
 
     /**
@@ -52,6 +55,7 @@ export class MnemonicKeyring {
         this.sign      = context.sign
         this.update    = context.update
         this.recovery  = context.recovery
+        this.encrypt   = context.encrypt
     }
 
     /**
@@ -69,6 +73,7 @@ export class MnemonicKeyring {
             sign    : this.sign.toHexKeyPair(),
             update  : this.update.toHexKeyPair(),
             recovery: this.recovery.toHexKeyPair(),
+            encrypt : this.encrypt.toHexKeyPair(),
             seed    : this.context.seed.toString('hex'),
             mnemonic: this.context.mnemonic,
         })
@@ -95,12 +100,14 @@ export class MnemonicKeyring {
         const sign     = await MnemonicKeyring.generateSecp256k1(context, MnemonicKeyring.signDerivationPath)
         const update   = await MnemonicKeyring.generateSecp256k1(context, MnemonicKeyring.updateDerivationPath)
         const recovery = await MnemonicKeyring.generateSecp256k1(context, MnemonicKeyring.recoveryDerivationPath)
+        const encrypt  = await MnemonicKeyring.generateSecp256k1(context, MnemonicKeyring.encryptDerivationPath)
         const instance = new MnemonicKeyring({
             connector: connector,
             context  : context,
             sign     : sign,
             update   : update,
             recovery : recovery,
+            encrypt  : encrypt,
         })
         instance.setKeyring(await instance.saveContext())
 
@@ -127,11 +134,15 @@ export class MnemonicKeyring {
         })
         const update: Secp256k1 = new Secp256k1({
             public : Buffer.from(keyring.update.public , 'hex'),
-            private: Buffer.from(keyring.update.private, 'hex')
+            private: Buffer.from(keyring.update.private, 'hex'),
         })
         const recovery: Secp256k1 = new Secp256k1({
             public : Buffer.from(keyring.recovery.public , 'hex'),
-            private: Buffer.from(keyring.recovery.private, 'hex')
+            private: Buffer.from(keyring.recovery.private, 'hex'),
+        })
+        const encrypt: Secp256k1 = new Secp256k1({
+            public : Buffer.from(keyring.encrypt.public , 'hex'),
+            private: Buffer.from(keyring.encrypt.private, 'hex'),
         })
         const instance = new MnemonicKeyring({
             connector: connector,
@@ -139,6 +150,7 @@ export class MnemonicKeyring {
             sign     : sign,
             update   : update,
             recovery : recovery,
+            encrypt  : encrypt,
         })
         instance.setKeyring(keyring)
 
@@ -194,6 +206,12 @@ export class MnemonicKeyring {
      */
     public getRecoveryKeyPair(): Secp256k1 {
         return this.recovery
+    }
+
+    /**
+     */
+    public getEncryptKeyPair(): Secp256k1 {
+        return this.encrypt
     }
 
     /**

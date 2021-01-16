@@ -59,9 +59,13 @@ export interface UNiDWithoutProofVerifiableCredentialMetadata extends
 /**
  */
 export interface UNiDExportedVerifiableCredentialMetadata extends
-    Weaken<UNiDWithoutProofVerifiableCredentialMetadata, 'issuanceDate' | 'expirationDate'> {
-    issuanceDate   : Date,
-    expirationDate?: Date,
+    Omit<Weaken<UNiDWithoutProofVerifiableCredentialMetadata, 'issuanceDate' | 'expirationDate'>, 'issuer'> {
+    '@context'          : string,
+    type                : string,
+    issuerDid           : string,
+    credentialSubjectDid: string,
+    issuanceDate        : Date,
+    expirationDate?     : Date,
 }
 
 /**
@@ -105,7 +109,8 @@ export interface UNiDWithoutProofVerifiablePresentationMetadata extends
 /**
  */
 export interface UNiDExportedVerifiablePresentationMetadata extends
-    Weaken<UNiDWithoutProofVerifiablePresentationMetadata, 'issuanceDate' | 'expirationDate'> {
+    Omit<Weaken<UNiDWithoutProofVerifiablePresentationMetadata, 'issuanceDate' | 'expirationDate'>, 'issuer'> {
+    issuerDid      : string,
     issuanceDate   : Date,
     expirationDate?: Date,
     credentialTypes: Array<string>,

@@ -5,6 +5,7 @@ export interface MnemonicKeyringModel {
     sign    : Secp256k1HexKeyPair,
     update  : Secp256k1HexKeyPair,
     recovery: Secp256k1HexKeyPair,
+    encrypt : Secp256k1HexKeyPair,
     mnemonic: string,
     seed    : string,
 }

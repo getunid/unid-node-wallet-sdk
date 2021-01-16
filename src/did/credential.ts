@@ -1,18 +1,30 @@
-import { UNiDExportedVerifiableCredentialMetadata, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialContext } from "../schemas"
+import { UNiDExportedVerifiableCredentialMetadata, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredential, UNiDWithoutProofVerifiableCredentialMetadata, UNiDCredentialSubjectMetadata } from "../schemas"
 import { CredentialSigner } from "../cipher/signer"
 import { Secp256k1 } from "../keyring/secp256k1"
 import { UNiD } from '../unid'
 import { DateTimeUtils } from "../utils/datetime"
+import { UNiDInvalidDataError } from "../error"
 
 /**
  */
 class VerifyContainer<T1, T2, T3> {
-    private $payload: UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata
+    private $object : UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata
+    private $payload: UNiDVerifiableCredential<T1, T2, T3> & UNiDWithoutProofVerifiableCredentialMetadata
     private $isValid: boolean
 
-    constructor(validated: { payload: UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata, isValid: boolean }) {
+    constructor(
+        object   : UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata,
+        validated: { payload: UNiDVerifiableCredential<T1, T2, T3> & UNiDWithoutProofVerifiableCredentialMetadata, isValid: boolean }
+    ) {
+        this.$object  = object
         this.$payload = validated.payload
         this.$isValid = validated.isValid
+    }
+
+    /**
+     */
+    public toJSON(): string {
+        return JSON.stringify(this.$object)
     }
 
     /**
@@ -23,20 +35,46 @@ class VerifyContainer<T1, T2, T3> {
 
     /**
      */
-    public get payload(): UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata {
+    public get payload(): UNiDVerifiableCredential<T1, T2, T3> & UNiDWithoutProofVerifiableCredentialMetadata {
         return this.$payload
     }
 
     /**
      */
-    public get metadata(): UNiDVerifiableCredentialContext<T1, T2> & UNiDExportedVerifiableCredentialMetadata {
-        const meta: UNiDVerifiableCredentialContext<T1, T2> & UNiDExportedVerifiableCredentialMetadata = {
-            '@context': this.$payload["@context"],
-            type      : this.$payload.type,
-            id        : this.$payload.id,
-            issuer    : this.$payload.issuer,
-            issuanceDate  : (new DateTimeUtils(this.$payload.issuanceDate)).$toDate(),
-            expirationDate: (new DateTimeUtils(this.$payload.expirationDate)).toDate(),
+    public get metadata(): UNiDExportedVerifiableCredentialMetadata {
+        // [TODO]: Modify not to use `any` type
+        const subject        = (this.$payload.credentialSubject as any) as UNiDCredentialSubjectMetadata
+        const issuanceDate   = (new DateTimeUtils(this.$payload.issuanceDate)).$toDate()
+        const expirationDate = (new DateTimeUtils(this.$payload.expirationDate)).toDate()
+
+        const context = this.$payload["@context"]
+            .filter((context) => {
+                return context !== 'https://www.w3.org/2018/credentials/v1'
+            })
+            .shift()
+
+        const type = this.$payload.type
+            .filter((type) => {
+                return type !== 'VerifiableCredential'
+            })
+            .shift()
+
+        if (context === undefined) {
+            throw new UNiDInvalidDataError()
+        }
+
+        if (type === undefined) {
+            throw new UNiDInvalidDataError()
+        }
+
+        const meta: UNiDExportedVerifiableCredentialMetadata = {
+            '@context'          : (context as string),
+            type                : (type as string),
+            id                  : this.$payload.id,
+            issuerDid           : this.$payload.issuer,
+            credentialSubjectDid: subject["@id"],
+            issuanceDate        : issuanceDate,
+            expirationDate      : expirationDate,
         }
 
         return meta
@@ -87,6 +125,6 @@ export class VerifiableCredential<T> {
             context: Secp256k1.fromJwk(did.publicKeyJwk),
         })
 
-        return new VerifyContainer(validated)
+        return new VerifyContainer(credential, validated)
     }
 }
