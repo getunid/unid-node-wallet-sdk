@@ -5,6 +5,7 @@ import {
     KeyRingType,
     AddressCredentialV1,
 } from '../src'
+import lodash from 'lodash'
 
 beforeAll(() => {
     return new Promise(async (resolve, reject) => {
@@ -63,4 +64,10 @@ test('SDS - 1', async () => {
     }
 
     await DID.postCredential(verifiedVC)
+
+    const r1 = await DID.getCredential({
+        type: 'AddressCredentialV1',
+    })
+
+    expect(r1).toEqual(lodash.omit(signedVC, [ 'proof' ]))
 })

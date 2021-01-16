@@ -6,17 +6,21 @@ import {
     UNiDVerifiableCredentialBase,
     UNiDVerifiableCredentialMetadata,
     UNiDVerifiableCredential,
-    UNiDVerifiableCredentialSchema,
+    UNiDCredentialSubjectTypes,
     UNiDVerifiablePresentationV1,
+    UNiDVerifiableCredentialTypes,
+    UNiDCredentialSubjectMetadata,
+    UNiDWithoutProofVerifiableCredentialMetadata,
 } from '../schemas'
 import { DateTimeTypes, DateTimeUtils } from '../utils/datetime'
-import { UNiDNotImplementedError, UNiDNotUniqueError } from '../error'
+import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
 import { VerifiablePresentation } from './presentation'
 import { UNiDVerifyCredentialResponse } from '../unid'
 import { Cipher } from '../cipher/cipher'
 import { SDSOperationCredentialV1 } from '../schemas/internal/sds-operation'
 import { ConfigManager } from '../config'
-import { UNiDSDSOperator } from '../sds/operator'
+import { UNiDSDSOperator, SDSCreateResponse, SDSFindResponse } from '../sds/operator'
+import { UNiD } from '..'
 
 /**
  */
@@ -28,8 +32,8 @@ interface UNiDDidContext {
 /**
  */
 interface UNiDDidAuthRequestClaims {
-    requiredCredentialTypes: Array<UNiDVerifiableCredentialSchema>,
-    optionalCredentialTypes: Array<UNiDVerifiableCredentialSchema>,
+    requiredCredentialTypes: Array<UNiDCredentialSubjectTypes>,
+    optionalCredentialTypes: Array<UNiDCredentialSubjectTypes>,
 }
 
 /**
@@ -44,11 +48,13 @@ interface UNiDDidAuthRequest {
 /**
  */
 interface UNiDFindOneQuery {
-    type?                : string,
-    issuerDid?           : string,
-    credentialSubjectDid?: string,
-    issuanceDate?        : { begin?: Date, end?: Date },
-    expirationDate?      : { begin?: Date, end?: Date },
+    // [[ REQUIRED ]]
+    type: UNiDVerifiableCredentialTypes,
+
+    // [[ OPTIONAL ]]
+    issuerDid?     : string,
+    issuanceDate?  : { begin?: Date, end?: Date },
+    expirationDate?: { begin?: Date, end?: Date },
 }
 
 /**
@@ -183,7 +189,7 @@ export class UNiDDid {
     /**
      * To: SDS
      */
-    public async postCredential<T1, T2, T3>(credential: UNiDVerifyCredentialResponse<T1, T2, T3>): Promise<{ id: string }> {
+    public async postCredential<T1, T2, T3>(credential: UNiDVerifyCredentialResponse<T1, T2, T3>): Promise<SDSCreateResponse> {
         const operator = new UNiDSDSOperator()
 
         const data: Buffer   = Buffer.from(credential.toJSON(), 'utf-8')
@@ -217,7 +223,7 @@ export class UNiDDid {
     /**
      * From: SDS
      */
-    public async getCredential(query: UNiDFindOneQuery): Promise<any> {
+    public async getCredential(query: UNiDFindOneQuery): Promise<UNiDVerifiableCredential<string, string, UNiDCredentialSubjectMetadata> & UNiDWithoutProofVerifiableCredentialMetadata | undefined> {
         const operator = new UNiDSDSOperator()
 
         let issuanceDate  : { begin?: string, end?: string } | undefined = undefined
@@ -239,25 +245,47 @@ export class UNiDDid {
         const payload = await this.createPresentation([
             await this.createCredential(
                 new SDSOperationCredentialV1({
-                    '@id'    : this.getIdentifier(),
-                    '@type'  : 'FindOneOperation',
-                    clientId : ConfigManager.context.clientId,
-                    type     : query.type,
-                    issuerDid: query.issuerDid,
-                    credentialSubjectDid: query.credentialSubjectDid,
+                    '@id'   : this.getIdentifier(),
+                    '@type' : 'FindOneOperation',
+                    clientId: ConfigManager.context.clientId,
+
+                    // [[ REQUIRED ]]
+                    type                : query.type,
+                    credentialSubjectDid: this.getIdentifier(),
+
+                    // [[ OPTIONAL ]]
+                    issuerDid     : query.issuerDid,
                     issuanceDate  : issuanceDate,
                     expirationDate: expirationDate,
                 })
             )
         ])
-        
-        return await operator.findOne({ payload: payload })
+
+        const response = await operator.findOne({ payload: payload })
+
+        if (response.payload === undefined) {
+            return undefined
+        }
+
+        const data: Buffer   = Buffer.from(response.payload.document, 'base64')
+        const secret: Buffer = this.keyring.getEncryptKeyPair().getPrivateKey()
+
+        const decrypted = (await Cipher.decrypt(data, secret)).toString('utf-8')
+        const object    = JSON.parse(decrypted)
+
+        if (! UNiD.isVerifiableCredential(object)) {
+            throw new UNiDNotCompatibleError()
+        }
+
+        const verified = await UNiD.verifyCredential(object)
+
+        return verified.payload
     }
 
     /**
      * From: SDS
      */
-    public async getCredentials(query: UNiDFindQuery): Promise<any> {
+    public async getCredentials(query: UNiDFindQuery): Promise<SDSFindResponse> {
         const operator = new UNiDSDSOperator()
 
         let issuanceDate  : { begin?: string, end?: string } | undefined = undefined
@@ -279,16 +307,22 @@ export class UNiDDid {
         const payload = await this.createPresentation([
             await this.createCredential(
                 new SDSOperationCredentialV1({
-                    '@id'    : this.getIdentifier(),
-                    '@type'  : 'FindOperation',
-                    clientId : ConfigManager.context.clientId,
-                    limit    : query.limit,
-                    page     : query.page,
-                    type     : query.type,
-                    issuerDid: query.issuerDid,
-                    credentialSubjectDid: query.credentialSubjectDid,
+                    '@id'   : this.getIdentifier(),
+                    '@type' : 'FindOperation',
+                    clientId: ConfigManager.context.clientId,
+
+                    // [[ METADATA - REQUIRED ]]
+                    type                : query.type,
+                    credentialSubjectDid: this.getIdentifier(),
+
+                    // [[ METADATA - OPTIONAL ]]
+                    issuerDid     : query.issuerDid,
                     issuanceDate  : issuanceDate,
                     expirationDate: expirationDate,
+
+                    // [[ OPTIONS ]]
+                    limit: query.limit,
+                    page : query.page,
                 })
             )
         ])

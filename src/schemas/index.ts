@@ -2,7 +2,18 @@ import { ProofContext } from "../cipher/signer"
 
 export const VC_ID: string = 'https://sds.getunid.io/api/v1'
 
-export type UNiDVerifiableCredentialSchema =
+export type UNiDVerifiableCredentialTypes =
+    | 'AddressCredentialV1'
+    | 'AlumniOfCredentialV1'
+    | 'BirthDateCredentialV1'
+    | 'ContactPointCredentialV1'
+    | 'EmailCredentialV1'
+    | 'GenderCredentialV1'
+    | 'NameCredentialV1'
+    | 'PhoneCredentialV1'
+    | 'QualificationCredentialV1'
+
+export type UNiDCredentialSubjectTypes =
     | 'AddressPerson'
     | 'AddressOrganization'
     | 'AlumniOfOrganization'

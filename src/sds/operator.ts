@@ -19,14 +19,31 @@ interface SDSRequest {
 
 /**
  */
+interface SDSFindOneResponsePayload {
+    id                  : string,
+    createdAt           : string,
+    updatedAt           : string,
+    context             : string,
+    type                : string,
+    issuerDid           : string,
+    credentialSubjectDid: string,
+    document            : string,
+    issuanceDate        : string,
+    expirationDate      : string | undefined,
+}
+
+/**
+ */
 interface SDSCreateRequest {
     payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata,
 }
 
 /**
  */
-interface SDSCreateResponse {
-    id: string,
+export interface SDSCreateResponse {
+    payload: {
+        id: string,
+    },
 }
 
 /**
@@ -37,7 +54,8 @@ interface SDSFindRequest {
 
 /**
  */
-interface SDSFindResponse {
+export interface SDSFindResponse {
+    payload: Array<SDSFindOneResponsePayload>,
 }
 
 /**
@@ -48,7 +66,8 @@ interface SDSFindOneRequest {
 
 /**
  */
-interface SDSFindOneResponse {
+export interface SDSFindOneResponse {
+    payload: SDSFindOneResponsePayload | undefined,
 }
 
 /**
@@ -59,7 +78,7 @@ interface SDSUpdateRequest {
 
 /**
  */
-interface SDSUpdateResponse {
+export interface SDSUpdateResponse {
 }
 
 /**
@@ -70,7 +89,7 @@ interface SDSDeleteRequest {
 
 /**
  */
-interface SDSDeleteResponse {
+export interface SDSDeleteResponse {
 }
 
 export class UNiDSDSOperator {

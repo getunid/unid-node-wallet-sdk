@@ -38,13 +38,15 @@ interface FindOneOperation extends UNiDCredentialSubjectMetadata {
     // [[ ID ]]
     id?: Readonly<Text>,
 
-    // [[ METADATA ]]
-    context?             : Readonly<Text>,
-    type?                : Readonly<Text>,
-    issuerDid?           : Readonly<Text>,
-    credentialSubjectDid?: Readonly<Text>,
-    issuanceDate?        : Readonly<DateTimeQuery>,
-    expirationDate?      : Readonly<DateTimeQuery>,
+    // [[ METADATA - REQUIRED ]]
+    type                : Readonly<Text>,
+    credentialSubjectDid: Readonly<Text>,
+
+    // [[ METADATA - OPTIONAL ]]
+    context?       : Readonly<Text>,
+    issuerDid?     : Readonly<Text>,
+    issuanceDate?  : Readonly<DateTimeQuery>,
+    expirationDate?: Readonly<DateTimeQuery>,
 }
 
 /**
@@ -56,13 +58,15 @@ interface FindOperation extends UNiDCredentialSubjectMetadata {
     // [[ ID ]]
     id?: Readonly<Text>,
 
-    // [[ METADATA ]]
-    context?             : Readonly<Text>,
-    type?                : Readonly<Text>,
-    issuerDid?           : Readonly<Text>,
-    credentialSubjectDid?: Readonly<Text>,
-    issuanceDate?        : Readonly<DateTimeQuery>,
-    expirationDate?      : Readonly<DateTimeQuery>,
+    // [[ METADATA - REQUIRED ]]
+    type                : Readonly<Text>,
+    credentialSubjectDid: Readonly<Text>,
+
+    // [[ METADATA - OPTIONAL ]]
+    context?       : Readonly<Text>,
+    issuerDid?     : Readonly<Text>,
+    issuanceDate?  : Readonly<DateTimeQuery>,
+    expirationDate?: Readonly<DateTimeQuery>,
 
     // [[ FIND OPTION ]]
     page? : Readonly<Number>,

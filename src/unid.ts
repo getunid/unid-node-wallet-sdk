@@ -8,6 +8,7 @@ import { UNiDInvalidDataError, UNiDNotImplementedError } from "./error"
 import { KeyRingType } from './keyring'
 import { MnemonicKeyring, MnemonicKeyringOptions } from './keyring/mnemonic'
 import {
+    UNiDCredentialSubjectMetadata,
     UNiDExportedVerifiableCredentialMetadata,
     UNiDExportedVerifiablePresentationMetadata,
     UNiDVerifiableCredential,
@@ -168,7 +169,7 @@ class UNiDKlass {
     /**
      * @param input 
      */
-    public isVerifiableCredential<T1 = string, T2 = string, T3 = object>(input: any): input is UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata {
+    public isVerifiableCredential<T1 = string, T2 = string, T3 = UNiDCredentialSubjectMetadata>(input: any): input is UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata {
         if (typeof(input) !== 'object') {
             return false
         }
