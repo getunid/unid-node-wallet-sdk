@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.13](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.12...v0.0.13) (2021-01-16)
+
+
+### Features
+
+* Added error handling ([c43f7c9](https://github.com/getunid/unid-nodejs-sdk/commit/c43f7c9bd96a0a9bba2cdf8e9c537b55329e3e17))
+* Added SDS integration ([6ae4bc2](https://github.com/getunid/unid-nodejs-sdk/commit/6ae4bc2fda8f461ef5991c356d49766dafec2452))
+* Added sds-operation schema ([692e74f](https://github.com/getunid/unid-nodejs-sdk/commit/692e74fa8735e3d1b24e3e383e79d8ab10717cbc))
+
+
+### Bug Fixes
+
+* Trivial fix for sds-operation schema ([2bf990a](https://github.com/getunid/unid-nodejs-sdk/commit/2bf990a3a5474e818804bd2985cf4cd81c52f74c))
+
 ### [0.0.12](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.11...v0.0.12) (2021-01-13)
 
 
