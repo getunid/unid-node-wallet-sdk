@@ -20,18 +20,19 @@ interface SDSRequest {
 /**
  */
 interface SDSCreateRequest {
-    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata
+    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata,
 }
 
 /**
  */
 interface SDSCreateResponse {
+    id: string,
 }
 
 /**
  */
 interface SDSFindRequest {
-    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata
+    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata,
 }
 
 /**
@@ -42,7 +43,7 @@ interface SDSFindResponse {
 /**
  */
 interface SDSFindOneRequest {
-    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata
+    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata,
 }
 
 /**
@@ -53,7 +54,7 @@ interface SDSFindOneResponse {
 /**
  */
 interface SDSUpdateRequest {
-    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata
+    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata,
 }
 
 /**
@@ -64,7 +65,7 @@ interface SDSUpdateResponse {
 /**
  */
 interface SDSDeleteRequest {
-    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata
+    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata,
 }
 
 /**

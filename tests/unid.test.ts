@@ -16,8 +16,8 @@ beforeAll(() => {
             client: client,
         })
         UNiD.init({
-            clientId    : 'CLIENT_ID',
-            clientSecret: 'CLIENT_SECRET',
+            clientId    : '718AC7F1006ECA672E1D1BE9B4666D3EEFD6C2805F9200328502853AFDFD3219',
+            clientSecret: '670E362C65183C3850A8FC6E0ED26EC72FDAE67846FDCE1904F604C8E4757273',
             connector   : connector,
         })
 
@@ -62,8 +62,6 @@ test('UNiD - 1', async () => {
 
         expect(address.isValid).toEqual(true)
     }
-
-    DID.postCredential(verifiedVC)
 })
 
 test('UNiD - 2', async () => {

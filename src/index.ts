@@ -12,6 +12,7 @@ import { GenderCredentialV1 } from './schemas/gender'
 import { NameCredentialV1 } from './schemas/name'
 import { PhoneCredentialV1 } from './schemas/phone'
 import { QualificationCredentialV1 } from './schemas/qualification'
+import { SDSOperationCredentialV1 } from './schemas/internal/sds-operation'
 
 export {
     UNiD,
@@ -29,4 +30,5 @@ export {
     NameCredentialV1,
     PhoneCredentialV1,
     QualificationCredentialV1,
+    SDSOperationCredentialV1,
 }

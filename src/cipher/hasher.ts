@@ -18,12 +18,12 @@ export class Hasher {
      * @param data 
      * @param secret 
      */
-    public static digest(data: Buffer, secret: Buffer): Buffer {
+    public static digest(data: Buffer, secret: Buffer): string {
         const hasher = crypto.createHmac(Hasher.ALGORITHM, secret)
 
         hasher.update(data)
 
-        return hasher.digest()
+        return hasher.digest('hex')
     }
 
     /**
@@ -38,8 +38,25 @@ export class Hasher {
         return hasher.digest().equals(digest)
     }
 
+    public static verifyRequestDigest(uri: string, payload: string, digest: string, options: {
+        clientSecret: string,
+    }): boolean {
+        const object: RequestDigest = {
+            uri    : uri,
+            payload: payload,
+        }
+        const json = JSON.stringify(object, Object.keys(object).sort())
+
+        return Hasher.verify(
+            Buffer.from(json  , 'utf-8'),
+            Buffer.from(digest, 'hex'),
+            Buffer.from(options.clientSecret, 'utf-8')
+        )
+    }
+
     /**
      * @param uri 
+     * 
      * @param payload 
      */
     public static generateRequestDigest(uri: string, payload: string, options: {
@@ -49,13 +66,11 @@ export class Hasher {
             uri    : uri,
             payload: payload,
         }
+        const json = JSON.stringify(object, Object.keys(object).sort())
 
-        const json   = JSON.stringify(object, Object.keys(object).sort())
-        const digest = Hasher.digest(
+        return Hasher.digest(
             Buffer.from(json, 'utf-8'),
             Buffer.from(options.clientSecret, 'utf-8')
         )
-
-        return digest.toString('hex')
     }
 }

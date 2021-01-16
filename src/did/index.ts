@@ -10,7 +10,7 @@ import {
     UNiDVerifiablePresentationV1,
 } from '../schemas'
 import { DateTimeTypes, DateTimeUtils } from '../utils/datetime'
-import { UNiDNotImplementedError } from '../error'
+import { UNiDNotImplementedError, UNiDNotUniqueError } from '../error'
 import { VerifiablePresentation } from './presentation'
 import { UNiDVerifyCredentialResponse } from '../unid'
 import { Cipher } from '../cipher/cipher'
@@ -39,6 +39,23 @@ interface UNiDDidAuthRequest {
     response_type: 'callback',
     callback_uri : string,
     claims       : UNiDDidAuthRequestClaims,
+}
+
+/**
+ */
+interface UNiDFindOneQuery {
+    type?                : string,
+    issuerDid?           : string,
+    credentialSubjectDid?: string,
+    issuanceDate?        : { begin?: Date, end?: Date },
+    expirationDate?      : { begin?: Date, end?: Date },
+}
+
+/**
+ */
+interface UNiDFindQuery extends UNiDFindOneQuery {
+    limit?: number,
+    page? : number,
 }
 
 /**
@@ -137,11 +154,10 @@ export class UNiDDid {
         })
 
         if (0 < duplicated.length) {
-            throw new Error()
+            throw new UNiDNotUniqueError()
         }
 
-        const presentation = new UNiDVerifiablePresentationV1(credentials, {
-        })
+        const presentation = new UNiDVerifiablePresentationV1(credentials)
 
         const iss = (new DateTimeUtils(presentation.issuanceDate)).$toString(DateTimeTypes.default)
         const exp = (new DateTimeUtils(presentation.expirationDate)).toString(DateTimeTypes.default)
@@ -167,7 +183,7 @@ export class UNiDDid {
     /**
      * To: SDS
      */
-    public async postCredential<T1, T2, T3>(credential: UNiDVerifyCredentialResponse<T1, T2, T3>) {
+    public async postCredential<T1, T2, T3>(credential: UNiDVerifyCredentialResponse<T1, T2, T3>): Promise<{ id: string }> {
         const operator = new UNiDSDSOperator()
 
         const data: Buffer   = Buffer.from(credential.toJSON(), 'utf-8')
@@ -178,41 +194,106 @@ export class UNiDDid {
         const issuance   = (new DateTimeUtils(metadata.issuanceDate)).$toString(DateTimeTypes.iso8601)
         const expiration = (new DateTimeUtils(metadata.expirationDate)).toString(DateTimeTypes.iso8601)
 
-        const vc = await this.createCredential(
-            new SDSOperationCredentialV1({
-                '@id'   : this.getIdentifier(),
-                '@type' : 'CreateOperation',
-                clientId: ConfigManager.context.clientId,
-
-                payload: encrypted,
-
-                context             : metadata['@context'],
-                type                : metadata.type,
-                issuerDid           : metadata.issuerDid,
-                credentialSubjectDid: metadata.credentialSubjectDid,
-                issuanceDate        : issuance,
-                expirationDate      : expiration,
-            })
-        )
-        const vp = await this.createPresentation([ vc ])
-
-        operator.create({ payload: vp })
-
-        // vp.verifiableCredential[0].credentialSubject.
+        const payload = await this.createPresentation([
+            await this.createCredential(
+                new SDSOperationCredentialV1({
+                    '@id'    : this.getIdentifier(),
+                    '@type'  : 'CreateOperation',
+                    clientId : ConfigManager.context.clientId,
+                    payload  : encrypted,
+                    context  : metadata['@context'],
+                    type     : metadata.type,
+                    issuerDid: metadata.issuerDid,
+                    credentialSubjectDid: metadata.credentialSubjectDid,
+                    issuanceDate  : issuance,
+                    expirationDate: expiration,
+                })
+            )
+        ])
+        
+        return await operator.create({ payload: payload })
     }
 
     /**
      * From: SDS
      */
-    public async getCredential() {
-        throw new UNiDNotImplementedError()
+    public async getCredential(query: UNiDFindOneQuery): Promise<any> {
+        const operator = new UNiDSDSOperator()
+
+        let issuanceDate  : { begin?: string, end?: string } | undefined = undefined
+        let expirationDate: { begin?: string, end?: string } | undefined = undefined
+
+        if (query.issuanceDate) {
+            issuanceDate = {
+                begin: (new DateTimeUtils(query.issuanceDate.begin)).toString(DateTimeTypes.iso8601),
+                end  : (new DateTimeUtils(query.issuanceDate.end)).toString(DateTimeTypes.iso8601),
+            }
+        }
+        if (query.expirationDate) {
+            expirationDate = {
+                begin: (new DateTimeUtils(query.expirationDate.begin)).toString(DateTimeTypes.iso8601),
+                end  : (new DateTimeUtils(query.expirationDate.end)).toString(DateTimeTypes.iso8601),
+            }
+        }
+
+        const payload = await this.createPresentation([
+            await this.createCredential(
+                new SDSOperationCredentialV1({
+                    '@id'    : this.getIdentifier(),
+                    '@type'  : 'FindOneOperation',
+                    clientId : ConfigManager.context.clientId,
+                    type     : query.type,
+                    issuerDid: query.issuerDid,
+                    credentialSubjectDid: query.credentialSubjectDid,
+                    issuanceDate  : issuanceDate,
+                    expirationDate: expirationDate,
+                })
+            )
+        ])
+        
+        return await operator.findOne({ payload: payload })
     }
 
     /**
      * From: SDS
      */
-    public async getCredentials() {
-        throw new UNiDNotImplementedError()
+    public async getCredentials(query: UNiDFindQuery): Promise<any> {
+        const operator = new UNiDSDSOperator()
+
+        let issuanceDate  : { begin?: string, end?: string } | undefined = undefined
+        let expirationDate: { begin?: string, end?: string } | undefined = undefined
+
+        if (query.issuanceDate) {
+            issuanceDate = {
+                begin: (new DateTimeUtils(query.issuanceDate.begin)).toString(DateTimeTypes.iso8601),
+                end  : (new DateTimeUtils(query.issuanceDate.end)).toString(DateTimeTypes.iso8601),
+            }
+        }
+        if (query.expirationDate) {
+            expirationDate = {
+                begin: (new DateTimeUtils(query.expirationDate.begin)).toString(DateTimeTypes.iso8601),
+                end  : (new DateTimeUtils(query.expirationDate.end)).toString(DateTimeTypes.iso8601),
+            }
+        }
+
+        const payload = await this.createPresentation([
+            await this.createCredential(
+                new SDSOperationCredentialV1({
+                    '@id'    : this.getIdentifier(),
+                    '@type'  : 'FindOperation',
+                    clientId : ConfigManager.context.clientId,
+                    limit    : query.limit,
+                    page     : query.page,
+                    type     : query.type,
+                    issuerDid: query.issuerDid,
+                    credentialSubjectDid: query.credentialSubjectDid,
+                    issuanceDate  : issuanceDate,
+                    expirationDate: expirationDate,
+                })
+            )
+        ])
+        
+        return await operator.find({ payload: payload })
     }
 
     /**
