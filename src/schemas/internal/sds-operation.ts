@@ -15,7 +15,7 @@ interface DateTimeQuery {
  */
 interface CreateOperation extends UNiDCredentialSubjectMetadata {
     '@type' : 'CreateOperation',
-    tenantId: Readonly<Text>,
+    clientId: Readonly<Text>,
 
     // [[ PAYLOAD ]]
     payload: Readonly<Text>,
@@ -33,7 +33,7 @@ interface CreateOperation extends UNiDCredentialSubjectMetadata {
  */
 interface FindOneOperation extends UNiDCredentialSubjectMetadata {
     '@type' : 'FindOneOperation',
-    tenantId: Readonly<Text>,
+    clientId: Readonly<Text>,
 
     // [[ ID ]]
     id?: Readonly<Text>,
@@ -51,7 +51,7 @@ interface FindOneOperation extends UNiDCredentialSubjectMetadata {
  */
 interface FindOperation extends UNiDCredentialSubjectMetadata {
     '@type' : 'FindOperation',
-    tenantId: Readonly<Text>,
+    clientId: Readonly<Text>,
 
     // [[ ID ]]
     id?: Readonly<Text>,
@@ -73,7 +73,7 @@ interface FindOperation extends UNiDCredentialSubjectMetadata {
  */
 interface UpdateOperation extends UNiDCredentialSubjectMetadata {
     '@type' : 'UpdateOperation',
-    tenantId: Readonly<Text>,
+    clientId: Readonly<Text>,
 
     // [[ ID ]]
     id: Readonly<Text>,
@@ -94,7 +94,7 @@ interface UpdateOperation extends UNiDCredentialSubjectMetadata {
  */
 interface DeleteOperation extends UNiDCredentialSubjectMetadata {
     '@type' : 'DeleteOperation',
-    tenantId: Readonly<Text>,
+    clientId: Readonly<Text>,
 
     // [[ ID ]]
     id: Readonly<Text>,
@@ -102,10 +102,19 @@ interface DeleteOperation extends UNiDCredentialSubjectMetadata {
 
 /**
  */
+export type SDSOperationCredentialV1Types =
+    | CreateOperation
+    | FindOneOperation
+    | FindOperation
+    | UpdateOperation
+    | DeleteOperation
+
+/**
+ */
 export interface SDSOperationCredentialV1Schema extends UNiDVerifiableCredential<
     'https://docs.getunid.io/docs/2020/credentials/internal/sds-operation',
     'SDSOperationCredentialV1',
-    CreateOperation | FindOneOperation | FindOperation | UpdateOperation | DeleteOperation
+    SDSOperationCredentialV1Types
 > {}
 
 /**

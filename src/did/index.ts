@@ -16,6 +16,7 @@ import { UNiDVerifyCredentialResponse } from '../unid'
 import { Cipher } from '../cipher/cipher'
 import { SDSOperationCredentialV1 } from '../schemas/internal/sds-operation'
 import { ConfigManager } from '../config'
+import { UNiDSDSOperator } from '../sds/operator'
 
 /**
  */
@@ -167,6 +168,8 @@ export class UNiDDid {
      * To: SDS
      */
     public async postCredential<T1, T2, T3>(credential: UNiDVerifyCredentialResponse<T1, T2, T3>) {
+        const operator = new UNiDSDSOperator()
+
         const data: Buffer   = Buffer.from(credential.toJSON(), 'utf-8')
         const secret: Buffer = this.keyring.getEncryptKeyPair().getPrivateKey()
 
@@ -174,11 +177,12 @@ export class UNiDDid {
         const encrypted  = (await Cipher.encrypt(data, secret)).toString('base64')
         const issuance   = (new DateTimeUtils(metadata.issuanceDate)).$toString(DateTimeTypes.iso8601)
         const expiration = (new DateTimeUtils(metadata.expirationDate)).toString(DateTimeTypes.iso8601)
-        const createData = (await this.createCredential(
+
+        const vc = await this.createCredential(
             new SDSOperationCredentialV1({
                 '@id'   : this.getIdentifier(),
                 '@type' : 'CreateOperation',
-                tenantId: ConfigManager.context.clientId,
+                clientId: ConfigManager.context.clientId,
 
                 payload: encrypted,
 
@@ -189,9 +193,12 @@ export class UNiDDid {
                 issuanceDate        : issuance,
                 expirationDate      : expiration,
             })
-        ))
+        )
+        const vp = await this.createPresentation([ vc ])
 
-        // throw new UNiDNotImplementedError()
+        operator.create({ payload: vp })
+
+        // vp.verifiableCredential[0].credentialSubject.
     }
 
     /**

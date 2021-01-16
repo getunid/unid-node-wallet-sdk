@@ -178,7 +178,7 @@ export class UNiDVerifiableCredentialBase<T> {
  * Verifiable Presentation
  */
 class UNiDVerifiablePresentationBase<T1> {
-    protected $presentation?: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>>
+    protected $presentation?: UNiDVerifiablePresentation<T1>
     private   $issuanceDate?: Date
     private   $expirationDate?: Date
 
@@ -194,12 +194,12 @@ class UNiDVerifiablePresentationBase<T1> {
 
     /**
      */
-    public getVerifiablePresentation(metadata: UNiDVerifiablePresentationMetadata): UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string,T1>> & UNiDVerifiablePresentationMetadata {
+    public getVerifiablePresentation(metadata: UNiDVerifiablePresentationMetadata): UNiDVerifiablePresentation<T1> & UNiDVerifiablePresentationMetadata {
         if (this.$presentation === undefined) {
             throw new Error()
         }
 
-        return Object.assign<UNiDVerifiablePresentationMetadata, UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string,T1>>>(metadata, this.$presentation)
+        return Object.assign<UNiDVerifiablePresentationMetadata, UNiDVerifiablePresentation<T1>>(metadata, this.$presentation)
     }
 
     /**
@@ -219,12 +219,12 @@ class UNiDVerifiablePresentationBase<T1> {
     }
 }
 
-export class UNiDVerifiablePresentationV1 extends UNiDVerifiablePresentationBase<UNiDVerifiableCredential<string, string, UNiDCredentialSubjectMetadata>> {
+export class UNiDVerifiablePresentationV1<T> extends UNiDVerifiablePresentationBase<UNiDVerifiableCredential<string, string, T>> {
     /**
      * @param credentialSubject 
      * @param options 
      */
-    public constructor(verifiableCredential: Array<UNiDVerifiableCredential<any, any, any> & UNiDVerifiableCredentialMetadata>, options?: UNiDVerifiableCredentialOptions) {
+    public constructor(verifiableCredential: Array<UNiDVerifiableCredential<string, string, T> & UNiDVerifiableCredentialMetadata>, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
         this.$presentation = {

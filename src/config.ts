@@ -1,28 +1,30 @@
 import { UNiDContext, UNiDNetworkType } from './unid'
 
-export class ConfigManager {
-    private constructor() {}
+class ConfigManagerKlass {
+    constructor() {}
 
-    private static $context: UNiDContext | undefined
+    private $context: UNiDContext | undefined
 
-    public static setContext(context: UNiDContext): void {
-        if (ConfigManager.$context === undefined) {
-            ConfigManager.$context = context
+    public setContext(context: UNiDContext): void {
+        if (this.$context === undefined) {
+            this.$context = context
         } else {
             throw new Error()
         }
 
         // Set default values
-        if (ConfigManager.$context.envNetwork === undefined) {
-            ConfigManager.$context.envNetwork = UNiDNetworkType.Testnet
+        if (this.$context.envNetwork === undefined) {
+            this.$context.envNetwork = UNiDNetworkType.Testnet
         }
     }
 
-    public static get context(): UNiDContext {
-        if (! ConfigManager.$context) {
+    public get context(): UNiDContext {
+        if (! this.$context) {
             throw new Error()
         }
 
-        return ConfigManager.$context
+        return this.$context
     }
 }
+
+export const ConfigManager = new ConfigManagerKlass()

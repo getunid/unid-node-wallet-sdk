@@ -96,7 +96,7 @@ export class VerifiablePresentation<T1> {
      * @param suite 
      */
     public async sign(suite: { did: string, context: Secp256k1 }): Promise<T1 & ProofContext> {
-        return await CredentialSigner.sign<T1>(this.presentation, {
+        return await CredentialSigner.sign(this.presentation, {
             did    : suite.did,
             context: suite.context,
         })

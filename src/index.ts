@@ -2,6 +2,7 @@ import { UNiD, UNiDNetworkType } from './unid'
 import { MongoDBClient } from './adapters/mongodb'
 import { MongoDBConnector } from './connector/mongodb'
 import { KeyRingType } from './keyring'
+import { Hasher } from './cipher/hasher'
 import { AddressCredentialV1 } from './schemas/address'
 import { AlumniOfCredentialV1 } from './schemas/alumni-of'
 import { BirthDateCredentialV1 } from './schemas/birth-date'
@@ -18,6 +19,7 @@ export {
     MongoDBClient,
     MongoDBConnector,
     KeyRingType,
+    Hasher,
     AddressCredentialV1,
     AlumniOfCredentialV1,
     BirthDateCredentialV1,
