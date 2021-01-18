@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.19](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.18...v0.0.19) (2021-01-18)
+
+
+### Features
+
+* Added find function with sds ([04bd0d1](https://github.com/getunid/unid-nodejs-sdk/commit/04bd0d1b4af87157d846be50221ca50853bb278a))
+
 ### [0.0.18](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.17...v0.0.18) (2021-01-16)
 
 
