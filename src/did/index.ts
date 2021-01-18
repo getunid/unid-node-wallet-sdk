@@ -10,17 +10,18 @@ import {
     UNiDVerifiablePresentationV1,
     UNiDVerifiableCredentialTypes,
     UNiDCredentialSubjectMetadata,
-    UNiDWithoutProofVerifiableCredentialMetadata,
 } from '../schemas'
 import { DateTimeTypes, DateTimeUtils } from '../utils/datetime'
-import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
+import { UNiDInvalidDataError, UNiDInvalidSignatureError, UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
 import { VerifiablePresentation } from './presentation'
 import { UNiDVerifyCredentialResponse } from '../unid'
 import { Cipher } from '../cipher/cipher'
 import { SDSOperationCredentialV1 } from '../schemas/internal/sds-operation'
 import { ConfigManager } from '../config'
-import { UNiDSDSOperator, SDSCreateResponse, SDSFindResponse } from '../sds/operator'
+import { UNiDSDSOperator, SDSCreateResponse, SDSFindOperationResponsePayload } from '../sds/operator'
 import { UNiD } from '..'
+import { promise } from '../utils/promise'
+import { utils } from '../utils/utils'
 
 /**
  */
@@ -223,7 +224,7 @@ export class UNiDDid {
     /**
      * From: SDS
      */
-    public async getCredential(query: UNiDFindOneQuery): Promise<UNiDVerifiableCredential<string, string, UNiDCredentialSubjectMetadata> & UNiDWithoutProofVerifiableCredentialMetadata | undefined> {
+    public async getCredential(query: UNiDFindOneQuery): Promise<UNiDVerifyCredentialResponse<string, string, UNiDCredentialSubjectMetadata> | undefined> {
         const operator = new UNiDSDSOperator()
 
         let issuanceDate  : { begin?: string, end?: string } | undefined = undefined
@@ -267,25 +268,13 @@ export class UNiDDid {
             return undefined
         }
 
-        const data: Buffer   = Buffer.from(response.payload.document, 'base64')
-        const secret: Buffer = this.keyring.getEncryptKeyPair().getPrivateKey()
-
-        const decrypted = (await Cipher.decrypt(data, secret)).toString('utf-8')
-        const object    = JSON.parse(decrypted)
-
-        if (! UNiD.isVerifiableCredential(object)) {
-            throw new UNiDNotCompatibleError()
-        }
-
-        const verified = await UNiD.verifyCredential(object)
-
-        return verified.payload
+        return this.decryptCredential(response.payload.document)
     }
 
     /**
      * From: SDS
      */
-    public async getCredentials(query: UNiDFindQuery): Promise<SDSFindResponse> {
+    public async getCredentials(query: UNiDFindQuery): Promise<Array<UNiDVerifyCredentialResponse<string, string, UNiDCredentialSubjectMetadata>>> {
         const operator = new UNiDSDSOperator()
 
         let issuanceDate  : { begin?: string, end?: string } | undefined = undefined
@@ -327,7 +316,12 @@ export class UNiDDid {
             )
         ])
         
-        return await operator.find({ payload: payload })
+        const response = await operator.find({ payload: payload })
+        const verified = await promise.all<SDSFindOperationResponsePayload, UNiDVerifyCredentialResponse<string, string, UNiDCredentialSubjectMetadata>>(response.payload, async (item, index) => {
+            return this.decryptCredential(item.document)
+        })
+
+        return verified
     }
 
     /**
@@ -348,5 +342,32 @@ export class UNiDDid {
             did    : this.keyring.getIdentifier(),
             context: this.keyring.getSignKeyPair(),
         })
+    }
+
+    /**
+     * @param encryptedCredential 
+     */
+    private async decryptCredential(encryptedCredential: string): Promise<UNiDVerifyCredentialResponse<string, string, UNiDCredentialSubjectMetadata>> {
+        if (! utils.isBase64(encryptedCredential)) {
+            throw new UNiDInvalidDataError()
+        }
+
+        const data: Buffer   = Buffer.from(encryptedCredential, 'base64')
+        const secret: Buffer = this.keyring.getEncryptKeyPair().getPrivateKey()
+
+        const decrypted = (await Cipher.decrypt(data, secret)).toString('utf-8')
+        const object    = JSON.parse(decrypted)
+
+        if (! UNiD.isVerifiableCredential(object)) {
+            throw new UNiDNotCompatibleError()
+        }
+
+        const verified = await UNiD.verifyCredential(object)
+
+        if (! verified.isValid) {
+            throw new UNiDInvalidSignatureError()
+        }
+
+        return verified
     }
 }

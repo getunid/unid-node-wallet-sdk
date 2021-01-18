@@ -1,5 +1,9 @@
 import crypto from 'crypto'
 
+const isBase64 = (input: string): boolean => {
+    return (Buffer.from(input, 'base64').toString('base64') === input)
+}
+
 const getRandomHexString = (length: number): string => {
     let bytes = crypto.randomBytes(length * 2).toString('hex')
 
@@ -60,6 +64,7 @@ const utils = {
     range,
     numberWithComma,
     isRequiredUpdate,
+    isBase64,
 }
 
 export { utils }

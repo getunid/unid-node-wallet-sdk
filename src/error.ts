@@ -38,6 +38,14 @@ export class UNiDInvalidDataError extends UNiDError {
 
 /**
  */
+export class UNiDInvalidSignatureError extends UNiDError {
+    constructor(message?: string) {
+        super(HttpStatus.BAD_REQUEST, message)
+    }
+}
+
+/**
+ */
 export class UNiDNotUniqueError extends UNiDError {
     constructor(message?: string) {
         super(HttpStatus.BAD_REQUEST, message)

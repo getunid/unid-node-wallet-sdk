@@ -19,7 +19,7 @@ interface SDSRequest {
 
 /**
  */
-interface SDSFindOneResponsePayload {
+export interface SDSFindOperationResponsePayload {
     id                  : string,
     createdAt           : string,
     updatedAt           : string,
@@ -55,7 +55,7 @@ interface SDSFindRequest {
 /**
  */
 export interface SDSFindResponse {
-    payload: Array<SDSFindOneResponsePayload>,
+    payload: Array<SDSFindOperationResponsePayload>,
 }
 
 /**
@@ -67,7 +67,7 @@ interface SDSFindOneRequest {
 /**
  */
 export interface SDSFindOneResponse {
-    payload: SDSFindOneResponsePayload | undefined,
+    payload: SDSFindOperationResponsePayload | undefined,
 }
 
 /**

@@ -61,13 +61,29 @@ test('SDS - 1', async () => {
         const address = await UNiD.verifyCredential(filterd)
 
         expect(address.isValid).toEqual(true)
+
+        await DID.postCredential(address)
+
+        const cred = await DID.getCredential({
+            type: 'AddressCredentialV1',
+        })
+
+        expect(cred).not.toBeUndefined()
+
+        if (cred) {
+            expect(cred.isValid).toEqual(true)
+            expect(cred.payload).toEqual(lodash.omit(signedVC, [ 'proof' ]))
+        }
     }
 
-    await DID.postCredential(verifiedVC)
-
-    const r1 = await DID.getCredential({
+    const creds = await DID.getCredentials({
         type: 'AddressCredentialV1',
     })
 
-    expect(r1).toEqual(lodash.omit(signedVC, [ 'proof' ]))
+    expect(creds.length).toEqual(1)
+
+    creds.forEach((cred) => {
+        expect(cred.isValid).toEqual(true)
+        expect(cred.payload).toEqual(lodash.omit(signedVC, [ 'proof' ]))
+    })
 })
