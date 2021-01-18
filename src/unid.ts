@@ -1,5 +1,5 @@
 import { UNiDDidOperator, PublicKeyPurpose, UNiDDidDocument } from '@unid/did-operator'
-import { ConfigManager } from './config'
+import { ContextManager } from './context'
 import { BaseConnector } from './connector/base'
 import { UNiDDid } from './did'
 import { VerifiableCredential } from './did/credential'
@@ -73,13 +73,13 @@ class UNiDKlass {
      * @param context 
      */
     public init(context: UNiDContext) {
-        ConfigManager.setContext(context)
+        ContextManager.setContext(context)
     }
 
     /**
      */
     private getConnector(): BaseConnector {
-        return ConfigManager.context.connector
+        return ContextManager.context.connector
     }
 
     /**

@@ -1,29 +1,26 @@
-import { UNiDContext, UNiDNetworkType } from './unid'
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 class ConfigManagerKlass {
-    constructor() {}
+    public constructor() {}
 
-    private $context: UNiDContext | undefined
+    /**
+     * @param key 
+     * @param defaultValue 
+     */
+    private config(key: string, defaultValue: string): string {
+        let e: string | undefined = process.env[key]
 
-    public setContext(context: UNiDContext): void {
-        if (this.$context === undefined) {
-            this.$context = context
-        } else {
-            throw new Error()
-        }
+        if (! (e)) { e = defaultValue }
 
-        // Set default values
-        if (this.$context.envNetwork === undefined) {
-            this.$context.envNetwork = UNiDNetworkType.Testnet
-        }
+        return e
     }
 
-    public get context(): UNiDContext {
-        if (! this.$context) {
-            throw new Error()
-        }
-
-        return this.$context
+    /**
+     */
+    public get SDS_ENDPOINT_BASE_URI(): string {
+        return this.config('SDS_ENDPOINT_BASE_URI', 'https://sds.getunid.io')
     }
 }
 

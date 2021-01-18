@@ -17,7 +17,7 @@ import { VerifiablePresentation } from './presentation'
 import { UNiDVerifyCredentialResponse } from '../unid'
 import { Cipher } from '../cipher/cipher'
 import { SDSOperationCredentialV1 } from '../schemas/internal/sds-operation'
-import { ConfigManager } from '../config'
+import { ContextManager } from '../context'
 import { UNiDSDSOperator, SDSCreateResponse, SDSFindOperationResponsePayload } from '../sds/operator'
 import { UNiD } from '..'
 import { promise } from '../utils/promise'
@@ -206,7 +206,7 @@ export class UNiDDid {
                 new SDSOperationCredentialV1({
                     '@id'    : this.getIdentifier(),
                     '@type'  : 'CreateOperation',
-                    clientId : ConfigManager.context.clientId,
+                    clientId : ContextManager.context.clientId,
                     payload  : encrypted,
                     context  : metadata['@context'],
                     type     : metadata.type,
@@ -248,7 +248,7 @@ export class UNiDDid {
                 new SDSOperationCredentialV1({
                     '@id'   : this.getIdentifier(),
                     '@type' : 'FindOneOperation',
-                    clientId: ConfigManager.context.clientId,
+                    clientId: ContextManager.context.clientId,
 
                     // [[ REQUIRED ]]
                     type                : query.type,
@@ -298,7 +298,7 @@ export class UNiDDid {
                 new SDSOperationCredentialV1({
                     '@id'   : this.getIdentifier(),
                     '@type' : 'FindOperation',
-                    clientId: ConfigManager.context.clientId,
+                    clientId: ContextManager.context.clientId,
 
                     // [[ METADATA - REQUIRED ]]
                     type                : query.type,

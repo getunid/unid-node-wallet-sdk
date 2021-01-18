@@ -1,8 +1,8 @@
 import { Hasher } from "../cipher/hasher"
-import { ConfigManager } from "../config"
+import { ContextManager } from "../context"
 import { UNiDVerifiableCredential, UNiDVerifiablePresentation, UNiDVerifiablePresentationMetadata } from "../schemas"
 import { SDSOperationCredentialV1Types } from "../schemas/internal/sds-operation"
-import { ConstManager } from "../const"
+import { ConfigManager } from "../config"
 import { UNiDNotImplementedError } from "../error"
 import { HttpClient } from "../utils/http-client"
 
@@ -112,7 +112,7 @@ export class UNiDSDSOperator {
         if ((context !== undefined) && (context.endpoint !== undefined)) {
             this.endpoint = context.endpoint
         } else {
-            this.endpoint = ConstManager.SDS_ENDPOINT_BASE_URI
+            this.endpoint = ConfigManager.SDS_ENDPOINT_BASE_URI
         }
 
         this.client = HttpClient.new({
@@ -133,7 +133,7 @@ export class UNiDSDSOperator {
                 payload: JSON.stringify(request.payload)
             }
             const digest = Hasher.generateRequestDigest(URI, context.payload, {
-                clientSecret: ConfigManager.context.clientSecret,
+                clientSecret: ContextManager.context.clientSecret,
             })
             const response = await this.client.setHeaders({
                 [UNiDSDSOperator.REQUEST_HEADER_KEY]: digest,
@@ -156,7 +156,7 @@ export class UNiDSDSOperator {
                 payload: JSON.stringify(request.payload)
             }
             const digest = Hasher.generateRequestDigest(URI, context.payload, {
-                clientSecret: ConfigManager.context.clientSecret,
+                clientSecret: ContextManager.context.clientSecret,
             })
             const response = await this.client.setHeaders({
                 [UNiDSDSOperator.REQUEST_HEADER_KEY]: digest,
@@ -179,7 +179,7 @@ export class UNiDSDSOperator {
                 payload: JSON.stringify(request.payload)
             }
             const digest = Hasher.generateRequestDigest(URI, context.payload, {
-                clientSecret: ConfigManager.context.clientSecret,
+                clientSecret: ContextManager.context.clientSecret,
             })
             const response = await this.client.setHeaders({
                 [UNiDSDSOperator.REQUEST_HEADER_KEY]: digest,
