@@ -1,4 +1,4 @@
-import { Organization } from 'schema-dts'
+import { Organization } from './schema.org'
 import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
@@ -8,7 +8,7 @@ import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiable
  */
 interface AlumniOfOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'AlumniOfOrganization',
-    alumniOf: Array<Organization>,
+    alumniOf: Organization,
 }
 
 /**

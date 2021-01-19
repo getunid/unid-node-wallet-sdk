@@ -1,4 +1,4 @@
-import { Text } from 'schema-dts'
+import { Text } from './schema.org'
 import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 

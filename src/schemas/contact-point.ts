@@ -1,4 +1,4 @@
-import { ContactPoint } from 'schema-dts'
+import { ContactPoint } from './schema.org'
 import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 

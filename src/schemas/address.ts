@@ -1,4 +1,4 @@
-import { PostalAddress } from 'schema-dts'
+import { PostalAddress } from './schema.org'
 import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.';
 

@@ -1,4 +1,4 @@
-import { EducationalOccupationalCredential } from 'schema-dts'
+import { EducationalOccupationalCredential } from './schema.org'
 import { UNiDNotUniqueError, UNiDNotCompatibleError } from '../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
