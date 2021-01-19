@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.20](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.19...v0.0.20) (2021-01-19)
+
+
+### Bug Fixes
+
+* Fixed for NameCredentialV1 schema ([99edeeb](https://github.com/getunid/unid-nodejs-sdk/commit/99edeeb1c2154ca66a05ce8c7046e35766eb1ae6))
+
 ### [0.0.19](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.18...v0.0.19) (2021-01-18)
 
 
