@@ -9,7 +9,7 @@ import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiable
 interface NamePerson extends UNiDCredentialSubjectMetadata {
     '@type': 'NamePerson',
     name: Readonly<Text>,
-    giveName: Readonly<Text>,
+    givenName: Readonly<Text>,
     familyName: Readonly<Text>,
 }
 
@@ -18,7 +18,7 @@ interface NamePerson extends UNiDCredentialSubjectMetadata {
 interface NameOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'NameOrganization',
     name: Readonly<Text>,
-    giveName: Readonly<Text>,
+    givenName: Readonly<Text>,
     familyName: Readonly<Text>,
 }
 

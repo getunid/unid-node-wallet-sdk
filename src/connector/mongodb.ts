@@ -16,6 +16,9 @@ export class MongoDBConnector implements BaseConnector {
         this.database = MongoDBClient.agent.db(this.DATABASE_NAME, {})
     }
 
+    /**
+     * @param payload 
+     */
     async upsert(payload: MnemonicKeyringModel): Promise<MnemonicKeyringModel> {
         const coll = this.database.collection<MnemonicKeyringModel>(this.COLLECTION_NAME, {})
         const item = await coll.findOne({
@@ -47,6 +50,9 @@ export class MongoDBConnector implements BaseConnector {
         return payload
     }
 
+    /**
+     * @param did 
+     */
     async findByDid(did: string): Promise<MnemonicKeyringModel | undefined> {
         const coll = this.database.collection<MnemonicKeyringModel>(this.COLLECTION_NAME, {})
         const item = await coll.findOne({ did: did })
@@ -58,6 +64,9 @@ export class MongoDBConnector implements BaseConnector {
         }
     }
 
+    /**
+     * @param payload 
+     */
     async deleteById(payload: MnemonicKeyringModel): Promise<MnemonicKeyringModel> {
         throw new Error()
     }
