@@ -7050,7 +7050,7 @@ interface PersonBase extends ThingBase {
     /** A credential awarded to the Person or Organization. */
     "hasCredential"?: SchemaValue<EducationalOccupationalCredential | IdReference>;
     /** The Person's occupation. For past professions, use Role for expressing dates. */
-    "hasOccupation"?: SchemaValue<Occupation | Role | IdReference>;
+    "hasOccupation"?: SchemaValue<Occupation | Role /** Extended by UNiD */ | IdReference>;
     /** Indicates an OfferCatalog listing for this Organization, Person, or Service. */
     "hasOfferCatalog"?: SchemaValue<OfferCatalog | IdReference>;
     /** Points-of-Sales operated by the organization or person. */
@@ -8521,6 +8521,8 @@ interface RoleBase extends ThingBase {
     "roleName"?: SchemaValue<Text | URL>;
     /** The start date and time of the item (in {@link http://en.wikipedia.org/wiki/ISO_8601 ISO 8601 date format}). */
     "startDate"?: SchemaValue<Date | DateTime>;
+    /** Extended by UNiD */
+    "hasOccupation"?: SchemaValue<Occupation | Role /** Extended by UNiD */ | IdReference>;
 }
 interface RoleLeaf extends RoleBase {
     "@type": "Role";
