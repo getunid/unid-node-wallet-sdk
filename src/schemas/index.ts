@@ -12,6 +12,8 @@ export type UNiDVerifiableCredentialTypes =
     | 'NameCredentialV1'
     | 'PhoneCredentialV1'
     | 'QualificationCredentialV1'
+    | 'ImageCredentialV1'
+    | 'WorksForCredentialV1'
 
 export type UNiDCredentialSubjectTypes =
     | 'AddressPerson'
@@ -27,6 +29,8 @@ export type UNiDCredentialSubjectTypes =
     | 'PhonePerson'
     | 'PhoneOrganization'
     | 'QualificationPerson'
+    | 'ImagePerson'
+    | 'WorksForOrganization'
 
 /**
  */

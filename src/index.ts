@@ -12,6 +12,8 @@ import { GenderCredentialV1 } from './schemas/gender'
 import { NameCredentialV1 } from './schemas/name'
 import { PhoneCredentialV1 } from './schemas/phone'
 import { QualificationCredentialV1 } from './schemas/qualification'
+import { ImageCredentialV1 } from './schemas/image'
+import { WorksForCredentialV1 } from './schemas/works-for'
 import { SDSOperationCredentialV1 } from './schemas/internal/sds-operation'
 
 export {
@@ -30,5 +32,7 @@ export {
     NameCredentialV1,
     PhoneCredentialV1,
     QualificationCredentialV1,
+    ImageCredentialV1,
+    WorksForCredentialV1,
     SDSOperationCredentialV1,
 }
