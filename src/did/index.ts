@@ -22,6 +22,7 @@ import { UNiDSDSOperator, SDSCreateResponse, SDSFindOperationResponsePayload } f
 import { UNiD } from '..'
 import { promise } from '../utils/promise'
 import { utils } from '../utils/utils'
+import { Secp256k1 } from '../keyring/secp256k1'
 
 /**
  */
@@ -92,14 +93,30 @@ export class UNiDDid {
 
     /**
      */
-    public getSeedPhrase(): Array<string> {
+    protected getKeyPairs(): {
+        sign    : Secp256k1,
+        update  : Secp256k1,
+        recovery: Secp256k1,
+        encrypt : Secp256k1
+    } {
+        return {
+            sign    : this.keyring.getSignKeyPair(),
+            update  : this.keyring.getUpdateKeyPair(),
+            recovery: this.keyring.getRecoveryKeyPair(),
+            encrypt : this.keyring.getEncryptKeyPair(),
+        }
+    }
+
+    /**
+     */
+    public getSeedPhrase(): Array<string> | undefined {
         return this.keyring.getSeedPhrases()
     }
 
     /**
      */
     public async verifySeedPhrase(phrase: Array<string>, option: { isPersistent: boolean } = { isPersistent: false }): Promise<boolean> {
-        return this.keyring.verifySeedPhrase(phrase, option)
+        return await this.keyring.verifySeedPhrase(this.getIdentifier(), phrase, option)
     }
 
     /**

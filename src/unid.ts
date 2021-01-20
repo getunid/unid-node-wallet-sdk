@@ -29,10 +29,11 @@ export enum UNiDNetworkType {
 /**
  */
 export interface UNiDContext {
-    clientId    : string,
-    clientSecret: string,
-    connector   : BaseConnector,
-    envNetwork? : UNiDNetworkType
+    clientId     : string,
+    clientSecret : string,
+    connector    : BaseConnector,
+    encryptionKey: string,
+    envNetwork?  : UNiDNetworkType
 }
 
 /**

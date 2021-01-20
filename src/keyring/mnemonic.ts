@@ -1,11 +1,12 @@
 import * as bip32 from 'bip32'
 import * as bip39 from 'bip39'
-import { BaseConnector, MnemonicKeyringModel } from '../connector/base'
+import { ObjectID } from 'mongodb'
+import { BaseConnector, MnemonicKeyringModel, Id } from '../connector/base'
 import { Secp256k1 } from './secp256k1'
 
 interface BIP39Context {
     seed: Buffer,
-    mnemonic: string,
+    mnemonic?: string,
 }
 
 type BIP39PhraseSize =
@@ -30,6 +31,10 @@ interface MnemonicKeyringContext {
     encrypt  : Secp256k1
 }
 
+interface SaveContextOptions {
+    removeMnemonic?: boolean
+}
+
 export class MnemonicKeyring {
     private static readonly baseDerivationPath: string = 'm/44\'/0\'/0\'/0'
 
@@ -44,7 +49,7 @@ export class MnemonicKeyring {
     private update   : Secp256k1
     private recovery : Secp256k1
     private encrypt  : Secp256k1
-    private keyring? : MnemonicKeyringModel
+    private model?   : Id<MnemonicKeyringModel>
 
     /**
      * @param context 
@@ -61,24 +66,43 @@ export class MnemonicKeyring {
     /**
      * @param keyring 
      */
-    private setKeyring(keyring: MnemonicKeyringModel): void {
-        this.keyring = keyring
+    private setKeyringModel(model: Id<MnemonicKeyringModel>): void {
+        this.model = model
     }
 
     /**
      */
-    private async saveContext(did?: string): Promise<MnemonicKeyringModel> {
-        const keyring = await this.connector.upsert({
-            did     : did,
-            sign    : this.sign.toHexKeyPair(),
-            update  : this.update.toHexKeyPair(),
-            recovery: this.recovery.toHexKeyPair(),
-            encrypt : this.encrypt.toHexKeyPair(),
-            seed    : this.context.seed.toString('hex'),
-            mnemonic: this.context.mnemonic,
-        })
+    private async saveContext(did?: string, options?: SaveContextOptions): Promise<Id<MnemonicKeyringModel>> {
+        let mnemonic: string | undefined = this.context.mnemonic
 
-        return keyring
+        if (options !== undefined) {
+            if (options.removeMnemonic !== undefined) {
+                if (options.removeMnemonic === true) {
+                    mnemonic = undefined
+                }
+            }
+        }
+
+        if (this.model === undefined) {
+            return await this.connector.insert({
+                sign    : this.sign.toHexKeyPair(),
+                update  : this.update.toHexKeyPair(),
+                recovery: this.recovery.toHexKeyPair(),
+                encrypt : this.encrypt.toHexKeyPair(),
+                seed    : this.context.seed.toString('hex'),
+                mnemonic: mnemonic,
+            })
+        } else {
+            return await this.connector.update(new ObjectID(this.model._id), {
+                did     : did,
+                sign    : this.sign.toHexKeyPair(),
+                update  : this.update.toHexKeyPair(),
+                recovery: this.recovery.toHexKeyPair(),
+                encrypt : this.encrypt.toHexKeyPair(),
+                seed    : this.context.seed.toString('hex'),
+                mnemonic: mnemonic,
+            })
+        }
     }
 
     public async setDid(did: string): Promise<void> {
@@ -88,7 +112,7 @@ export class MnemonicKeyring {
             throw new Error()
         }
 
-        this.setKeyring(await this.saveContext(did))
+        this.setKeyringModel(await this.saveContext(did))
     }
 
     /**
@@ -109,7 +133,9 @@ export class MnemonicKeyring {
             recovery : recovery,
             encrypt  : encrypt,
         })
-        instance.setKeyring(await instance.saveContext())
+        const model = await instance.saveContext()
+
+        instance.setKeyringModel(model)
 
         return instance
     }
@@ -152,7 +178,7 @@ export class MnemonicKeyring {
             recovery : recovery,
             encrypt  : encrypt,
         })
-        instance.setKeyring(keyring)
+        instance.setKeyringModel(keyring)
 
         return instance
     }
@@ -160,16 +186,20 @@ export class MnemonicKeyring {
     /**
      */
     public getIdentifier(): string {
-        if ((! this.keyring) || (! this.keyring.did)) {
+        if ((! this.model) || (! this.model.did)) {
             throw new Error()
         }
 
-        return this.keyring.did
+        return this.model.did
     }
 
     /**
      */
-    public getSeedPhrases(): Array<string> {
+    public getSeedPhrases(): Array<string> | undefined {
+        if (! this.context.mnemonic) {
+            return undefined
+        }
+
         return this.context.mnemonic.split(' ')
     }
 
@@ -177,13 +207,17 @@ export class MnemonicKeyring {
      * @param seeds 
      * @param persistent 
      */
-    public async verifySeedPhrase(phrase: Array<string>, option: { isPersistent: boolean } = { isPersistent: false }): Promise<boolean> {
+    public async verifySeedPhrase(did: string, phrase: Array<string>, option: { isPersistent: boolean } = { isPersistent: false }): Promise<boolean> {
         const mnemonic = phrase.map((v) => { return v.trim() }).join(' ')
         const isValid  = (this.context.mnemonic === mnemonic)
 
         if (isValid) {
-            if (! option.isPersistent) {
-                // Remove mnemonic phrase from local datastore
+            if (option.isPersistent === false) {
+                await this.saveContext(did, {
+                    removeMnemonic: true,
+                })
+
+                this.context.mnemonic = undefined
             }
         }
 
