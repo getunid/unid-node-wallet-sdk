@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.23](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.22...v0.0.23) (2021-01-20)
+
+
+### Features
+
+* Added ImageCredentialV1, WorksForCredentialV1 schema ([97d6dbb](https://github.com/getunid/unid-nodejs-sdk/commit/97d6dbb769f25806a3676365c7ef75505c3b642f))
+
 ### [0.0.22](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.21...v0.0.22) (2021-01-19)
 
 ### [0.0.21](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.20...v0.0.21) (2021-01-19)
