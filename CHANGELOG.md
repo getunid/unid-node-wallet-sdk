@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.25](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.24...v0.0.25) (2021-01-20)
+
+
+### Features
+
+* Added mongodb encryption and remove mnemonic after verify seed ([5c185cd](https://github.com/getunid/unid-nodejs-sdk/commit/5c185cd5519d0cda1c5b0076095601a98d38a9ac))
+
 ### [0.0.24](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.23...v0.0.24) (2021-01-20)
 
 
