@@ -1,4 +1,4 @@
-import { KeyPair, DidPublicKey } from '@unid/did-operator'
+import { KeyPair, PublicKeyPayload } from '@unid/did-operator'
 import base64url from 'base64url'
 import secp256k1 from 'secp256k1'
 import { utils } from '../utils/utils'
@@ -114,13 +114,13 @@ export class Secp256k1 {
 
     /**
      */
-    public toPublicKey(id: string, purpose: Array<string>): DidPublicKey {
+    public toPublicKey(keyId: string, purpose: Array<string>): PublicKeyPayload {
         if (! this.validatePoint()) {
             throw new Error()
         }
 
         return {
-            id  : id,
+            id  : keyId,
             type: 'EcdsaSecp256k1VerificationKey2019',
             jwk : this.toJwk(),
             purpose: purpose,

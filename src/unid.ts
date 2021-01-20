@@ -37,7 +37,7 @@ export interface UNiDContext {
 
 /**
  */
-const SIGNING_KEY_ID = 'signingKey'
+export const SIGNING_KEY_ID = 'signingKey'
 
 /**
  */

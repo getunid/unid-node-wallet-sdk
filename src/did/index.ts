@@ -14,7 +14,7 @@ import {
 import { DateTimeTypes, DateTimeUtils } from '../utils/datetime'
 import { UNiDInvalidDataError, UNiDInvalidSignatureError, UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
 import { VerifiablePresentation } from './presentation'
-import { UNiDVerifyCredentialResponse } from '../unid'
+import { SIGNING_KEY_ID, UNiDVerifyCredentialResponse } from '../unid'
 import { Cipher } from '../cipher/cipher'
 import { SDSOperationCredentialV1 } from '../schemas/internal/sds-operation'
 import { ContextManager } from '../context'
@@ -137,6 +137,7 @@ export class UNiDDid {
 
         return await verifiableCredential.sign({
             did    : this.keyring.getIdentifier(),
+            keyId  : SIGNING_KEY_ID,
             context: this.keyring.getSignKeyPair(),
         })
     }
@@ -183,6 +184,7 @@ export class UNiDDid {
 
         return await verifiablePresentation.sign({
             did    : this.keyring.getIdentifier(),
+            keyId  : SIGNING_KEY_ID,
             context: this.keyring.getSignKeyPair(),
         })
     }
@@ -340,6 +342,7 @@ export class UNiDDid {
 
         return await request.sign({
             did    : this.keyring.getIdentifier(),
+            keyId  : SIGNING_KEY_ID,
             context: this.keyring.getSignKeyPair(),
         })
     }

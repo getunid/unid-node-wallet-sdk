@@ -2,7 +2,8 @@ import { UNiDExportedVerifiablePresentationMetadata, UNiDVerifiableCredential, U
 import { DateTimeUtils } from "../utils/datetime"
 import { CredentialSigner, ProofContext } from "../cipher/signer"
 import { Secp256k1 } from "../keyring/secp256k1"
-import { UNiD } from '../unid'
+import { SIGNING_KEY_ID, UNiD } from '../unid'
+import { utils } from "../utils/utils"
 
 /**
  */
@@ -95,9 +96,10 @@ export class VerifiablePresentation<T1> {
     /**
      * @param suite 
      */
-    public async sign(suite: { did: string, context: Secp256k1 }): Promise<T1 & ProofContext> {
+    public async sign(suite: { did: string, keyId: string, context: Secp256k1 }): Promise<T1 & ProofContext> {
         return await CredentialSigner.sign(this.presentation, {
             did    : suite.did,
+            keyId  : suite.keyId,
             context: suite.context,
         })
     }
@@ -110,12 +112,14 @@ export class VerifiablePresentation<T1> {
             throw new Error()
         }
 
+        const vm  = utils.splitDid(presentation.proof.verificationMethod)
         const did = await UNiD.getDidDocument({
-            did: presentation.proof.verificationMethod,
+            did: vm.did,
         })
 
         const validated = await CredentialSigner.verify(presentation, {
-            context: Secp256k1.fromJwk(did.publicKeyJwk),
+            keyId  : SIGNING_KEY_ID,
+            context: Secp256k1.fromJwk(did.getPublicKey(SIGNING_KEY_ID).publicKeyJwk),
         })
 
         return new VerifyContainer(presentation, validated)

@@ -645,10 +645,10 @@
   dependencies:
     "@types/yargs-parser" "*"
 
-"@unid/did-operator@^0.0.16":
-  version "0.0.16"
-  resolved "https://npm-registry.getunid.io/@unid%2fdid-operator/-/did-operator-0.0.16.tgz#905c9c2505c064220df9e795e30e6c2c83ae1ef0"
-  integrity sha512-HDbmFZ/+tw8afQqhOhNUr1s2bQ+oAlvcHD8/NXEzSUzdntm+xqOaIWtW+ZszxD4Gp3LQ4dSdbh3C19zVYmrO7g==
+"@unid/did-operator@^0.0.20":
+  version "0.0.20"
+  resolved "https://npm-registry.getunid.io/@unid%2fdid-operator/-/did-operator-0.0.20.tgz#4eb3ed7cbb41d137a810f772d51e8a467eb20624"
+  integrity sha512-wEWRIraqkjCSgo8N0d1FjKZV2JBljUZqtmOlayspmjwbfQFu+Aiulf8uwEj60rifffYnjZWZQgdo7cbFsJO6eg==
   dependencies:
     axios "^0.21.0"
     base64url "^3.0.1"

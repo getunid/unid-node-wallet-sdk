@@ -1,4 +1,18 @@
 import crypto from 'crypto'
+import { UNiDNotCompatibleError } from '../error'
+
+const splitDid = (input: string): { did: string, keyId: string } => {
+    const arr = input.split('#')
+
+    if (arr.length !== 2) {
+        throw new UNiDNotCompatibleError()
+    }
+
+    return {
+        did  : arr[0],
+        keyId: arr[1],
+    }
+}
 
 const isBase64 = (input: string): boolean => {
     return (Buffer.from(input, 'base64').toString('base64') === input)
@@ -65,6 +79,7 @@ const utils = {
     numberWithComma,
     isRequiredUpdate,
     isBase64,
+    splitDid,
 }
 
 export { utils }

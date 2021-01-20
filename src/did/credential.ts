@@ -1,9 +1,10 @@
 import { UNiDExportedVerifiableCredentialMetadata, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredential, UNiDWithoutProofVerifiableCredentialMetadata, UNiDCredentialSubjectMetadata } from "../schemas"
 import { CredentialSigner } from "../cipher/signer"
 import { Secp256k1 } from "../keyring/secp256k1"
-import { UNiD } from '../unid'
+import { SIGNING_KEY_ID, UNiD } from '../unid'
 import { DateTimeUtils } from "../utils/datetime"
 import { UNiDInvalidDataError } from "../error"
+import { utils } from "../utils/utils"
 
 /**
  */
@@ -102,9 +103,10 @@ export class VerifiableCredential<T> {
     /**
      * @param suite 
      */
-    public async sign(suite: { did: string, context: Secp256k1 }): Promise<T> {
+    public async sign(suite: { did: string, keyId: string, context: Secp256k1 }): Promise<T> {
         return await CredentialSigner.sign(this.$credential, {
             did    : suite.did,
+            keyId  : suite.keyId,
             context: suite.context,
         })
     }
@@ -117,12 +119,14 @@ export class VerifiableCredential<T> {
             throw new Error()
         }
 
+        const vm  = utils.splitDid(credential.proof.verificationMethod)
         const did = await UNiD.getDidDocument({
-            did: credential.proof.verificationMethod,
+            did: vm.did,
         })
 
         const validated = await CredentialSigner.verify(credential, {
-            context: Secp256k1.fromJwk(did.publicKeyJwk),
+            keyId  : SIGNING_KEY_ID,
+            context: Secp256k1.fromJwk(did.getPublicKey(SIGNING_KEY_ID).publicKeyJwk),
         })
 
         return new VerifyContainer(credential, validated)

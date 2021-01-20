@@ -4,6 +4,8 @@ import secp256k1 from 'secp256k1'
 import base64url from 'base64url'
 import lodash from 'lodash'
 import { DateTimeTypes, DateTimeUtils } from "../utils/datetime";
+import { utils } from "../utils/utils";
+import { UNiDNotCompatibleError } from "../error";
 
 interface JwsHeader {
     alg: 'ES256K',
@@ -31,6 +33,7 @@ export class CredentialSigner {
 
     public static async sign<T>(object: T, suite: {
         did    : string,
+        keyId  : string,
         context: Context,
     }): Promise<T & ProofContext> {
         if (Object.keys(object).indexOf(this.PROOF_KEY) !== -1) {
@@ -44,7 +47,7 @@ export class CredentialSigner {
                 type: 'EcdsaSecp256k1Signature2019',
                 proofPurpose: 'authentication',
                 created: created,
-                verificationMethod: suite.did,
+                verificationMethod: `${ suite.did }#${ suite.keyId }`,
                 jws: jws,
             }
         }
@@ -56,6 +59,7 @@ export class CredentialSigner {
     }
 
     public static async verify<T>(object: T & ProofContext, suite: {
+        keyId  : string,
         context: Context,
     }): Promise<{ payload: T, isValid: boolean }> {
         if (Object.keys(object).indexOf(this.PROOF_KEY) === -1) {
@@ -65,7 +69,13 @@ export class CredentialSigner {
         const proof = object.proof
 
         if (proof === undefined) {
-            throw new Error()
+            throw new UNiDNotCompatibleError()
+        }
+
+        const vm = utils.splitDid(proof.verificationMethod)
+
+        if (vm.keyId !== suite.keyId) {
+            throw new UNiDNotCompatibleError()
         }
 
         const jws     = proof.jws
