@@ -1,5 +1,5 @@
 import { Text } from './schema.org'
-import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
+import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
 // PhoneCredentialV1
@@ -36,7 +36,7 @@ export class PhoneCredentialV1 extends UNiDVerifiableCredentialBase<PhoneCredent
     public constructor(credentialSubject: PhonePerson | PhoneOrganization, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        this.$credential = {
+        this._credential = {
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/phone',

@@ -1,48 +1,48 @@
 import { UNiDExportedVerifiablePresentationMetadata, UNiDVerifiableCredential, UNiDVerifiablePresentation, UNiDVerifiablePresentationContext, UNiDVerifiablePresentationMetadata, UNiDWithoutProofVerifiablePresentationMetadata } from "../schemas"
-import { DateTimeUtils } from "../utils/datetime"
+import { DateTimeUtils } from "../../utils/datetime"
 import { CredentialSigner, ProofContext } from "../cipher/signer"
 import { Secp256k1 } from "../keyring/secp256k1"
-import { SIGNING_KEY_ID, UNiD } from '../unid'
-import { utils } from "../utils/utils"
+import { SIGNING_KEY_ID, UNiD } from '../../unid'
+import { utils } from "../../utils/utils"
 
 /**
  */
 class VerifyContainer<T1> {
-    private $object : UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata
-    private $payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDWithoutProofVerifiablePresentationMetadata
-    private $isValid: boolean
+    private _object : UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata
+    private _payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDWithoutProofVerifiablePresentationMetadata
+    private _isValid: boolean
 
     constructor(
         object: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata,
         validated: { payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDWithoutProofVerifiablePresentationMetadata, isValid: boolean }
     ) {
-        this.$object  = object
-        this.$payload = validated.payload
-        this.$isValid = validated.isValid
+        this._object  = object
+        this._payload = validated.payload
+        this._isValid = validated.isValid
     }
 
     /**
      */
     public toJSON(): string {
-        return JSON.stringify(this.$object)
+        return JSON.stringify(this._object)
     }
 
     /**
      */
     public get isValid(): boolean {
-        return this.$isValid
+        return this._isValid
     }
 
     /**
      */
     public get payload(): UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDWithoutProofVerifiablePresentationMetadata {
-        return this.$payload
+        return this._payload
     }
 
     /**
      */
     public get metadata(): UNiDVerifiablePresentationContext & UNiDExportedVerifiablePresentationMetadata {
-        const credentialTypes: Array<string> = this.$payload.verifiableCredential
+        const credentialTypes: Array<string> = this._payload.verifiableCredential
             .map((vc) => {
                 return vc.type
             })
@@ -58,14 +58,14 @@ class VerifyContainer<T1> {
                 return left
             }, [])
 
-        const issuanceDate   = (new DateTimeUtils(this.$payload.issuanceDate)).$toDate()
-        const expirationDate = (new DateTimeUtils(this.$payload.expirationDate)).toDate()
+        const issuanceDate   = (new DateTimeUtils(this._payload.issuanceDate)).$toDate()
+        const expirationDate = (new DateTimeUtils(this._payload.expirationDate)).toDate()
 
         const meta: UNiDVerifiablePresentationContext & UNiDExportedVerifiablePresentationMetadata = {
             '@context': this.payload["@context"],
             type      : this.payload.type,
-            id        : this.$payload.id,
-            issuerDid : this.$payload.issuer,
+            id        : this._payload.id,
+            issuerDid : this._payload.issuer,
             issuanceDate   : issuanceDate,
             expirationDate : expirationDate,
             credentialTypes: credentialTypes,

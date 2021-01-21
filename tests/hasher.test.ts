@@ -1,4 +1,4 @@
-import { Hasher } from '../src/cipher/hasher'
+import { Hasher } from '../src/did-unid/cipher/hasher'
 
 test('Hasher - 1', async () => {
     const data   = { a: 'hello', b: 'world' }

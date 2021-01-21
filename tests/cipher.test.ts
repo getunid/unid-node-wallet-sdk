@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import { Cipher } from '../src/cipher/cipher'
+import { Cipher } from '../src/did-unid/cipher/cipher'
 
 test('Cipher#enc/dec - 1', async () => {
     const data: Buffer   = Buffer.from('hello', 'utf-8')

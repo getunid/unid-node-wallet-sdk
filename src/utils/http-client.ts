@@ -21,13 +21,13 @@ interface HttpClientContext {
 }
 
 export class HttpClient {
-    private $timeout: number | undefined
-    private $baseUri: string | undefined
-    private $headers: KV
+    private _timeout: number | undefined
+    private _baseUri: string | undefined
+    private _headers: KV
 
-    private $logging: Logging
-    private $handler: CancelTokenSource
-    private $instance: AxiosInstance
+    private _logging: Logging
+    private _handler: CancelTokenSource
+    private _instance: AxiosInstance
 
     private context?: HttpClientContext
 
@@ -35,14 +35,14 @@ export class HttpClient {
         let cancel = axios.CancelToken
 
         this.context   = context
-        this.$headers  = {}
-        this.$logging  = new Logging()
-        this.$handler  = cancel.source()
-        this.$instance = (config) ? axios.create({
+        this._headers  = {}
+        this._logging  = new Logging()
+        this._handler  = cancel.source()
+        this._instance = (config) ? axios.create({
             ...config,
-            cancelToken: this.$handler.token,
+            cancelToken: this._handler.token,
         }) : axios.create({
-            cancelToken: this.$handler.token,
+            cancelToken: this._handler.token,
         })
 
         this.initialize()
@@ -50,46 +50,46 @@ export class HttpClient {
 
     private initialize() {
         // Inspect of the http request
-        this.$instance.interceptors.request.use((request) => {
+        this._instance.interceptors.request.use((request) => {
             // set headers
-            let common  = lodash.defaults<KV, KV>(this.$headers, request.headers.common)
+            let common  = lodash.defaults<KV, KV>(this._headers, request.headers.common)
             let headers = lodash.defaults<{ [ key: string ]: KV }, { [ key: string ]: KV }>({ common: common }, request.headers)
 
             request.headers = headers
 
             // set base-uri
-            if (this.$baseUri !== undefined) {
-                request.baseURL = this.$baseUri
+            if (this._baseUri !== undefined) {
+                request.baseURL = this._baseUri
             }
 
             // set timeout
-            if (this.$timeout !== undefined) {
-                request.timeout = this.$timeout
+            if (this._timeout !== undefined) {
+                request.timeout = this._timeout
             }
 
             if (this.context && this.context.debug) {
-                this.$logging.info('axios (request):', request)
+                this._logging.info('axios (request):', request)
             }
 
             return request
         }, (error) => {
             if (this.context && this.context.debug) {
-                this.$logging.err('axios (request)', error)
+                this._logging.err('axios (request)', error)
             }
 
             return Promise.reject(error)
         })
 
         // Inspect of the http response
-        this.$instance.interceptors.response.use((response) => {
+        this._instance.interceptors.response.use((response) => {
             if (this.context && this.context.debug) {
-                this.$logging.info('axios (response):', response)
+                this._logging.info('axios (response):', response)
             }
 
             return response
         }, (error) => {
             if (this.context && this.context.debug) {
-                this.$logging.err('axios (response):', error)
+                this._logging.err('axios (response):', error)
             }
 
             return Promise.reject(error)
@@ -101,21 +101,21 @@ export class HttpClient {
     }
 
     public get agent(): AxiosInstance {
-        return this.$instance
+        return this._instance
     }
 
     public cancel() {
-        this.$handler.cancel()
+        this._handler.cancel()
     }
 
     public setBaseUri(uri: string): HttpClient {
-        this.$baseUri = uri
+        this._baseUri = uri
 
         return this
     }
 
     public setTimeout(timeout: number): HttpClient {
-        this.$timeout = timeout
+        this._timeout = timeout
 
         return this
     }
@@ -130,7 +130,7 @@ export class HttpClient {
             headers[nk] = v
         })
 
-        this.$headers = lodash.defaults<KV, KV>(headers, this.$headers)
+        this._headers = lodash.defaults<KV, KV>(headers, this._headers)
 
         return this
     }

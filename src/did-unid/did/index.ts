@@ -1,5 +1,5 @@
 import { MnemonicKeyring } from '../keyring/mnemonic'
-import { UNiDDidOperator } from '@unid/did-operator'
+import { UNiDDidOperator } from '../../libs'
 import { VerifiableCredential } from './credential'
 import {
     VC_ID,
@@ -13,17 +13,17 @@ import {
     UNiDVerifiablePresentation,
     UNiDVerifiablePresentationMetadata,
 } from '../schemas'
-import { DateTimeTypes, DateTimeUtils } from '../utils/datetime'
-import { UNiDInvalidDataError, UNiDInvalidSignatureError, UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
+import { DateTimeTypes, DateTimeUtils } from '../../utils/datetime'
+import { UNiDInvalidDataError, UNiDInvalidSignatureError, UNiDNotCompatibleError, UNiDNotUniqueError } from '../../error'
 import { VerifiablePresentation } from './presentation'
-import { SIGNING_KEY_ID, UNiDVerifyCredentialResponse } from '../unid'
+import { SIGNING_KEY_ID, UNiDVerifyCredentialResponse } from '../../unid'
 import { Cipher } from '../cipher/cipher'
 import { SDSOperationCredentialV1, SDSOperationCredentialV1Types } from '../schemas/internal/sds-operation'
-import { ContextManager } from '../context'
+import { ContextManager } from '../../context'
 import { UNiDSDSOperator, SDSCreateResponse, SDSFindOperationResponsePayload } from '../sds/operator'
-import { UNiD } from '..'
-import { promise } from '../utils/promise'
-import { utils } from '../utils/utils'
+import { UNiD } from '../../unid'
+import { promise } from '../../utils/promise'
+import { utils } from '../../utils/utils'
 import { Secp256k1 } from '../keyring/secp256k1'
 
 /**

@@ -3,9 +3,9 @@ import crypto from 'crypto'
 import secp256k1 from 'secp256k1'
 import base64url from 'base64url'
 import lodash from 'lodash'
-import { DateTimeTypes, DateTimeUtils } from "../utils/datetime";
-import { utils } from "../utils/utils";
-import { UNiDNotCompatibleError } from "../error";
+import { DateTimeTypes, DateTimeUtils } from "../../utils/datetime";
+import { utils } from "../../utils/utils";
+import { UNiDNotCompatibleError } from "../../error";
 
 interface JwsHeader {
     alg: 'ES256K',
@@ -107,23 +107,23 @@ export class Jws {
             b64 : false,
             crit: [ 'b64' ]
         }
-        const $header = base64url.encode(
+        const _header = base64url.encode(
             Buffer.from(JSON.stringify(header), 'utf-8')
         )
 
         // Payload
-        const $payload = base64url.encode(
+        const _payload = base64url.encode(
             Buffer.from(JSON.stringify(object), 'utf-8')
         )
 
         // Message
-        const message = [ $header, $payload ].join('.')
+        const message = [ _header, _payload ].join('.')
 
         // Signature
         const signature  = await Signer.sign(Buffer.from(message, 'utf-8'), context)
-        const $signature = base64url.encode(signature)
+        const _signature = base64url.encode(signature)
 
-        return [ $header, '', $signature ].join('.')
+        return [ _header, '', _signature ].join('.')
     }
 
     /**
@@ -132,14 +132,14 @@ export class Jws {
      * @param key 
      */
     public static async verify(object: any, jws: string, context: Context): Promise<boolean> {
-        const [ $header, $_payload, $signature ] = jws.split('.')
+        const [ _header, __payload, _signature ] = jws.split('.')
 
-        if (($header == undefined) || ($_payload == undefined) || ($signature == undefined)) {
+        if ((_header == undefined) || (__payload == undefined) || (_signature == undefined)) {
             throw new Error()
         }
 
         // Header
-        const header: JwsHeader = JSON.parse(base64url.decode($header))
+        const header: JwsHeader = JSON.parse(base64url.decode(_header))
 
         if (header.alg !== 'ES256K') {
             throw new Error()
@@ -152,19 +152,19 @@ export class Jws {
         }
 
         // Payload
-        if ($_payload !== '') {
+        if (__payload !== '') {
             throw new Error()
         }
 
-        const $payload = base64url.encode(
+        const _payload = base64url.encode(
             Buffer.from(JSON.stringify(object), 'utf-8')
         )
 
         // Message
-        const message = [ $header, $payload ].join('.')
+        const message = [ _header, _payload ].join('.')
 
         // Signature
-        const signature = Buffer.from(base64url.toBuffer($signature))
+        const signature = Buffer.from(base64url.toBuffer(_signature))
 
         // Verify
         return await Signer.verify(Buffer.from(message), signature, context)

@@ -34,12 +34,12 @@ const getRandomInt = (min: number, max: number): number => {
 
 const trimString = (input: string | undefined, length: number): string => {
     if (input === undefined) {
-        return ``
+        return ''
     }
     if (length < input.length) {
-        return `${input.slice(0, length)}･･`
+        return `${ input.slice(0, length) }･･`
     }
-    return `${input}`
+    return `${ input }`
 }
 
 const range = (start: number, end: number): Array<number> => {

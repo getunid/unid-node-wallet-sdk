@@ -7,7 +7,7 @@ interface MongoDBClientContext {
 export class MongoDBClient {
     private constructor() {}
 
-    private static $conn: MongoClient | undefined
+    private static _conn: MongoClient | undefined
 
     public static async initialize(context: MongoDBClientContext): Promise<MongoClient> {
         const uri = context.uri
@@ -17,26 +17,26 @@ export class MongoDBClient {
             useUnifiedTopology: true,
         }
 
-        if (MongoDBClient.$conn === undefined) {
-            MongoDBClient.$conn = await MongoClient.connect(uri, config)
+        if (MongoDBClient._conn === undefined) {
+            MongoDBClient._conn = await MongoClient.connect(uri, config)
         }
 
-        return MongoDBClient.$conn
+        return MongoDBClient._conn
     }
 
     public static get agent(): MongoClient {
-        if (MongoDBClient.$conn === undefined) {
+        if (MongoDBClient._conn === undefined) {
             throw new Error()
         }
 
-        return MongoDBClient.$conn
+        return MongoDBClient._conn
     }
 
     public static async kill(): Promise<void> {
-        if (MongoDBClient.$conn === undefined) {
+        if (MongoDBClient._conn === undefined) {
             throw new Error()
         }
 
-        await MongoDBClient.$conn.close()
+        await MongoDBClient._conn.close()
     }
 }

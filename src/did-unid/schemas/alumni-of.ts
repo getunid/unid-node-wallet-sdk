@@ -1,5 +1,5 @@
 import { Organization } from './schema.org'
-import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
+import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
 // AlumniOfCredentialV1
@@ -29,7 +29,7 @@ export class AlumniOfCredentialV1 extends UNiDVerifiableCredentialBase<AlumniOfC
     public constructor(credentialSubject: AlumniOfOrganization, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        this.$credential = {
+        this._credential = {
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/alumniOf',

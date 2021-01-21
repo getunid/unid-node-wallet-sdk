@@ -1,10 +1,10 @@
 import { Hasher } from "../cipher/hasher"
-import { ContextManager } from "../context"
+import { ContextManager } from "../../context"
 import { UNiDVerifiableCredential, UNiDVerifiablePresentation, UNiDVerifiablePresentationMetadata } from "../schemas"
 import { SDSOperationCredentialV1Types } from "../schemas/internal/sds-operation"
-import { ConfigManager } from "../config"
-import { UNiDNotImplementedError } from "../error"
-import { HttpClient } from "../utils/http-client"
+import { ConfigManager } from "../../config"
+import { UNiDNotImplementedError } from "../../error"
+import { HttpClient } from "../../utils/http-client"
 
 interface UNiDSDSOperatorContext {
     debug?: boolean

@@ -1,5 +1,5 @@
-import { Signer, Jws, CredentialSigner } from '../src/cipher/signer'
-import { Secp256k1 as Context } from '../src/keyring/secp256k1'
+import { Signer, Jws, CredentialSigner } from '../src/did-unid/cipher/signer'
+import { Secp256k1 as Context } from '../src/did-unid/keyring/secp256k1'
 import secp256k1 from 'secp256k1'
 
 const KID: string = 'signingKey'

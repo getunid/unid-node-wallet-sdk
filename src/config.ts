@@ -22,6 +22,12 @@ class ConfigManagerKlass {
     public get SDS_ENDPOINT_BASE_URI(): string {
         return this.config('SDS_ENDPOINT_BASE_URI', 'https://sds.getunid.io')
     }
+
+    /**
+     */
+    public get DID_ENDPOINT_BASE_URI(): string {
+        return this.config('DID_ENDPOINT_BASE_URI', 'https://did.getunid.io')
+    }
 }
 
 export const ConfigManager = new ConfigManagerKlass()

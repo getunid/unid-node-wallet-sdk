@@ -1,5 +1,5 @@
 import { Text, DateTime, Number } from '../schema.org'
-import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../../error'
+import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../../../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '..';
 
 // SDSOperationCredentialV1
@@ -131,7 +131,7 @@ export class SDSOperationCredentialV1 extends UNiDVerifiableCredentialBase<SDSOp
     public constructor(credentialSubject: CreateOperation | FindOneOperation | FindOperation | UpdateOperation | DeleteOperation, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        this.$credential = {
+        this._credential = {
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/internal/sds-operation',

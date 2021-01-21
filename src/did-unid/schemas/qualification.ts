@@ -1,5 +1,5 @@
 import { EducationalOccupationalCredential } from './schema.org'
-import { UNiDNotUniqueError, UNiDNotCompatibleError } from '../error'
+import { UNiDNotUniqueError, UNiDNotCompatibleError } from '../../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
 // QualificationCredentialV1
@@ -29,7 +29,7 @@ export class QualificationCredentialV1 extends UNiDVerifiableCredentialBase<Qual
     public constructor(credentialSubject: QualificationPerson, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        this.$credential = {
+        this._credential = {
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/qualification',

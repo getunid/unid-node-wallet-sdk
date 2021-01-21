@@ -3,7 +3,7 @@ import { UNiDContext, UNiDNetworkType } from './unid'
 class ContextManagerKlass {
     constructor() {}
 
-    private $context: UNiDContext | undefined
+    private _context: UNiDContext | undefined
 
     public setContext(context: UNiDContext): void {
         // Validate contexts
@@ -20,8 +20,8 @@ class ContextManagerKlass {
         }
 
         // Set context
-        if (this.$context === undefined) {
-            this.$context = context
+        if (this._context === undefined) {
+            this._context = context
         } else {
             throw new Error()
         }
@@ -40,11 +40,11 @@ class ContextManagerKlass {
     /**
      */
     public get context(): UNiDContext {
-        if (! this.$context) {
+        if (! this._context) {
             throw new Error()
         }
 
-        return this.$context
+        return this._context
     }
 }
 

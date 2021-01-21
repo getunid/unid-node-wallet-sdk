@@ -1,9 +1,9 @@
 import { Db, ObjectId, WithId } from 'mongodb'
-import { UNiDInvalidDataError } from '../error';
+import { UNiDInvalidDataError } from '../../error';
 import { MongoDBClient } from "../adapters/mongodb";
 import { BaseConnector, MnemonicKeyringModel, Id } from "./base";
 import { Cipher } from '../cipher/cipher';
-import { ContextManager } from '../context';
+import { ContextManager } from '../../context';
 
 interface MongoDBConnectorContext {
     client: MongoDBClient

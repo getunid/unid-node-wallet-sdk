@@ -1,7 +1,7 @@
-import { KeyPair, PublicKeyPayload } from '@unid/did-operator'
+import { KeyPair, PublicKeyPayload } from '../../libs'
 import base64url from 'base64url'
 import secp256k1 from 'secp256k1'
-import { utils } from '../utils/utils'
+import { utils } from '../../utils/utils'
 
 interface Secp256k1Context {
     public : Buffer,

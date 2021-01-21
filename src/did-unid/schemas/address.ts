@@ -1,5 +1,5 @@
 import { PostalAddress } from './schema.org'
-import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
+import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.';
 
 // AddressCredentialV1
@@ -36,7 +36,7 @@ export class AddressCredentialV1 extends UNiDVerifiableCredentialBase<AddressCre
     public constructor(credentialSubject: AddressPerson | AddressOrganization, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        this.$credential = {
+        this._credential = {
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
                 'https://docs.getunid.io/docs/2020/credentials/address',

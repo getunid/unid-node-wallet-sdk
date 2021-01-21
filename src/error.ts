@@ -3,7 +3,7 @@ import HttpStatus from 'http-status-codes'
 /**
  */
 export class UNiDError extends Error {
-    private $code: number
+    private _code: number
 
     constructor(code: number, message?: string) {
         if (message === undefined) {
@@ -12,11 +12,11 @@ export class UNiDError extends Error {
             super(`[code: ${ code }] ${ message }`)
         }
 
-        this.$code = code
+        this._code = code
     }
 
     public get code(): number {
-        return this.$code
+        return this._code
     }
 }
 

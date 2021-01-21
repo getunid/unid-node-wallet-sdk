@@ -148,44 +148,44 @@ export interface UNiDVerifiablePresentationOptions {
  * Verifiable Credential
  */
 export class UNiDVerifiableCredentialBase<T> {
-    protected $credential?: T
-    private   $issuanceDate?: Date
-    private   $expirationDate?: Date
+    protected _credential?: T
+    private   _issuanceDate?: Date
+    private   _expirationDate?: Date
 
     /**
      * @param options 
      */
     public constructor(options?: UNiDVerifiableCredentialOptions) {
         if (options) {
-            this.$issuanceDate   = options.issuanceDate
-            this.$expirationDate = options.expirationDate
+            this._issuanceDate   = options.issuanceDate
+            this._expirationDate = options.expirationDate
         }
     }
 
     /**
      */
     public getVerifiableCredential(metadata: UNiDVerifiableCredentialMetadata): T & UNiDVerifiableCredentialMetadata {
-        if (this.$credential === undefined) {
+        if (this._credential === undefined) {
             throw new Error()
         }
 
-        return Object.assign<UNiDVerifiableCredentialMetadata, T>(metadata, this.$credential)
+        return Object.assign<UNiDVerifiableCredentialMetadata, T>(metadata, this._credential)
     }
 
     /**
      */
     public get issuanceDate(): Date {
-        if (this.$issuanceDate === undefined) {
+        if (this._issuanceDate === undefined) {
             return (new Date())
         }
 
-        return this.$issuanceDate
+        return this._issuanceDate
     }
 
     /**
      */
     public get expirationDate(): Date | undefined {
-        return this.$expirationDate
+        return this._expirationDate
     }
 }
 
@@ -193,44 +193,44 @@ export class UNiDVerifiableCredentialBase<T> {
  * Verifiable Presentation
  */
 class UNiDVerifiablePresentationBase<T1> {
-    protected $presentation?: UNiDVerifiablePresentation<T1>
-    private   $issuanceDate?: Date
-    private   $expirationDate?: Date
+    protected _presentation?: UNiDVerifiablePresentation<T1>
+    private   _issuanceDate?: Date
+    private   _expirationDate?: Date
 
     /**
      * @param options 
      */
     public constructor(options?: UNiDVerifiablePresentationOptions) {
         if (options) {
-            this.$issuanceDate   = options.issuanceDate
-            this.$expirationDate = options.expirationDate
+            this._issuanceDate   = options.issuanceDate
+            this._expirationDate = options.expirationDate
         }
     }
 
     /**
      */
     public getVerifiablePresentation(metadata: UNiDVerifiablePresentationMetadata): UNiDVerifiablePresentation<T1> & UNiDVerifiablePresentationMetadata {
-        if (this.$presentation === undefined) {
+        if (this._presentation === undefined) {
             throw new Error()
         }
 
-        return Object.assign<UNiDVerifiablePresentationMetadata, UNiDVerifiablePresentation<T1>>(metadata, this.$presentation)
+        return Object.assign<UNiDVerifiablePresentationMetadata, UNiDVerifiablePresentation<T1>>(metadata, this._presentation)
     }
 
     /**
      */
     public get issuanceDate(): Date {
-        if (this.$issuanceDate === undefined) {
+        if (this._issuanceDate === undefined) {
             return (new Date())
         }
 
-        return this.$issuanceDate
+        return this._issuanceDate
     }
 
     /**
      */
     public get expirationDate(): Date | undefined {
-        return this.$expirationDate
+        return this._expirationDate
     }
 }
 
@@ -242,7 +242,7 @@ export class UNiDVerifiablePresentationV1<T> extends UNiDVerifiablePresentationB
     public constructor(verifiableCredential: Array<UNiDVerifiableCredential<string, string, T> & UNiDVerifiableCredentialMetadata>, options?: UNiDVerifiableCredentialOptions) {
         super(options)
 
-        this.$presentation = {
+        this._presentation = {
             '@context': [ 'https://www.w3.org/2018/credentials/v1' ],
             type: [ 'VerifiablePresentation' ],
             verifiableCredential: verifiableCredential,

@@ -1,12 +1,12 @@
-import { UNiDDidOperator, PublicKeyPurpose, UNiDDidDocument } from '@unid/did-operator'
+import { UNiDDidOperator, PublicKeyPurpose, UNiDDidDocument } from './libs'
 import { ContextManager } from './context'
-import { BaseConnector } from './connector/base'
-import { UNiDDid } from './did'
-import { VerifiableCredential } from './did/credential'
-import { VerifiablePresentation } from './did/presentation'
+import { BaseConnector } from './did-unid/connector/base'
+import { UNiDDid } from './did-unid/did'
+import { VerifiableCredential } from './did-unid/did/credential'
+import { VerifiablePresentation } from './did-unid/did/presentation'
 import { UNiDNotCompatibleError, UNiDNotImplementedError } from "./error"
-import { KeyRingType } from './keyring'
-import { MnemonicKeyring, MnemonicKeyringOptions } from './keyring/mnemonic'
+import { KeyRingType } from './did-unid/keyring'
+import { MnemonicKeyring, MnemonicKeyringOptions } from './did-unid/keyring/mnemonic'
 import {
     UNiDCredentialSubjectMetadata,
     UNiDExportedVerifiableCredentialMetadata,
@@ -17,7 +17,7 @@ import {
     UNiDVerifiablePresentationMetadata,
     UNiDWithoutProofVerifiableCredentialMetadata,
     UNiDWithoutProofVerifiablePresentationMetadata,
-} from './schemas'
+} from './did-unid/schemas'
 
 /**
  */
