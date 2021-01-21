@@ -10,13 +10,15 @@ import {
     UNiDVerifiablePresentationV1,
     UNiDVerifiableCredentialTypes,
     UNiDCredentialSubjectMetadata,
+    UNiDVerifiablePresentation,
+    UNiDVerifiablePresentationMetadata,
 } from '../schemas'
 import { DateTimeTypes, DateTimeUtils } from '../utils/datetime'
 import { UNiDInvalidDataError, UNiDInvalidSignatureError, UNiDNotCompatibleError, UNiDNotUniqueError } from '../error'
 import { VerifiablePresentation } from './presentation'
 import { SIGNING_KEY_ID, UNiDVerifyCredentialResponse } from '../unid'
 import { Cipher } from '../cipher/cipher'
-import { SDSOperationCredentialV1 } from '../schemas/internal/sds-operation'
+import { SDSOperationCredentialV1, SDSOperationCredentialV1Types } from '../schemas/internal/sds-operation'
 import { ContextManager } from '../context'
 import { UNiDSDSOperator, SDSCreateResponse, SDSFindOperationResponsePayload } from '../sds/operator'
 import { UNiD } from '..'
@@ -162,7 +164,7 @@ export class UNiDDid {
     /**
      * Create: Verifiable Presentation
      */
-    public async createPresentation<T1 = UNiDCredentialSubjectMetadata>(credentials: Array<UNiDVerifiableCredential<string, string, T1> & UNiDVerifiableCredentialMetadata>) {
+    public async createPresentation(credentials: Array<UNiDVerifiableCredential<string, string, UNiDCredentialSubjectMetadata> & UNiDVerifiableCredentialMetadata>) {
         const types: Array<string> = []
 
         credentials.forEach((credential) => {
@@ -220,7 +222,7 @@ export class UNiDDid {
         const issuance   = (new DateTimeUtils(metadata.issuanceDate)).$toString(DateTimeTypes.iso8601)
         const expiration = (new DateTimeUtils(metadata.expirationDate)).toString(DateTimeTypes.iso8601)
 
-        const payload = await this.createPresentation([
+        const payload = (await this.createPresentation([
             await this.createCredential(
                 new SDSOperationCredentialV1({
                     '@id'    : this.getIdentifier(),
@@ -235,8 +237,8 @@ export class UNiDDid {
                     expirationDate: expiration,
                 })
             )
-        ])
-        
+        ])) as UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata
+
         return await operator.create({ payload: payload })
     }
 
@@ -262,7 +264,7 @@ export class UNiDDid {
             }
         }
 
-        const payload = await this.createPresentation([
+        const payload = (await this.createPresentation([
             await this.createCredential(
                 new SDSOperationCredentialV1({
                     '@id'   : this.getIdentifier(),
@@ -279,7 +281,7 @@ export class UNiDDid {
                     expirationDate: expirationDate,
                 })
             )
-        ])
+        ])) as UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata
 
         const response = await operator.findOne({ payload: payload })
 
@@ -312,7 +314,7 @@ export class UNiDDid {
             }
         }
 
-        const payload = await this.createPresentation([
+        const payload = (await this.createPresentation([
             await this.createCredential(
                 new SDSOperationCredentialV1({
                     '@id'   : this.getIdentifier(),
@@ -333,7 +335,7 @@ export class UNiDDid {
                     page : query.page,
                 })
             )
-        ])
+        ])) as UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata
         
         const response = await operator.find({ payload: payload })
         const verified = await promise.all<SDSFindOperationResponsePayload, UNiDVerifyCredentialResponse<string, string, UNiDCredentialSubjectMetadata>>(response.payload, async (item, index) => {
