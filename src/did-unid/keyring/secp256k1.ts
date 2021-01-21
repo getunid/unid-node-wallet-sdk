@@ -1,4 +1,4 @@
-import { KeyPair, PublicKeyPayload } from '../../libs'
+import { KeyPair, PublicKeyPayload } from '../../core'
 import base64url from 'base64url'
 import secp256k1 from 'secp256k1'
 import { utils } from '../../utils/utils'

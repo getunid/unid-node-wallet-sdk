@@ -1,5 +1,5 @@
 import { MnemonicKeyring } from '../keyring/mnemonic'
-import { UNiDDidOperator } from '../../libs'
+import { UNiDDidOperator } from '../../core'
 import { VerifiableCredential } from './credential'
 import {
     VC_ID,

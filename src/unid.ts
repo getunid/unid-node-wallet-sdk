@@ -1,4 +1,4 @@
-import { UNiDDidOperator, PublicKeyPurpose, UNiDDidDocument } from './libs'
+import { UNiDDidOperator, PublicKeyPurpose, UNiDDidDocument } from './core'
 import { ContextManager } from './context'
 import { BaseConnector } from './did-unid/connector/base'
 import { UNiDDid } from './did-unid/did'
