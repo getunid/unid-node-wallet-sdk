@@ -162,7 +162,7 @@ export class UNiDDid {
     /**
      * Create: Verifiable Presentation
      */
-    public async createPresentation<T>(credentials: Array<UNiDVerifiableCredential<string, string, T> & UNiDVerifiableCredentialMetadata>) {
+    public async createPresentation<T1 = UNiDCredentialSubjectMetadata>(credentials: Array<UNiDVerifiableCredential<string, string, T1> & UNiDVerifiableCredentialMetadata>) {
         const types: Array<string> = []
 
         credentials.forEach((credential) => {

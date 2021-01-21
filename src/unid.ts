@@ -153,8 +153,8 @@ class UNiDKlass {
     /**
      * @param presentation 
      */
-    public async verifyPresentation(presentation: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, UNiDCredentialSubjectMetadata>> & UNiDVerifiablePresentationMetadata): Promise<UNiDVerifyPresentationResponse<UNiDCredentialSubjectMetadata>> {
-        if (! this.isVerifiablePresentation<UNiDCredentialSubjectMetadata>(presentation)) {
+    public async verifyPresentation<T1>(presentation: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata): Promise<UNiDVerifyPresentationResponse<T1>> {
+        if (! this.isVerifiablePresentation<T1>(presentation)) {
             throw new UNiDNotCompatibleError()
         }
 
