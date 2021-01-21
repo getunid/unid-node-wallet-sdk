@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.27](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.26...v0.0.27) (2021-01-21)
+
+
+### Bug Fixes
+
+* Modified verifyPresentation() method ([6d871ee](https://github.com/getunid/unid-nodejs-sdk/commit/6d871eea55b8d5e09b24e5c1b0d693329d70c79a))
+
 ### [0.0.26](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.25...v0.0.26) (2021-01-21)
 
 
