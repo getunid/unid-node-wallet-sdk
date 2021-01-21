@@ -1,6 +1,6 @@
 {
   "name": "@unid/nodejs-sdk",
-  "version": "0.0.29",
+  "version": "0.0.30",
   "main": "libs/index.js",
   "types": "libs/index.d.ts",
   "author": "UNiD <>",
