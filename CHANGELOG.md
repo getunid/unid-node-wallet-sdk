@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.29](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.28...v0.0.29) (2021-01-21)
+
+
+### Features
+
+* Bundle did-resolver libs ([706b4d6](https://github.com/getunid/unid-nodejs-sdk/commit/706b4d693878ccd906f4504ccde5f80d063a7e4b))
+
 ### [0.0.28](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.27...v0.0.28) (2021-01-21)
 
 
