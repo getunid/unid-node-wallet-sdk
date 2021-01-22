@@ -8,6 +8,7 @@ interface Options {
  * @param array 
  * @param worker 
  * @param options 
+ * @returns
  */
 const all = async <T1, T2>(array  : Array<T1>, worker : (item: T1, index: string | number) => Promise<T2>, options?: Options): Promise<Array<T2>> => {
     return new Promise<Array<T2>>((resolve, reject) => {
@@ -38,6 +39,7 @@ const all = async <T1, T2>(array  : Array<T1>, worker : (item: T1, index: string
 
 /**
  * @param timeout 
+ * @returns
  */
 const wait = (timeout: number): Promise<boolean> => {
     return new Promise<boolean>((resolve, reject) => {
@@ -47,6 +49,8 @@ const wait = (timeout: number): Promise<boolean> => {
     })
 }
 
+/**
+ */
 const promise = {
     all,
     wait,

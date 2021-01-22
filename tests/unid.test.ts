@@ -5,6 +5,15 @@ import {
     KeyRingType,
     AddressCredentialV1,
     PhoneCredentialV1,
+    AlumniOfCredentialV1,
+    BirthDateCredentialV1,
+    ContactPointCredentialV1,
+    EmailCredentialV1,
+    GenderCredentialV1,
+    ImageCredentialV1,
+    NameCredentialV1,
+    QualificationCredentialV1,
+    WorksForCredentialV1,
 } from '../src'
 
 beforeAll(() => {
@@ -121,4 +130,166 @@ test('UNiD - 5', async () => {
     await expect(async () => {
         await UNiD.verifyPresentation(json)
     }).rejects.toThrow('[code: 400]')
+})
+
+test('UNiD - 6', async () => {
+    const DID = await UNiD.createDid(KeyRingType.Mnemonic)
+
+    const signedVC1 = await DID.createCredential(
+        new AddressCredentialV1({
+            '@id'  : DID.getIdentifier(),
+            '@type': 'AddressPerson',
+            address: {
+                '@type': 'PostalAddress',
+                streetAddress: '日本橋',
+            },
+        })
+    )
+
+    const verifiedVC1 = await UNiD.verifyCredential(signedVC1)
+
+    const signedVC2 = await DID.createCredential(
+        new AlumniOfCredentialV1({
+            '@id'  : DID.getIdentifier(),
+            '@type': 'AlumniOfOrganization',
+            alumniOf: {
+                '@type': 'Organization',
+            }
+        })
+    )
+
+    const verifiedVC2 = await UNiD.verifyCredential(signedVC2)
+
+    const signedVC3 = await DID.createCredential(
+        new BirthDateCredentialV1({
+            '@id'    : DID.getIdentifier(),
+            '@type'  : 'BirthDatePerson',
+            birthDate: '1900-01-01',
+        })
+    )
+
+    const verifiedVC3 = await UNiD.verifyCredential(signedVC3)
+
+    const signedVC4 = await DID.createCredential(
+        new ContactPointCredentialV1({
+            '@id': DID.getIdentifier(),
+            '@type': 'ContactPointPerson',
+            contactPoint: {
+                '@type': 'PostalAddress',
+            }
+        })
+    )
+
+    const verifiedVC4 = await UNiD.verifyCredential(signedVC4)
+
+    const signedVC5 = await DID.createCredential(
+        new EmailCredentialV1({
+            '@id'  : DID.getIdentifier(),
+            '@type': 'EmailPerson',
+            email  : 'username@example.com',
+        })
+    )
+
+    const verifiedVC5 = await UNiD.verifyCredential(signedVC5)
+
+    const signedVC6 = await DID.createCredential(
+        new GenderCredentialV1({
+            '@id'  : DID.getIdentifier(),
+            '@type': 'GenderPerson',
+            gender : 'Male'
+        })
+    )
+
+    const verifiedVC6 = await UNiD.verifyCredential(signedVC6)
+
+    const signedVC7 = await DID.createCredential(
+        new ImageCredentialV1({
+            '@id'  : DID.getIdentifier(),
+            '@type': 'ImagePerson',
+            image  : {
+                '@type': 'Barcode',
+            }
+        })
+    )
+
+    const verifiedVC7 = await UNiD.verifyCredential(signedVC7)
+
+    const signedVC8 = await DID.createCredential(
+        new NameCredentialV1({
+            '@id'     : DID.getIdentifier(),
+            '@type'   : 'NamePerson',
+            name      : 'name',
+            givenName : 'givenName',
+            familyName: 'familyName',
+        })
+    )
+
+    const verifiedVC8 = await UNiD.verifyCredential(signedVC8)
+
+    const signedVC9 = await DID.createCredential(
+        new PhoneCredentialV1({
+            '@id'    : DID.getIdentifier(),
+            '@type'  : 'PhonePerson',
+            telephone: '0000-0000-0000'
+        })
+    )
+
+    const verifiedVC9 = await UNiD.verifyCredential(signedVC9)
+
+    const signedVC10 = await DID.createCredential(
+        new QualificationCredentialV1({
+            '@id': DID.getIdentifier(),
+            '@type': 'QualificationPerson',
+            hasCredential: [{
+                '@type': 'EducationalOccupationalCredential'
+            }],
+        })
+    )
+
+    const verifiedVC10 = await UNiD.verifyCredential(signedVC10)
+
+    const signedVC11 = await DID.createCredential(
+        new WorksForCredentialV1({
+            '@id': DID.getIdentifier(),
+            '@type': 'WorksForOrganization',
+            worksFor: {
+                '@type': 'Organization',
+            }
+        })
+    )
+
+    const verifiedVC11 = await UNiD.verifyCredential(signedVC11)
+
+    const signedVP = await DID.createPresentation([
+        signedVC1, signedVC2, signedVC3, signedVC4, signedVC5,
+        signedVC6, signedVC7, signedVC8, signedVC9, signedVC10,
+        signedVC11,
+    ])
+
+    const verifiedVP = await UNiD.verifyPresentation(signedVP)
+
+    expect(verifiedVP.isValid).toEqual(true)
+    expect(verifiedVC1.isValid).toEqual(true)
+    expect(verifiedVC2.isValid).toEqual(true)
+    expect(verifiedVC3.isValid).toEqual(true)
+    expect(verifiedVC4.isValid).toEqual(true)
+    expect(verifiedVC5.isValid).toEqual(true)
+    expect(verifiedVC6.isValid).toEqual(true)
+    expect(verifiedVC7.isValid).toEqual(true)
+    expect(verifiedVC8.isValid).toEqual(true)
+    expect(verifiedVC9.isValid).toEqual(true)
+    expect(verifiedVC10.isValid).toEqual(true)
+    expect(verifiedVC11.isValid).toEqual(true)
+
+    expect(AddressCredentialV1.select(signedVP)).not.toBeUndefined()
+    expect(AlumniOfCredentialV1.select(signedVP)).not.toBeUndefined()
+    expect(BirthDateCredentialV1.select(signedVP)).not.toBeUndefined()
+    expect(ContactPointCredentialV1.select(signedVP)).not.toBeUndefined()
+    expect(EmailCredentialV1.select(signedVP)).not.toBeUndefined()
+    expect(GenderCredentialV1.select(signedVP)).not.toBeUndefined()
+    expect(ImageCredentialV1.select(signedVP)).not.toBeUndefined()
+    expect(NameCredentialV1.select(signedVP)).not.toBeUndefined()
+    expect(PhoneCredentialV1.select(signedVP)).not.toBeUndefined()
+    expect(QualificationCredentialV1.select(signedVP)).not.toBeUndefined()
+    expect(WorksForCredentialV1.select(signedVP)).not.toBeUndefined()
 })

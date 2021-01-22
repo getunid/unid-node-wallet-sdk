@@ -1,6 +1,10 @@
 import crypto from 'crypto'
 import { UNiDNotCompatibleError } from '../error'
 
+/**
+ * @param input 
+ * @returns
+ */
 const splitDid = (input: string): { did: string, keyId: string } => {
     const arr = input.split('#')
 
@@ -14,16 +18,29 @@ const splitDid = (input: string): { did: string, keyId: string } => {
     }
 }
 
+/**
+ * @param input 
+ * @returns
+ */
 const isBase64 = (input: string): boolean => {
     return (Buffer.from(input, 'base64').toString('base64') === input)
 }
 
+/**
+ * @param length 
+ * @returns
+ */
 const getRandomHexString = (length: number): string => {
     let bytes = crypto.randomBytes(length * 2).toString('hex')
 
     return bytes.slice(0, length)
 }
 
+/**
+ * @param min 
+ * @param max 
+ * @returns
+ */
 const getRandomInt = (min: number, max: number): number => {
     if (max < min) {
         throw new Error()
@@ -32,6 +49,11 @@ const getRandomInt = (min: number, max: number): number => {
     return Math.floor(Math.random() * (max - min + 1) + min)
 }
 
+/**
+ * @param input 
+ * @param length 
+ * @returns
+ */
 const trimString = (input: string | undefined, length: number): string => {
     if (input === undefined) {
         return ''
@@ -42,14 +64,28 @@ const trimString = (input: string | undefined, length: number): string => {
     return `${ input }`
 }
 
+/**
+ * @param start 
+ * @param end 
+ * @returns
+ */
 const range = (start: number, end: number): Array<number> => {
     return Array.from({ length: (end - start) }, (v, k) => k + start);
 }
 
+/**
+ * @param input 
+ * @returns
+ */
 const numberWithComma = (input: number): string => {
     return String(input).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
 }
 
+/**
+ * @param l 
+ * @param r 
+ * @returns
+ */
 const isRequiredUpdate = (l: string, r: string): boolean => {
     const ls: Array<string> = l.split('.').map((v, _) => v.trim())
     const rs: Array<string> = r.split('.').map((v, _) => v.trim())

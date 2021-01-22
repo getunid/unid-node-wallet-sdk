@@ -3,15 +3,27 @@ import CryptoJS from 'crypto-js'
 import { Encoder } from './encoder'
 import JsonCanonicalizer from './canonicalizer'
 
+/**
+ */
 const ALGORITHM_CODE = 0x12 // sha256
 
+/**
+ */
 export class Multihash {
+    /**
+     * @param content 
+     * @returns
+     */
     public static hash (content: Buffer): Buffer {
         const conventionalHash = this.hashAsNonMultihashBuffer(content)
 
         return Buffer.from(multihashes.encode(Uint8Array.from(conventionalHash), ALGORITHM_CODE))
     }
 
+    /**
+     * @param content 
+     * @returns
+     */
     public static hashAsNonMultihashBuffer (content: Buffer): Buffer {
         const buffer = CryptoJS.enc.Hex.parse(content.toString('hex'))
         const cipher = CryptoJS.SHA256(buffer)
@@ -19,6 +31,10 @@ export class Multihash {
         return Buffer.from(cipher.toString(CryptoJS.enc.Hex), 'hex')
     }
 
+    /**
+     * @param content 
+     * @returns
+     */
     public static canonicalizeThenDoubleHashThenEncode (content: object) {
         const contentBuffer = JsonCanonicalizer.canonicalizeAsBuffer(content);
 
@@ -27,12 +43,20 @@ export class Multihash {
         return Multihash.hashThenEncode(intermediateHashBuffer)
     }
 
+    /**
+     * @param content 
+     * @returns
+     */
     public static hashThenEncode (content: Buffer): string {
         const multihashBuffer = Multihash.hash(content)
 
         return Encoder.encode(multihashBuffer)
     }
 
+    /**
+     * @param multihashBuffer 
+     * @returns
+     */
     public static decode (multihashBuffer: Buffer): { algorithm: number, hash: Buffer } {
         const multihash = multihashes.decode(Uint8Array.from(multihashBuffer))
 
@@ -42,6 +66,9 @@ export class Multihash {
         }
     }
 
+    /**
+     * @param hash 
+     */
     public static verifyHashComputedUsingLatestSupportedAlgorithm (hash: Buffer) {
         const isLatestSupportedHashFormat = Multihash.isComputedUsingHashAlgorithm(hash, ALGORITHM_CODE)
 
@@ -50,12 +77,20 @@ export class Multihash {
         }
     }
 
+    /**
+     * @param encodedHash 
+     */
     public static verifyEncodedHashIsComputedUsingLastestAlgorithm (encodedHash: string) {
         const hashBuffer = Encoder.decodeAsBuffer(encodedHash)
 
         Multihash.verifyHashComputedUsingLatestSupportedAlgorithm(hashBuffer)
     }
 
+    /**
+     * @param hash 
+     * @param expectedHashAlgorithmInMultihashCode 
+     * @returns
+     */
     public static isComputedUsingHashAlgorithm (hash: Buffer, expectedHashAlgorithmInMultihashCode: number): boolean {
         try {
             const multihash = multihashes.decode(Uint8Array.from(hash))
@@ -66,6 +101,11 @@ export class Multihash {
         }
     }
 
+    /**
+     * @param encodedContent 
+     * @param encodedMultihash 
+     * @returns
+     */
     public static isValidHash (encodedContent: string | undefined, encodedMultihash: string): boolean {
         if (encodedContent === undefined) {
             return false
@@ -80,6 +120,11 @@ export class Multihash {
         }
     }
 
+    /**
+     * @param content 
+     * @param encodedMultihash 
+     * @returns
+     */
     public static canonicalizeAndVerifyDoubleHash (content: object | undefined, encodedMultihash: string): boolean {
         if (content === undefined) {
             return false
@@ -94,6 +139,11 @@ export class Multihash {
         }
     }
 
+    /**
+     * @param content 
+     * @param encodedMultihash 
+     * @returns
+     */
     private static verifyDoubleHash (content: Buffer, encodedMultihash: string): boolean {
         try {
             const expectedMultihashBuffer = Encoder.decodeAsBuffer(encodedMultihash)
@@ -106,6 +156,11 @@ export class Multihash {
         }
     }
 
+    /**
+     * @param content 
+     * @param encodedMultihash 
+     * @returns
+     */
     private static verify (content: Buffer, encodedMultihash: string): boolean {
         try {
             const expectedMultihashBuffer = Encoder.decodeAsBuffer(encodedMultihash)
