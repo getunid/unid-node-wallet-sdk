@@ -43,7 +43,7 @@ export class Hasher {
     }): boolean {
         const object: RequestDigest = {
             uri    : uri,
-            payload: payload,
+            payload: JSON.parse(payload),
         }
         const json = JSON.stringify(object, Object.keys(object).sort())
 
