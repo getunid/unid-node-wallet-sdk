@@ -64,7 +64,7 @@ export class Hasher {
     }): string {
         const object: RequestDigest = {
             uri    : uri,
-            payload: payload,
+            payload: JSON.parse(payload),
         }
         const json = JSON.stringify(object, Object.keys(object).sort())
 
