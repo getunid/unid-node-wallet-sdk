@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.31](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.30...v0.0.31) (2021-01-22)
+
+
+### Bug Fixes
+
+* Modified generateRequestDigest() function ([f955143](https://github.com/getunid/unid-nodejs-sdk/commit/f9551432789aba56a5bcca08d213eb6e05a0487a))
+
 ### [0.0.30](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.29...v0.0.30) (2021-01-21)
 
 
