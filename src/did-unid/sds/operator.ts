@@ -1,7 +1,7 @@
 import { Hasher } from "../cipher/hasher"
 import { ContextManager } from "../../context"
 import { UNiDVerifiableCredential, UNiDVerifiablePresentation, UNiDVerifiablePresentationMetadata } from "../schemas"
-import { SDSOperationCredentialV1Types } from "../schemas/internal/sds-operation"
+import { UNiDSDSCredentialV1Types } from "../schemas/internal/unid-sds"
 import { ConfigManager } from "../../config"
 import { UNiDNotImplementedError } from "../../error"
 import { HttpClient } from "../../utils/http-client"
@@ -35,7 +35,7 @@ export interface SDSFindOperationResponsePayload {
 /**
  */
 interface SDSCreateRequest {
-    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata,
+    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, UNiDSDSCredentialV1Types>> & UNiDVerifiablePresentationMetadata,
 }
 
 /**
@@ -49,7 +49,7 @@ export interface SDSCreateResponse {
 /**
  */
 interface SDSFindRequest {
-    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata,
+    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, UNiDSDSCredentialV1Types>> & UNiDVerifiablePresentationMetadata,
 }
 
 /**
@@ -61,7 +61,7 @@ export interface SDSFindResponse {
 /**
  */
 interface SDSFindOneRequest {
-    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata,
+    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, UNiDSDSCredentialV1Types>> & UNiDVerifiablePresentationMetadata,
 }
 
 /**
@@ -73,7 +73,7 @@ export interface SDSFindOneResponse {
 /**
  */
 interface SDSUpdateRequest {
-    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata,
+    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, UNiDSDSCredentialV1Types>> & UNiDVerifiablePresentationMetadata,
 }
 
 /**
@@ -84,7 +84,7 @@ export interface SDSUpdateResponse {
 /**
  */
 interface SDSDeleteRequest {
-    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata,
+    payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, UNiDSDSCredentialV1Types>> & UNiDVerifiablePresentationMetadata,
 }
 
 /**

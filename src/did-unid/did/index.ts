@@ -18,7 +18,7 @@ import { UNiDInvalidDataError, UNiDInvalidSignatureError, UNiDNotCompatibleError
 import { VerifiablePresentation } from './presentation'
 import { SIGNING_KEY_ID, UNiDVerifyCredentialResponse } from '../../unid'
 import { Cipher } from '../cipher/cipher'
-import { SDSOperationCredentialV1, SDSOperationCredentialV1Types } from '../schemas/internal/sds-operation'
+import { UNiDSDSCredentialV1, UNiDSDSCredentialV1Types } from '../schemas/internal/unid-sds'
 import { ContextManager } from '../../context'
 import { UNiDSDSOperator, SDSCreateResponse, SDSFindOperationResponsePayload } from '../sds/operator'
 import { UNiD } from '../../unid'
@@ -240,7 +240,7 @@ export class UNiDDid {
 
         const payload = (await this.createPresentation([
             await this.createCredential(
-                new SDSOperationCredentialV1({
+                new UNiDSDSCredentialV1({
                     '@id'    : this.getIdentifier(),
                     '@type'  : 'CreateOperation',
                     clientId : ContextManager.context.clientId,
@@ -253,7 +253,7 @@ export class UNiDDid {
                     expirationDate: expiration,
                 })
             )
-        ])) as UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata
+        ])) as UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, UNiDSDSCredentialV1Types>> & UNiDVerifiablePresentationMetadata
 
         return await operator.create({ payload: payload })
     }
@@ -285,7 +285,7 @@ export class UNiDDid {
 
         const payload = (await this.createPresentation([
             await this.createCredential(
-                new SDSOperationCredentialV1({
+                new UNiDSDSCredentialV1({
                     '@id'   : this.getIdentifier(),
                     '@type' : 'FindOneOperation',
                     clientId: ContextManager.context.clientId,
@@ -300,7 +300,7 @@ export class UNiDDid {
                     expirationDate: expirationDate,
                 })
             )
-        ])) as UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata
+        ])) as UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, UNiDSDSCredentialV1Types>> & UNiDVerifiablePresentationMetadata
 
         const response = await operator.findOne({ payload: payload })
 
@@ -338,7 +338,7 @@ export class UNiDDid {
 
         const payload = (await this.createPresentation([
             await this.createCredential(
-                new SDSOperationCredentialV1({
+                new UNiDSDSCredentialV1({
                     '@id'   : this.getIdentifier(),
                     '@type' : 'FindOperation',
                     clientId: ContextManager.context.clientId,
@@ -357,7 +357,7 @@ export class UNiDDid {
                     page : query.page,
                 })
             )
-        ])) as UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, SDSOperationCredentialV1Types>> & UNiDVerifiablePresentationMetadata
+        ])) as UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, UNiDSDSCredentialV1Types>> & UNiDVerifiablePresentationMetadata
         
         const response = await operator.find({ payload: payload })
         const verified = await promise.all<SDSFindOperationResponsePayload, UNiDVerifyCredentialResponse<string, string, UNiDCredentialSubjectMetadata>>(response.payload, async (item, index) => {
@@ -388,6 +388,11 @@ export class UNiDDid {
             keyId  : SIGNING_KEY_ID,
             context: this.keyring.getSignKeyPair(),
         })
+    }
+
+    /**
+     */
+    public async generateAuthenticationResponse() {
     }
 
     /**

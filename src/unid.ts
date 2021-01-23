@@ -173,8 +173,20 @@ class UNiDKlass {
      * @param request 
      * @returns
      */
-    public async validateAuthenticationRequest<T1, T2, T3>(request: UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata): Promise<UNiDVerifyCredentialResponse<T1, T2, T3>> {
-        return await VerifiableCredential.verify(request)
+    public async validateAuthenticationRequest<T1>(request: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata): Promise<UNiDVerifyPresentationResponse<T1>> {
+        const verified = this.verifyPresentation(request)
+
+        return verified
+    }
+
+    /**
+     * @param response 
+     * @returns
+     */
+    public async validateAuthenticationResponse<T1>(response: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata): Promise<UNiDVerifyPresentationResponse<T1>> {
+        const verified = this.verifyPresentation(response)
+
+        return verified
     }
 
     /**

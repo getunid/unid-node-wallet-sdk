@@ -2,7 +2,7 @@ import { Text, DateTime, Number } from '../schema.org'
 import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../../../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '..';
 
-// SDSOperationCredentialV1
+// UNiDSDSCredentialV1
 
 /**
  */
@@ -106,7 +106,7 @@ interface DeleteOperation extends UNiDCredentialSubjectMetadata {
 
 /**
  */
-export type SDSOperationCredentialV1Types =
+export type UNiDSDSCredentialV1Types =
     | CreateOperation
     | FindOneOperation
     | FindOperation
@@ -115,15 +115,15 @@ export type SDSOperationCredentialV1Types =
 
 /**
  */
-export interface SDSOperationCredentialV1Schema extends UNiDVerifiableCredential<
-    'https://docs.getunid.io/docs/2020/credentials/internal/sds-operation',
-    'SDSOperationCredentialV1',
-    SDSOperationCredentialV1Types
+export interface UNiDSDSCredentialV1Schema extends UNiDVerifiableCredential<
+    'https://docs.getunid.io/docs/2020/credentials/internal/unid-sds',
+    'UNiDSDSCredentialV1',
+    UNiDSDSCredentialV1Types
 > {}
 
 /**
  */
-export class SDSOperationCredentialV1 extends UNiDVerifiableCredentialBase<SDSOperationCredentialV1Schema> {
+export class UNiDSDSCredentialV1 extends UNiDVerifiableCredentialBase<UNiDSDSCredentialV1Schema> {
     /**
      * @param credentialSubject 
      * @param options 
@@ -134,9 +134,9 @@ export class SDSOperationCredentialV1 extends UNiDVerifiableCredentialBase<SDSOp
         this._credential = {
             '@context': [
                 'https://www.w3.org/2018/credentials/v1',
-                'https://docs.getunid.io/docs/2020/credentials/internal/sds-operation',
+                'https://docs.getunid.io/docs/2020/credentials/internal/unid-sds',
             ],
-            type: [ 'VerifiableCredential', 'SDSOperationCredentialV1' ],
+            type: [ 'VerifiableCredential', 'UNiDSDSCredentialV1' ],
             credentialSubject: credentialSubject,
         }
     }
@@ -144,7 +144,7 @@ export class SDSOperationCredentialV1 extends UNiDVerifiableCredentialBase<SDSOp
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is SDSOperationCredentialV1Schema & UNiDVerifiableCredentialMetadata {
+    private static isCompatible(input: any): input is UNiDSDSCredentialV1Schema & UNiDVerifiableCredentialMetadata {
         if (typeof input !== 'object') {
             return false
         }
@@ -154,7 +154,7 @@ export class SDSOperationCredentialV1 extends UNiDVerifiableCredentialBase<SDSOp
         if (Array.isArray(input.type) !== true) {
             return false
         }
-        if (Array.from(input.type).indexOf('SDSOperationCredentialV1') < 0) {
+        if (Array.from(input.type).indexOf('UNiDSDSCredentialV1') < 0) {
             return false
         }
         return true
@@ -163,20 +163,20 @@ export class SDSOperationCredentialV1 extends UNiDVerifiableCredentialBase<SDSOp
     /**
      * @param input 
      */
-    public static fromObject(input: any): SDSOperationCredentialV1 {
-        if (! SDSOperationCredentialV1.isCompatible(input)) {
+    public static fromObject(input: any): UNiDSDSCredentialV1 {
+        if (! UNiDSDSCredentialV1.isCompatible(input)) {
             throw new UNiDNotCompatibleError()
         }
 
-        return new SDSOperationCredentialV1(input.credentialSubject)
+        return new UNiDSDSCredentialV1(input.credentialSubject)
     }
 
     /**
      * @param vp 
      */
-    public static select<T>(vp: UNiDVerifiablePresentation<T>): SDSOperationCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
+    public static select<T>(vp: UNiDVerifiablePresentation<T>): UNiDSDSCredentialV1Schema & UNiDVerifiableCredentialMetadata | undefined {
         const selected = vp.verifiableCredential.filter((vc) => {
-            return SDSOperationCredentialV1.isCompatible(vc)
+            return UNiDSDSCredentialV1.isCompatible(vc)
         })
 
         if (1 < selected.length) {
@@ -188,7 +188,7 @@ export class SDSOperationCredentialV1 extends UNiDVerifiableCredentialBase<SDSOp
         if (select === undefined) {
             return undefined
         }
-        if (! SDSOperationCredentialV1.isCompatible(select)) {
+        if (! UNiDSDSCredentialV1.isCompatible(select)) {
             return undefined
         }
 
