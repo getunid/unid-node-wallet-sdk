@@ -5,6 +5,9 @@ class ContextManagerKlass {
 
     private _context: UNiDContext | undefined
 
+    /**
+     * @param context 
+     */
     public setContext(context: UNiDContext): void {
         // Validate contexts
         if (! this.isHex(context.encryptionKey)) {

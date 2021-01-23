@@ -35,6 +35,8 @@ interface SaveContextOptions {
     removeMnemonic?: boolean
 }
 
+/**
+ */
 export class MnemonicKeyring {
     private static readonly baseDerivationPath: string = 'm/44\'/0\'/0\'/0'
 
@@ -64,13 +66,16 @@ export class MnemonicKeyring {
     }
 
     /**
-     * @param keyring 
+     * @param model 
      */
     private setKeyringModel(model: Id<MnemonicKeyringModel>): void {
         this.model = model
     }
 
     /**
+     * @param did 
+     * @param options 
+     * @returns
      */
     private async saveContext(did?: string, options?: SaveContextOptions): Promise<Id<MnemonicKeyringModel>> {
         let mnemonic: string | undefined = this.context.mnemonic
@@ -105,6 +110,9 @@ export class MnemonicKeyring {
         }
     }
 
+    /**
+     * @param did 
+     */
     public async setDid(did: string): Promise<void> {
         const item = await this.connector.findByDid(did)
 
@@ -118,6 +126,7 @@ export class MnemonicKeyring {
     /**
      * @param connector 
      * @param options 
+     * @returns
      */
     public static async createKeyring(connector: BaseConnector, options?: MnemonicKeyringOptions): Promise<MnemonicKeyring> {
         const context  = await MnemonicKeyring.generateBip39Seed(options)
@@ -142,6 +151,8 @@ export class MnemonicKeyring {
 
     /**
      * @param connector 
+     * @param did 
+     * @returns
      */
     public static async loadKeyring(connector: BaseConnector, did: string): Promise<MnemonicKeyring> {
         const keyring = await connector.findByDid(did)
@@ -184,6 +195,7 @@ export class MnemonicKeyring {
     }
 
     /**
+     * @returns
      */
     public getIdentifier(): string {
         if ((! this.model) || (! this.model.did)) {
@@ -194,6 +206,7 @@ export class MnemonicKeyring {
     }
 
     /**
+     * @returns
      */
     public getSeedPhrases(): Array<string> | undefined {
         if (! this.context.mnemonic) {
@@ -204,8 +217,10 @@ export class MnemonicKeyring {
     }
 
     /**
-     * @param seeds 
-     * @param persistent 
+     * @param did 
+     * @param phrase 
+     * @param option 
+     * @returns
      */
     public async verifySeedPhrase(did: string, phrase: Array<string>, option: { isPersistent: boolean } = { isPersistent: false }): Promise<boolean> {
         const mnemonic = phrase.map((v) => { return v.trim() }).join(' ')
@@ -225,24 +240,28 @@ export class MnemonicKeyring {
     }
 
     /**
+     * @returns
      */
     public getSignKeyPair(): Secp256k1 {
         return this.sign
     }
 
     /**
+     * @returns
      */
     public getUpdateKeyPair(): Secp256k1 {
         return this.update
     }
 
     /**
+     * @returns
      */
     public getRecoveryKeyPair(): Secp256k1 {
         return this.recovery
     }
 
     /**
+     * @returns
      */
     public getEncryptKeyPair(): Secp256k1 {
         return this.encrypt
@@ -251,6 +270,7 @@ export class MnemonicKeyring {
     /**
      * @param context 
      * @param derivationPath 
+     * @returns
      */
     public static async generateSecp256k1(context: BIP39Context, derivationPath: string): Promise<Secp256k1> {
         const node = await MnemonicKeyring.generateHDNodeByDerivationPath(context, derivationPath)
@@ -263,6 +283,7 @@ export class MnemonicKeyring {
 
     /**
      * @param options 
+     * @returns
      */
     public static async generateBip39Seed(options?: MnemonicKeyringOptions): Promise<BIP39Context> {
         const fromSize = (size: BIP39PhraseSize): number => {
@@ -294,6 +315,7 @@ export class MnemonicKeyring {
     /**
      * @param context 
      * @param derivationPath 
+     * @returns
      */
     public static async generateHDNodeByDerivationPath(context: BIP39Context, derivationPath: string): Promise<bip32.BIP32Interface> {
         const root  = bip32.fromSeed(context.seed)

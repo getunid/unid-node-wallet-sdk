@@ -78,6 +78,8 @@ class VerifyContainer<T1> {
 /**
  */
 export class VerifiablePresentation<T1> {
+    /**
+     */
     private presentation: T1
 
     /**
@@ -95,6 +97,7 @@ export class VerifiablePresentation<T1> {
 
     /**
      * @param suite 
+     * @returns
      */
     public async sign(suite: { did: string, keyId: string, context: Secp256k1 }): Promise<T1 & ProofContext> {
         return await CredentialSigner.sign(this.presentation, {
@@ -106,6 +109,7 @@ export class VerifiablePresentation<T1> {
 
     /**
      * @param presentation 
+     * @returns
      */
     public static async verify<T1>(presentation: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata): Promise<VerifyContainer<T1>> {
         if (presentation.proof === undefined) {
@@ -128,6 +132,7 @@ export class VerifiablePresentation<T1> {
     /**
      * @param vcs 
      * @param checker 
+     * @returns
      */
     public static filter<T1>(vcs: Array<any>, checker: (input: any) => boolean): Array<T1> {
         return vcs.filter((vc) => {

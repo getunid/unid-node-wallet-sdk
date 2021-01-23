@@ -3,16 +3,30 @@ import crypto from 'crypto'
 /**
  */
 export class Cipher {
+    /**
+     */
     public static readonly ALGORITHM: string   = 'aes-256-cbc'
+
+    /**
+     */
     public static readonly IV_LENGTH: number   = 16 // 128 Bit
+
+    /**
+     */
     public static readonly SALT_LENGTH: number = 32 // 256 Bit
+
+    /**
+     */
     public static readonly PASS_LENGTH: number = 32 // 256 Bit
 
+    /**
+     */
     private constructor() {}
 
     /**
      * @param data 
      * @param secret 
+     * @returns
      */
     public static async encrypt(data: Buffer, secret: Buffer): Promise<Buffer> {
         const salt = crypto.randomBytes(this.SALT_LENGTH)
@@ -35,8 +49,9 @@ export class Cipher {
     }
 
     /**
-     * @param buffer 
+     * @param data 
      * @param secret 
+     * @returns
      */
     public static async decrypt(data: Buffer, secret: Buffer): Promise<Buffer> {
         if (data.length < (this.SALT_LENGTH + this.IV_LENGTH)) {

@@ -78,12 +78,15 @@ class UNiDKlass {
     }
 
     /**
+     * @returns
      */
     private getConnector(): BaseConnector {
         return ContextManager.context.connector
     }
 
     /**
+     * @param params 
+     * @returns
      */
     public async loadDid(params: { did: string }): Promise<UNiDDid> {
         const keyring = await MnemonicKeyring.loadKeyring(this.getConnector(), params.did)
@@ -95,6 +98,8 @@ class UNiDKlass {
     }
 
     /**
+     * @param type 
+     * @param options 
      */
     public async createDid(type: KeyRingType.Mnemonic, options?: MnemonicKeyringOptions): Promise<UNiDDid>
     public async createDid(type: KeyRingType, options?: MnemonicKeyringOptions): Promise<UNiDDid> {
@@ -128,6 +133,7 @@ class UNiDKlass {
 
     /**
      * @param params 
+     * @returns
      */
     public async getDidDocument(params: { did: string }): Promise<UNiDDidDocument> {
         return await this.operator.resolve(params)
@@ -141,6 +147,7 @@ class UNiDKlass {
 
     /**
      * @param credential 
+     * @returns
      */
     public async verifyCredential<T1, T2, T3>(credential: UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata): Promise<UNiDVerifyCredentialResponse<T1, T2, T3>> {
         if (! this.isVerifiableCredential<T1, T2, T3>(credential)) {
@@ -152,6 +159,7 @@ class UNiDKlass {
 
     /**
      * @param presentation 
+     * @returns
      */
     public async verifyPresentation<T1>(presentation: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata): Promise<UNiDVerifyPresentationResponse<T1>> {
         if (! this.isVerifiablePresentation<T1>(presentation)) {
@@ -162,6 +170,8 @@ class UNiDKlass {
     }
 
     /**
+     * @param request 
+     * @returns
      */
     public async validateAuthenticationRequest<T1, T2, T3>(request: UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata): Promise<UNiDVerifyCredentialResponse<T1, T2, T3>> {
         return await VerifiableCredential.verify(request)
@@ -169,6 +179,7 @@ class UNiDKlass {
 
     /**
      * @param input 
+     * @returns
      */
     public isVerifiableCredential<T1 = string, T2 = string, T3 = UNiDCredentialSubjectMetadata>(input: any): input is UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata {
         if (typeof(input) !== 'object') {
@@ -188,6 +199,7 @@ class UNiDKlass {
 
     /**
      * @param input 
+     * @returns
      */
     public isVerifiablePresentation<T1 = object>(input: any): input is UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata {
         if (typeof(input) !== 'object') {

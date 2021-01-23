@@ -2,12 +2,17 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
+/**
+ */
 class ConfigManagerKlass {
+    /**
+     */
     public constructor() {}
 
     /**
      * @param key 
      * @param defaultValue 
+     * @returns
      */
     private config(key: string, defaultValue: string): string {
         let e: string | undefined = process.env[key]

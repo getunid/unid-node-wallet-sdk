@@ -11,6 +11,7 @@ import { Multihash } from "../utils/multihash";
 
 /**
  * @param params 
+ * @returns
  */
 export const didCreatePayload = (params: DIDCreateRequest): DIDCreatePayload => {
     const document: DIDReplacePayload = {

@@ -46,18 +46,21 @@ export class Secp256k1 {
     }
 
     /**
+     * @returns
      */
     public getPublicKey(): Buffer {
         return this._public
     }
 
     /**
+     * @returns
      */
     public getPrivateKey(): Buffer {
         return this._private
     }
 
     /**
+     * @returns
      */
     public toHexKeyPair(): Secp256k1HexKeyPair {
         return {
@@ -66,6 +69,10 @@ export class Secp256k1 {
         }
     }
 
+    /**
+     * @param jwk 
+     * @returns
+     */
     public static fromJwk(jwk: KeyPair.Secp256K1): Secp256k1 {
         let d = jwk.d
         let x = jwk.x
@@ -92,6 +99,8 @@ export class Secp256k1 {
     }
 
     /**
+     * @param includedPrivateKey 
+     * @returns
      */
     public toJwk(includedPrivateKey: boolean = false): KeyPair.Secp256K1 {
         if (! this.validatePoint()) {
@@ -113,6 +122,9 @@ export class Secp256k1 {
     }
 
     /**
+     * @param keyId 
+     * @param purpose 
+     * @returns
      */
     public toPublicKey(keyId: string, purpose: Array<string>): PublicKeyPayload {
         if (! this.validatePoint()) {
@@ -128,6 +140,7 @@ export class Secp256k1 {
     }
 
     /**
+     * @returns
      */
     public getPointX(): Buffer {
         if (this.getPublicKey().length !== UNCOMPRESSED_PUBLIC_KEY_SIZE) {
@@ -143,6 +156,7 @@ export class Secp256k1 {
     }
     
     /**
+     * @returns
      */
     public getPointY(): Buffer {
         if (this.getPublicKey().length !== UNCOMPRESSED_PUBLIC_KEY_SIZE) {
@@ -158,6 +172,7 @@ export class Secp256k1 {
     }
     
     /**
+     * @returns
      */
     public validatePoint(): boolean {
         const nx = parseInt(this.getPointX().toString('hex'), 16)
@@ -169,6 +184,7 @@ export class Secp256k1 {
 
     /**
      * @param compressed 
+     * @returns
      */
     private transformUncompressedPublicKey(compressed: Buffer): Buffer {
         return Buffer.from(secp256k1.publicKeyConvert(Uint8Array.from(compressed), false))

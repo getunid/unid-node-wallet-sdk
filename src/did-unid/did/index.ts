@@ -94,6 +94,7 @@ export class UNiDDid {
     }
 
     /**
+     * @returns
      */
     protected getKeyPairs(): {
         sign    : Secp256k1,
@@ -110,24 +111,30 @@ export class UNiDDid {
     }
 
     /**
+     * @returns
      */
     public getSeedPhrase(): Array<string> | undefined {
         return this.keyring.getSeedPhrases()
     }
 
     /**
+     * @param phrase 
+     * @param option 
+     * @returns
      */
     public async verifySeedPhrase(phrase: Array<string>, option: { isPersistent: boolean } = { isPersistent: false }): Promise<boolean> {
         return await this.keyring.verifySeedPhrase(this.getIdentifier(), phrase, option)
     }
 
     /**
+     * @returns
      */
     public getIdentifier(): string {
         return this.keyring.getIdentifier()
     }
 
     /**
+     * @returns
      */
     public async getDidDocument() {
         return await this.operator.resolve({
@@ -137,6 +144,9 @@ export class UNiDDid {
 
     /**
      * Create: Verifiable Credential
+     * 
+     * @param credential 
+     * @returns
      */
     public async createCredential<T>(credential: UNiDVerifiableCredentialBase<T>) {
         const iss = (new DateTimeUtils(credential.issuanceDate)).$toString(DateTimeTypes.default)
@@ -163,6 +173,9 @@ export class UNiDDid {
 
     /**
      * Create: Verifiable Presentation
+     * 
+     * @param credentials 
+     * @returns
      */
     public async createPresentation(credentials: Array<UNiDVerifiableCredential<string, string, UNiDCredentialSubjectMetadata> & UNiDVerifiableCredentialMetadata>) {
         const types: Array<string> = []
@@ -210,6 +223,9 @@ export class UNiDDid {
 
     /**
      * To: SDS
+     * 
+     * @param credential 
+     * @returns
      */
     public async postCredential<T1, T2, T3>(credential: UNiDVerifyCredentialResponse<T1, T2, T3>): Promise<SDSCreateResponse> {
         const operator = new UNiDSDSOperator()
@@ -244,6 +260,9 @@ export class UNiDDid {
 
     /**
      * From: SDS
+     * 
+     * @param query 
+     * @returns
      */
     public async getCredential(query: UNiDFindOneQuery): Promise<UNiDVerifyCredentialResponse<string, string, UNiDCredentialSubjectMetadata> | undefined> {
         const operator = new UNiDSDSOperator()
@@ -294,6 +313,9 @@ export class UNiDDid {
 
     /**
      * From: SDS
+     * 
+     * @param query 
+     * @returns
      */
     public async getCredentials(query: UNiDFindQuery): Promise<Array<UNiDVerifyCredentialResponse<string, string, UNiDCredentialSubjectMetadata>>> {
         const operator = new UNiDSDSOperator()
@@ -346,6 +368,8 @@ export class UNiDDid {
     }
 
     /**
+     * @param params 
+     * @returns
      */
     public async generateAuthenticationRequest(params: {
         claims     : UNiDDidAuthRequestClaims,
@@ -368,6 +392,7 @@ export class UNiDDid {
 
     /**
      * @param encryptedCredential 
+     * @returns
      */
     private async decryptCredential(encryptedCredential: string): Promise<UNiDVerifyCredentialResponse<string, string, UNiDCredentialSubjectMetadata>> {
         if (! utils.isBase64(encryptedCredential)) {

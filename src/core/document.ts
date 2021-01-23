@@ -1,6 +1,10 @@
 import { DIDDocument, ServiceEndpoint, DidPublicKey } from "./interfaces/did-document";
 
+/**
+ */
 export class UNiDDidDocument {
+    /**
+     */
     private _document: DIDDocument
 
     /**
@@ -35,6 +39,8 @@ export class UNiDDidDocument {
     }
 
     /**
+     * @param keyId 
+     * @returns
      */
     public getPublicKey(keyId: string): DidPublicKey {
         const ks = Object.assign([], this.publicKeys) as Array<DidPublicKey>

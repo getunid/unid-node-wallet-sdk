@@ -10,17 +10,28 @@ interface MongoDBConnectorContext {
 }
 
 export class MongoDBConnector implements BaseConnector {
+    /**
+     */
     private database: Db
 
+    /**
+     */
     private readonly DATABASE_NAME: string   = 'node_wallet_sdk'
+
+    /**
+     */
     private readonly COLLECTION_NAME: string = 'keyring'
 
+    /**
+     * @param context 
+     */
     constructor(context: MongoDBConnectorContext) {
         this.database = MongoDBClient.agent.db(this.DATABASE_NAME, {})
     }
 
     /**
      * @param payload 
+     * @returns
      */
     async insert(payload: MnemonicKeyringModel): Promise<Id<MnemonicKeyringModel>> {
         const coll   = this.database.collection<MnemonicKeyringModel>(this.COLLECTION_NAME, {})
@@ -31,7 +42,9 @@ export class MongoDBConnector implements BaseConnector {
     }
 
     /**
+     * @param _id 
      * @param payload 
+     * @returns
      */
     async update(_id: ObjectId, payload: MnemonicKeyringModel): Promise<Id<MnemonicKeyringModel>> {
         const coll  = this.database.collection<WithId<MnemonicKeyringModel>>(this.COLLECTION_NAME, {})
@@ -54,6 +67,7 @@ export class MongoDBConnector implements BaseConnector {
 
     /**
      * @param did 
+     * @returns
      */
     async findByDid(did: string): Promise<Id<MnemonicKeyringModel> | undefined> {
         const coll = this.database.collection<WithId<MnemonicKeyringModel>>(this.COLLECTION_NAME, {})
@@ -77,6 +91,7 @@ export class MongoDBConnector implements BaseConnector {
 
     /**
      * @param model 
+     * @returns
      */
     private async encryptModel(model: MnemonicKeyringModel): Promise<MnemonicKeyringModel> {
         const secret: Buffer = Buffer.from(ContextManager.context.encryptionKey, 'hex')
@@ -112,6 +127,7 @@ export class MongoDBConnector implements BaseConnector {
 
     /**
      * @param model 
+     * @returns
      */
     private async decryptModel(model: WithId<MnemonicKeyringModel>): Promise<WithId<MnemonicKeyringModel>> {
         const secret: Buffer = Buffer.from(ContextManager.context.encryptionKey, 'hex')

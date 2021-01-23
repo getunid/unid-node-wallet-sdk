@@ -3,15 +3,26 @@ import { UNiDDidDocument } from "./document"
 import { DIDCreateRequest, DIDCreateResponse, DIDResolutionRequest, DIDResolutionResponse } from "./interfaces/did-operation"
 import { didCreatePayload } from "./payload"
 import { HttpClient } from "../utils/http-client"
+import { UNiDNotImplementedError } from "../error"
 
 interface UNiDDidResolverContext {
     debug?: boolean
     endpoint?: string
 }
 
+/**
+ */
 export class UNiDDidOperator {
+    /**
+     */
     private readonly debug: boolean
+
+    /**
+     */
     private readonly endpoint: string
+
+    /**
+     */
     private readonly client: HttpClient
 
     /**
@@ -39,6 +50,7 @@ export class UNiDDidOperator {
 
     /**
      * @param params 
+     * @returns
      */
     public async resolve(params: DIDResolutionRequest): Promise<UNiDDidDocument> {
         try {
@@ -52,6 +64,7 @@ export class UNiDDidOperator {
 
     /**
      * @param params 
+     * @returns
      */
     public async create(params: DIDCreateRequest): Promise<UNiDDidDocument> {
         try {
@@ -67,18 +80,18 @@ export class UNiDDidOperator {
     /**
      */
     public async update(): Promise<void> {
-        throw new Error('NOT IMPLEMENTED')
+        throw new UNiDNotImplementedError()
     }
 
     /**
      */
     public async recover(): Promise<void> {
-        throw new Error('NOT IMPLEMENTED')
+        throw new UNiDNotImplementedError()
     }
 
     /**
      */
     public async deactivate(): Promise<void> {
-        throw new Error('NOT IMPLEMENTED')
+        throw new UNiDNotImplementedError()
     }
 }

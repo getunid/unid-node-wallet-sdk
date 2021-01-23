@@ -92,11 +92,23 @@ interface SDSDeleteRequest {
 export interface SDSDeleteResponse {
 }
 
+/**
+ */
 export class UNiDSDSOperator {
+    /**
+     */
     private static readonly REQUEST_HEADER_KEY: string = 'X-REQUEST-DIGEST'
 
+    /**
+     */
     private readonly debug: boolean
+
+    /**
+     */
     private readonly endpoint: string
+
+    /**
+     */
     private readonly client: HttpClient
 
     /**
@@ -124,6 +136,7 @@ export class UNiDSDSOperator {
 
     /**
      * @param request 
+     * @returns
      */
     public async create(request: SDSCreateRequest): Promise<SDSCreateResponse> {
         const URI = '/api/v1/create'
@@ -147,6 +160,7 @@ export class UNiDSDSOperator {
 
     /**
      * @param request 
+     * @returns
      */
     public async find(request: SDSFindRequest): Promise<SDSFindResponse> {
         const URI = '/api/v1/find'
@@ -170,6 +184,7 @@ export class UNiDSDSOperator {
 
     /**
      * @param request 
+     * @returns
      */
     public async findOne(request: SDSFindOneRequest): Promise<SDSFindOneResponse> {
         const URI = '/api/v1/findOne'
@@ -212,49 +227,4 @@ export class UNiDSDSOperator {
             throw err
         }
     }
-
-    // /**
-    //  * @param params 
-    //  */
-    // public async resolve(params: DIDResolutionRequest): Promise<UNiDDidDocument> {
-    //     try {
-    //         const response = await this.client.agent.get<DIDResolutionResponse>(`/api/v1/identifiers/${ params.did }`)
-
-    //         return new UNiDDidDocument(response.data.didDocument)
-    //     } catch (err) {
-    //         throw new err
-    //     }
-    // }
-
-    // /**
-    //  * @param params 
-    //  */
-    // public async create(params: DIDCreateRequest): Promise<UNiDDidDocument> {
-    //     try {
-    //         const payload  = didCreatePayload(params)
-    //         const response = await this.client.agent.post<DIDCreateResponse>('/api/v1/operations', payload)
-
-    //         return new UNiDDidDocument(response.data.didDocument)
-    //     } catch (err) {
-    //         throw new err
-    //     }
-    // }
-
-    // /**
-    //  */
-    // public async update(): Promise<void> {
-    //     throw new Error('NOT IMPLEMENTED')
-    // }
-
-    // /**
-    //  */
-    // public async recover(): Promise<void> {
-    //     throw new Error('NOT IMPLEMENTED')
-    // }
-
-    // /**
-    //  */
-    // public async deactivate(): Promise<void> {
-    //     throw new Error('NOT IMPLEMENTED')
-    // }
 }

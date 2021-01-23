@@ -26,11 +26,22 @@ export interface ProofContext {
     }
 }
 
+/**
+ */
 export class CredentialSigner {
+    /**
+     */
     private static readonly PROOF_KEY: string = 'proof'
 
+    /**
+     */
     private constructor() {}
 
+    /**
+     * @param object 
+     * @param suite 
+     * @returns
+     */
     public static async sign<T>(object: T, suite: {
         did    : string,
         keyId  : string,
@@ -58,6 +69,11 @@ export class CredentialSigner {
         return signedObject
     }
 
+    /**
+     * @param object 
+     * @param suite 
+     * @returns
+     */
     public static async verify<T>(object: T & ProofContext, suite: {
         keyId  : string,
         context: Context,
@@ -94,11 +110,14 @@ export class CredentialSigner {
 /**
  */
 export class Jws {
+    /**
+     */
     private constructor() {}
 
     /**
      * @param object 
      * @param context 
+     * @returns
      */
     public static async encode(object: any, context: Context): Promise<string> {
         // Header
@@ -129,7 +148,8 @@ export class Jws {
     /**
      * @param object 
      * @param jws 
-     * @param key 
+     * @param context 
+     * @returns
      */
     public static async verify(object: any, jws: string, context: Context): Promise<boolean> {
         const [ _header, __payload, _signature ] = jws.split('.')
@@ -174,14 +194,18 @@ export class Jws {
 /**
  */
 export class Signer {
-    /** */
+    /**
+     */
     public  static readonly ALGORITHM: string = 'sha256'
 
+    /**
+     */
     private constructor() {}
 
     /**
      * @param message 
      * @param context 
+     * @returns
      */
     public static async sign(message: Buffer, context: Context): Promise<Buffer> {
         const hasher  = crypto.createHash(this.ALGORITHM)
@@ -202,6 +226,7 @@ export class Signer {
      * @param message 
      * @param signature 
      * @param context 
+     * @returns
      */
     public static async verify(message: object, signature: Buffer, context: Context): Promise<boolean> {
         const hasher  = crypto.createHash(this.ALGORITHM)

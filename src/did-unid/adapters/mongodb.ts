@@ -4,11 +4,21 @@ interface MongoDBClientContext {
     uri: string
 }
 
+/**
+ */
 export class MongoDBClient {
+    /**
+     */
     private constructor() {}
 
+    /**
+     */
     private static _conn: MongoClient | undefined
 
+    /**
+     * @param context 
+     * @returns
+     */
     public static async initialize(context: MongoDBClientContext): Promise<MongoClient> {
         const uri = context.uri
 
@@ -24,6 +34,8 @@ export class MongoDBClient {
         return MongoDBClient._conn
     }
 
+    /**
+     */
     public static get agent(): MongoClient {
         if (MongoDBClient._conn === undefined) {
             throw new Error()
@@ -32,6 +44,8 @@ export class MongoDBClient {
         return MongoDBClient._conn
     }
 
+    /**
+     */
     public static async kill(): Promise<void> {
         if (MongoDBClient._conn === undefined) {
             throw new Error()

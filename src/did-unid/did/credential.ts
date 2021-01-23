@@ -23,6 +23,7 @@ class VerifyContainer<T1, T2, T3> {
     }
 
     /**
+     * @returns
      */
     public toJSON(): string {
         return JSON.stringify(this._object)
@@ -85,6 +86,8 @@ class VerifyContainer<T1, T2, T3> {
 /**
  */
 export class VerifiableCredential<T> {
+    /**
+     */
     private _credential: T
 
     /**
@@ -102,6 +105,7 @@ export class VerifiableCredential<T> {
 
     /**
      * @param suite 
+     * @returns
      */
     public async sign(suite: { did: string, keyId: string, context: Secp256k1 }): Promise<T> {
         return await CredentialSigner.sign(this._credential, {
@@ -113,6 +117,7 @@ export class VerifiableCredential<T> {
 
     /**
      * @param credential 
+     * @returns
      */
     public static async verify<T1, T2, T3>(credential: UNiDVerifiableCredential<T1, T2, T3> & UNiDVerifiableCredentialMetadata): Promise<VerifyContainer<T1, T2, T3>> {
         if (credential.proof === undefined) {
