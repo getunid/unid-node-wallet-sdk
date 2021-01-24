@@ -7,21 +7,28 @@ import { KeyPair } from '../../../core';
 
 /**
  */
-interface AuthnRequest extends UNiDCredentialSubjectMetadata {
+interface UNiDAuthnClaims {
+    required: Array<UNiDVerifiableCredentialTypes>,
+    optional: Array<UNiDVerifiableCredentialTypes>,
+}
+
+/**
+ */
+export interface AuthnRequest extends UNiDCredentialSubjectMetadata {
     '@type': 'AuthnRequest',
     iss: Readonly<Text>,
     kid: Readonly<Text>,
     scope: Readonly<'did_authn'>,
     registration: Readonly<{}>,
     client_id: Readonly<Text>,
-    claims?: Readonly<Array<UNiDVerifiableCredentialTypes>>,
+    claims?: Readonly<UNiDAuthnClaims>,
     response_mode?: Readonly<'fragment' | 'form_post'>,
     response_context?: Readonly<Text>,
 }
 
 /**
  */
-interface AuthnResponse extends UNiDCredentialSubjectMetadata {
+export interface AuthnResponse extends UNiDCredentialSubjectMetadata {
     '@type': 'AuthnResponse',
     did: Readonly<Text>,
     sub_jwk: Readonly<KeyPair.Secp256K1>,

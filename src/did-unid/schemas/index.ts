@@ -15,23 +15,6 @@ export type UNiDVerifiableCredentialTypes =
     | 'ImageCredentialV1'
     | 'WorksForCredentialV1'
 
-export type UNiDCredentialSubjectTypes =
-    | 'AddressPerson'
-    | 'AddressOrganization'
-    | 'AlumniOfOrganization'
-    | 'ContactPointPerson'
-    | 'ContactPointOrganization'
-    | 'EmailPerson'
-    | 'EmailOrganization'
-    | 'GenderPerson'
-    | 'NamePerson'
-    | 'NameOrganization'
-    | 'PhonePerson'
-    | 'PhoneOrganization'
-    | 'QualificationPerson'
-    | 'ImagePerson'
-    | 'WorksForOrganization'
-
 /**
  */
 export type Weaken<T, K extends keyof T> = {

@@ -197,12 +197,16 @@ export class MnemonicKeyring {
     /**
      * @returns
      */
-    public getIdentifier(): string {
+    public getIdentifier(keyId?: string): string {
         if ((! this.model) || (! this.model.did)) {
             throw new Error()
         }
 
-        return this.model.did
+        if (keyId === undefined) {
+            return `${ this.model.did }`
+        } else {
+            return `${ this.model.did }#${ keyId }`
+        }
     }
 
     /**

@@ -4,7 +4,7 @@ import { BaseConnector } from './did-unid/connector/base'
 import { UNiDDid } from './did-unid/did'
 import { VerifiableCredential } from './did-unid/did/credential'
 import { VerifiablePresentation } from './did-unid/did/presentation'
-import { UNiDNotCompatibleError, UNiDNotImplementedError } from "./error"
+import { UNiDInvalidSignatureError, UNiDNotCompatibleError, UNiDNotImplementedError } from "./error"
 import { KeyRingType } from './did-unid/keyring'
 import { MnemonicKeyring, MnemonicKeyringOptions } from './did-unid/keyring/mnemonic'
 import {
@@ -17,7 +17,10 @@ import {
     UNiDVerifiablePresentationMetadata,
     UNiDWithoutProofVerifiableCredentialMetadata,
     UNiDWithoutProofVerifiablePresentationMetadata,
+    UNiDVerifiableCredentialTypes,
 } from './did-unid/schemas'
+import { UNiDAuthCredentialV1 } from './did-unid/schemas/internal/unid-auth'
+import { promise } from './utils/promise'
 
 /**
  */
@@ -170,26 +173,6 @@ class UNiDKlass {
     }
 
     /**
-     * @param request 
-     * @returns
-     */
-    public async validateAuthenticationRequest<T1>(request: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata): Promise<UNiDVerifyPresentationResponse<T1>> {
-        const verified = this.verifyPresentation(request)
-
-        return verified
-    }
-
-    /**
-     * @param response 
-     * @returns
-     */
-    public async validateAuthenticationResponse<T1>(response: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata): Promise<UNiDVerifyPresentationResponse<T1>> {
-        const verified = this.verifyPresentation(response)
-
-        return verified
-    }
-
-    /**
      * @param input 
      * @returns
      */
@@ -227,6 +210,92 @@ class UNiDKlass {
         }
 
         return true
+    }
+
+    /**
+     * @param payload 
+     * @returns
+     */
+    private async validateAuthentication<T1>(payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata) {
+        const verifiedVP = await this.verifyPresentation(payload)
+
+        if (! verifiedVP.isValid) {
+            throw new UNiDInvalidSignatureError()
+        }
+
+        const selectedVC = UNiDAuthCredentialV1.select(verifiedVP.payload)
+
+        if (selectedVC === undefined) {
+            throw new UNiDNotCompatibleError()
+        }
+
+        const verifiedVC = await this.verifyCredential(selectedVC)
+
+        if (! verifiedVC.isValid) {
+            throw new UNiDInvalidSignatureError()
+        }
+
+        return verifiedVC.payload.credentialSubject
+    }
+
+    /**
+     * @param request 
+     * @returns
+     */
+    public async validateAuthenticationRequest<T1>(request: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata) {
+        const subject = await this.validateAuthentication(request)
+
+        if (subject['@type'] !== 'AuthnRequest') {
+            throw new UNiDNotCompatibleError()
+        }
+
+        return subject
+    }
+
+    /**
+     * @param response 
+     * @returns
+     */
+    public async validateAuthenticationResponse<T1>(response: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata, options: {
+        required: Array<UNiDVerifiableCredentialTypes>,
+        optional: Array<UNiDVerifiableCredentialTypes>,
+    }) {
+        const subject = await this.validateAuthentication(response)
+
+        if (subject['@type'] !== 'AuthnResponse') {
+            throw new UNiDNotCompatibleError()
+        }
+
+        const vp = subject.verifiablePresentation
+        const verifiedVP = await this.verifyPresentation(vp)
+
+        if (! verifiedVP.isValid) {
+            throw new UNiDInvalidSignatureError()
+        }
+
+        // Verify: Signatures
+        await promise.all(verifiedVP.payload.verifiableCredential, async (item, index) => {
+            if (! this.isVerifiableCredential(item)) {
+                throw new UNiDNotCompatibleError()
+            }
+
+            const vc = await this.verifyCredential(item)
+
+            if (! vc.isValid) {
+                throw new UNiDInvalidSignatureError()
+            }
+
+            return vc
+        })
+
+        // Verify: Types
+        options.required.forEach((type) => {
+            if (verifiedVP.metadata.credentialTypes.indexOf(type) < 0) {
+                throw new UNiDNotCompatibleError()
+            }
+        })
+
+        return verifiedVP
     }
 }
 

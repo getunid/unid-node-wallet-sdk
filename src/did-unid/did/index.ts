@@ -6,7 +6,6 @@ import {
     UNiDVerifiableCredentialBase,
     UNiDVerifiableCredentialMetadata,
     UNiDVerifiableCredential,
-    UNiDCredentialSubjectTypes,
     UNiDVerifiablePresentationV1,
     UNiDVerifiableCredentialTypes,
     UNiDCredentialSubjectMetadata,
@@ -25,28 +24,13 @@ import { UNiD } from '../../unid'
 import { promise } from '../../utils/promise'
 import { utils } from '../../utils/utils'
 import { Secp256k1 } from '../keyring/secp256k1'
+import { UNiDAuthCredentialV1 } from '../schemas/internal/unid-auth'
 
 /**
  */
 interface UNiDDidContext {
     keyring : MnemonicKeyring
     operator: UNiDDidOperator
-}
-
-/**
- */
-interface UNiDDidAuthRequestClaims {
-    requiredCredentialTypes: Array<UNiDCredentialSubjectTypes>,
-    optionalCredentialTypes: Array<UNiDCredentialSubjectTypes>,
-}
-
-/**
- */
-interface UNiDDidAuthRequest {
-    iss          : string,
-    response_type: 'callback',
-    callback_uri : string,
-    claims       : UNiDDidAuthRequestClaims,
 }
 
 /**
@@ -289,12 +273,10 @@ export class UNiDDid {
                     '@id'   : this.getIdentifier(),
                     '@type' : 'FindOneOperation',
                     clientId: ContextManager.context.clientId,
-
-                    // [[ REQUIRED ]]
+                    // REQUIRED
                     type                : query.type,
                     credentialSubjectDid: this.getIdentifier(),
-
-                    // [[ OPTIONAL ]]
+                    // OPTIONAL
                     issuerDid     : query.issuerDid,
                     issuanceDate  : issuanceDate,
                     expirationDate: expirationDate,
@@ -342,17 +324,14 @@ export class UNiDDid {
                     '@id'   : this.getIdentifier(),
                     '@type' : 'FindOperation',
                     clientId: ContextManager.context.clientId,
-
-                    // [[ METADATA - REQUIRED ]]
+                    // METADATA/REQUIRED
                     type                : query.type,
                     credentialSubjectDid: this.getIdentifier(),
-
-                    // [[ METADATA - OPTIONAL ]]
+                    // METADATA/OPTIONAL
                     issuerDid     : query.issuerDid,
                     issuanceDate  : issuanceDate,
                     expirationDate: expirationDate,
-
-                    // [[ OPTIONS ]]
+                    // OPTIONS
                     limit: query.limit,
                     page : query.page,
                 })
@@ -371,28 +350,45 @@ export class UNiDDid {
      * @param params 
      * @returns
      */
-    public async generateAuthenticationRequest(params: {
-        claims     : UNiDDidAuthRequestClaims,
-        callbackUri: string,
+    public async generateAuthenticationRequest(options: {
+        required: Array<UNiDVerifiableCredentialTypes>,
+        optional: Array<UNiDVerifiableCredentialTypes>,
     }) {
-        const payload: UNiDDidAuthRequest = {
-            iss          : this.getIdentifier(),
-            response_type: 'callback',
-            callback_uri : params.callbackUri,
-            claims       : params.claims,
-        }
-        const request = new VerifiableCredential<UNiDDidAuthRequest>(payload)
+        const vc = await this.createCredential(
+                new UNiDAuthCredentialV1({
+                '@id'  : this.getIdentifier(),
+                '@type': 'AuthnRequest',
+                iss: this.getIdentifier(),
+                kid: this.keyring.getIdentifier(SIGNING_KEY_ID),
+                client_id: this.getIdentifier(),
+                registration: {},
+                scope: 'did_authn',
+                claims: {
+                    required: options.required,
+                    optional: options.optional,
+                },
+            })
+        )
 
-        return await request.sign({
-            did    : this.keyring.getIdentifier(),
-            keyId  : SIGNING_KEY_ID,
-            context: this.keyring.getSignKeyPair(),
-        })
+        return await this.createPresentation([ vc ])
     }
 
     /**
+     * @param verifiablePresentation 
+     * @returns
      */
-    public async generateAuthenticationResponse() {
+    public async generateAuthenticationResponse(verifiablePresentation: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, UNiDCredentialSubjectMetadata>> & UNiDVerifiablePresentationMetadata) {
+        const vc = await this.createCredential(
+            new UNiDAuthCredentialV1({
+                '@id': this.getIdentifier(),
+                '@type': 'AuthnResponse',
+                did: this.getIdentifier(),
+                sub_jwk: this.keyring.getSignKeyPair().toJwk(),
+                verifiablePresentation: verifiablePresentation,
+            })
+        )
+
+        return await this.createPresentation([ vc ])
     }
 
     /**
