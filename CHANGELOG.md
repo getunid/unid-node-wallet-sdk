@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.36](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.35...v0.0.36) (2021-01-24)
+
+
+### Features
+
+* Added DID-AuthN functions ([c803fe1](https://github.com/getunid/unid-nodejs-sdk/commit/c803fe1314d11ea2ab25273a3f37302fe7d5bf3d))
+
 ### [0.0.35](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.34...v0.0.35) (2021-01-24)
 
 ### [0.0.34](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.33...v0.0.34) (2021-01-23)
