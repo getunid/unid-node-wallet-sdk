@@ -42,18 +42,10 @@ test('UNiD - AuthN Request - 1', async () => {
         required: [ 'NameCredentialV1' ],
         optional: [ 'BirthDateCredentialV1' ],
     })
-    const subject = await UNiD.validateAuthenticationRequest(request)
+    const claims = await UNiD.validateAuthenticationRequest(request)
 
-    expect(subject['@type']).toEqual('AuthnRequest')
-
-    if (subject['@type'] === 'AuthnRequest') {
-        expect(subject.claims).not.toBeUndefined()
-
-        if (subject.claims !== undefined) {
-            expect(0 <= subject.claims.required.indexOf('NameCredentialV1')).toEqual(true)
-            expect(0 <= subject.claims.optional.indexOf('BirthDateCredentialV1')).toEqual(true)
-        }
-    }
+    expect(0 <= claims.required.indexOf('NameCredentialV1')).toEqual(true)
+    expect(0 <= claims.optional.indexOf('BirthDateCredentialV1')).toEqual(true)
 })
 
 test('UNiD - AuthN Response - 1', async () => {

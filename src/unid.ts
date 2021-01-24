@@ -249,7 +249,7 @@ class UNiDKlass {
             throw new UNiDNotCompatibleError()
         }
 
-        return subject
+        return subject.claims
     }
 
     /**

@@ -7,7 +7,7 @@ import { KeyPair } from '../../../core';
 
 /**
  */
-interface UNiDAuthnClaims {
+export interface UNiDAuthnClaims {
     required: Array<UNiDVerifiableCredentialTypes>,
     optional: Array<UNiDVerifiableCredentialTypes>,
 }
@@ -21,7 +21,7 @@ export interface AuthnRequest extends UNiDCredentialSubjectMetadata {
     scope: Readonly<'did_authn'>,
     registration: Readonly<{}>,
     client_id: Readonly<Text>,
-    claims?: Readonly<UNiDAuthnClaims>,
+    claims: Readonly<UNiDAuthnClaims>,
     response_mode?: Readonly<'fragment' | 'form_post'>,
     response_context?: Readonly<Text>,
 }
