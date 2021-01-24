@@ -15,6 +15,7 @@ import { QualificationCredentialV1 } from './did-unid/schemas/qualification'
 import { ImageCredentialV1 } from './did-unid/schemas/image'
 import { WorksForCredentialV1 } from './did-unid/schemas/works-for'
 import { UNiDSDSCredentialV1 } from './did-unid/schemas/internal/unid-sds'
+import { UNiDAuthCredentialV1 } from './did-unid/schemas/internal/unid-auth'
 
 export {
     UNiD,
@@ -34,5 +35,6 @@ export {
     QualificationCredentialV1,
     ImageCredentialV1,
     WorksForCredentialV1,
-    UNiDSDSCredentialV1 as SDSOperationCredentialV1,
+    UNiDSDSCredentialV1,
+    UNiDAuthCredentialV1,
 }

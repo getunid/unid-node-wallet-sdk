@@ -5,6 +5,7 @@ export namespace KeyPair {
         x: string
         y: string
         d?: string
+        kid?: string,
     }
 }
 

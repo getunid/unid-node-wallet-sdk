@@ -1,6 +1,7 @@
-import { Text, DateTime, Number } from '../schema.org'
+import { Text } from '../schema.org'
 import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../../../error'
-import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '..';
+import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiableCredentialTypes, UNiDVerifiablePresentation, UNiDVerifiablePresentationMetadata } from '..';
+import { KeyPair } from '../../../core';
 
 // UNiDAuthCredentialV1
 
@@ -8,12 +9,23 @@ import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiable
  */
 interface AuthnRequest extends UNiDCredentialSubjectMetadata {
     '@type': 'AuthnRequest',
-    clientId: Readonly<Text>,
+    iss: Readonly<Text>,
+    kid: Readonly<Text>,
+    scope: Readonly<'did_authn'>,
+    registration: Readonly<{}>,
+    client_id: Readonly<Text>,
+    claims?: Readonly<Array<UNiDVerifiableCredentialTypes>>,
+    response_mode?: Readonly<'fragment' | 'form_post'>,
+    response_context?: Readonly<Text>,
 }
 
+/**
+ */
 interface AuthnResponse extends UNiDCredentialSubjectMetadata {
     '@type': 'AuthnResponse',
-    clientId: Readonly<Text>,
+    did: Readonly<Text>,
+    sub_jwk: Readonly<KeyPair.Secp256K1>,
+    verifiablePresentation: Readonly<UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, UNiDCredentialSubjectMetadata>> & UNiDVerifiablePresentationMetadata>,
 }
 
 /**
