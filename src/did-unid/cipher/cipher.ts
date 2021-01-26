@@ -28,12 +28,12 @@ export class Cipher {
      * @param secret 
      * @returns
      */
-    public static async encrypt(data: Buffer, secret: Buffer): Promise<Buffer> {
+    public static async encrypt(content: Buffer, secret: Buffer): Promise<Buffer> {
         const salt = Runtime.Commons.randomBytes(this.SALT_LENGTH)
         const iv   = Runtime.Commons.randomBytes(this.IV_LENGTH)
         const key  = await Runtime.Scrypt.kdf(secret, salt, this.PASS_LENGTH)
 
-        return Buffer.concat([ salt, iv, Runtime.AES.encrypt(data, key, iv) ])
+        return Buffer.concat([ salt, Runtime.AES.encrypt(content, key, iv), iv ])
     }
 
     /**
@@ -41,16 +41,16 @@ export class Cipher {
      * @param secret 
      * @returns
      */
-    public static async decrypt(data: Buffer, secret: Buffer): Promise<Buffer> {
-        if (data.length < (this.SALT_LENGTH + this.IV_LENGTH)) {
+    public static async decrypt(content: Buffer, secret: Buffer): Promise<Buffer> {
+        if (content.length < (this.SALT_LENGTH + this.IV_LENGTH)) {
             throw new Error()
         }
 
-        const salt  = data.slice(0, this.SALT_LENGTH)
-        const iv    = data.slice(this.SALT_LENGTH, this.SALT_LENGTH + this.IV_LENGTH)
-        const final = data.slice(this.SALT_LENGTH + this.IV_LENGTH)
-        const key   = await Runtime.Scrypt.kdf(secret, salt, this.PASS_LENGTH)
+        const salt = content.slice(0, this.SALT_LENGTH)
+        const iv   = content.slice(-(this.IV_LENGTH))
+        const data = content.slice(this.SALT_LENGTH, -(this.IV_LENGTH))
+        const key  = await Runtime.Scrypt.kdf(secret, salt, this.PASS_LENGTH)
 
-        return Runtime.AES.decrypt(final, key, iv)
+        return Runtime.AES.decrypt(data, key, iv)
     }
 }
