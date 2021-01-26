@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.39](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.38...v0.0.39) (2021-01-26)
+
+
+### Features
+
+* Re-oder encrypted data structure ([123cb90](https://github.com/getunid/unid-nodejs-sdk/commit/123cb909af63f8e7db448a7c47ae9982d0856c4e))
+
 ### [0.0.38](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.37...v0.0.38) (2021-01-26)
 
 
