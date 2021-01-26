@@ -1,4 +1,4 @@
-import crypto from 'crypto'
+import { Runtime } from '../../runtime'
 
 /**
  */
@@ -29,23 +29,11 @@ export class Cipher {
      * @returns
      */
     public static async encrypt(data: Buffer, secret: Buffer): Promise<Buffer> {
-        const salt = crypto.randomBytes(this.SALT_LENGTH)
-        const iv   = crypto.randomBytes(this.IV_LENGTH)
-        const key  = await (new Promise<Buffer>((resolve, reject) => {
-            crypto.scrypt(secret, salt, this.PASS_LENGTH, (err, key) => {
-                if (err) {
-                    return reject(err)
-                }
-                return resolve(key)
-            })
-        }))
+        const salt = Runtime.Commons.randomBytes(this.SALT_LENGTH)
+        const iv   = Runtime.Commons.randomBytes(this.IV_LENGTH)
+        const key  = await Runtime.Scrypt.kdf(secret, salt, this.PASS_LENGTH)
 
-        const cipher = crypto.createCipheriv(this.ALGORITHM, key, iv)
-        const buffer = cipher.update(data)
-
-        return Buffer.concat([
-            salt, iv, Buffer.concat([ buffer, cipher.final() ])
-        ])
+        return Buffer.concat([ salt, iv, Runtime.AES.encrypt(data, key, iv) ])
     }
 
     /**
@@ -61,20 +49,8 @@ export class Cipher {
         const salt  = data.slice(0, this.SALT_LENGTH)
         const iv    = data.slice(this.SALT_LENGTH, this.SALT_LENGTH + this.IV_LENGTH)
         const final = data.slice(this.SALT_LENGTH + this.IV_LENGTH)
-        const key   = await (new Promise<Buffer>((resolve, reject) => {
-            crypto.scrypt(secret, salt, this.PASS_LENGTH, (err, key) => {
-                if (err) {
-                    return reject(err)
-                }
-                return resolve(key)
-            })
-        }))
+        const key   = await Runtime.Scrypt.kdf(secret, salt, this.PASS_LENGTH)
 
-        const cipher = crypto.createDecipheriv(this.ALGORITHM, key, iv)
-        const buffer = cipher.update(final)
-
-        return Buffer.concat([
-            buffer, cipher.final()
-        ])
+        return Runtime.AES.decrypt(final, key, iv)
     }
 }

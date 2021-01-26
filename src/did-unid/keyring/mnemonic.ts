@@ -1,8 +1,6 @@
-import * as bip32 from 'bip32'
-import * as bip39 from 'bip39'
-import { ObjectID } from 'mongodb'
 import { BaseConnector, MnemonicKeyringModel, Id } from '../connector/base'
 import { Secp256k1 } from './secp256k1'
+import { BIP32Interface, Runtime } from '../../runtime'
 
 interface BIP39Context {
     seed: Buffer,
@@ -98,7 +96,7 @@ export class MnemonicKeyring {
                 mnemonic: mnemonic,
             })
         } else {
-            return await this.connector.update(new ObjectID(this.model._id), {
+            return await this.connector.update(this.model._id, {
                 did     : did,
                 sign    : this.sign.toHexKeyPair(),
                 update  : this.update.toHexKeyPair(),
@@ -130,10 +128,10 @@ export class MnemonicKeyring {
      */
     public static async createKeyring(connector: BaseConnector, options?: MnemonicKeyringOptions): Promise<MnemonicKeyring> {
         const context  = await MnemonicKeyring.generateBip39Seed(options)
-        const sign     = await MnemonicKeyring.generateSecp256k1(context, MnemonicKeyring.signDerivationPath)
-        const update   = await MnemonicKeyring.generateSecp256k1(context, MnemonicKeyring.updateDerivationPath)
-        const recovery = await MnemonicKeyring.generateSecp256k1(context, MnemonicKeyring.recoveryDerivationPath)
-        const encrypt  = await MnemonicKeyring.generateSecp256k1(context, MnemonicKeyring.encryptDerivationPath)
+        const sign     = MnemonicKeyring.generateSecp256k1(context, MnemonicKeyring.signDerivationPath)
+        const update   = MnemonicKeyring.generateSecp256k1(context, MnemonicKeyring.updateDerivationPath)
+        const recovery = MnemonicKeyring.generateSecp256k1(context, MnemonicKeyring.recoveryDerivationPath)
+        const encrypt  = MnemonicKeyring.generateSecp256k1(context, MnemonicKeyring.encryptDerivationPath)
         const instance = new MnemonicKeyring({
             connector: connector,
             context  : context,
@@ -276,8 +274,8 @@ export class MnemonicKeyring {
      * @param derivationPath 
      * @returns
      */
-    public static async generateSecp256k1(context: BIP39Context, derivationPath: string): Promise<Secp256k1> {
-        const node = await MnemonicKeyring.generateHDNodeByDerivationPath(context, derivationPath)
+    public static generateSecp256k1(context: BIP39Context, derivationPath: string): Secp256k1 {
+        const node = MnemonicKeyring.generateHDNodeByDerivationPath(context, derivationPath)
 
         return new Secp256k1({
             public : node.publicKey  || Buffer.from([]),
@@ -307,8 +305,8 @@ export class MnemonicKeyring {
             }
         }
 
-        const mnemonic = bip39.generateMnemonic(fromSize(options.length))
-        const seed     = await bip39.mnemonicToSeed(mnemonic)
+        const mnemonic = Runtime.BIP39.generateMnemonic(fromSize(options.length))
+        const seed     = await Runtime.BIP39.mnemonicToSeed(mnemonic)
     
         return {
             mnemonic: mnemonic,
@@ -321,10 +319,7 @@ export class MnemonicKeyring {
      * @param derivationPath 
      * @returns
      */
-    public static async generateHDNodeByDerivationPath(context: BIP39Context, derivationPath: string): Promise<bip32.BIP32Interface> {
-        const root  = bip32.fromSeed(context.seed)
-        const child = root.derivePath(derivationPath)
-    
-        return child
+    public static generateHDNodeByDerivationPath(context: BIP39Context, derivationPath: string): BIP32Interface {
+        return Runtime.BIP32.getNode(context.seed, derivationPath)
     }
 }

@@ -1,7 +1,7 @@
-import { KeyPair, PublicKeyPayload } from '../../core'
 import base64url from 'base64url'
-import secp256k1 from 'secp256k1'
+import { KeyPair, PublicKeyPayload } from '../../core'
 import { utils } from '../../utils/utils'
+import { Runtime } from '../../runtime'
 
 interface Secp256k1Context {
     public : Buffer,
@@ -187,6 +187,6 @@ export class Secp256k1 {
      * @returns
      */
     private transformUncompressedPublicKey(compressed: Buffer): Buffer {
-        return Buffer.from(secp256k1.publicKeyConvert(Uint8Array.from(compressed), false))
+        return Buffer.from(Runtime.Secp256k1.publicKeyConvert(Uint8Array.from(compressed), false))
     }
 }

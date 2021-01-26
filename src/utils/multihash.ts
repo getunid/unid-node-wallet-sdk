@@ -1,5 +1,4 @@
-import multihashes from 'multihashes'
-import CryptoJS from 'crypto-js'
+import { Runtime } from '../runtime'
 import { Encoder } from './encoder'
 import JsonCanonicalizer from './canonicalizer'
 
@@ -17,7 +16,7 @@ export class Multihash {
     public static hash (content: Buffer): Buffer {
         const conventionalHash = this.hashAsNonMultihashBuffer(content)
 
-        return Buffer.from(multihashes.encode(Uint8Array.from(conventionalHash), ALGORITHM_CODE))
+        return Buffer.from(Runtime.Multihashes.encode(Uint8Array.from(conventionalHash), ALGORITHM_CODE))
     }
 
     /**
@@ -25,10 +24,7 @@ export class Multihash {
      * @returns
      */
     public static hashAsNonMultihashBuffer (content: Buffer): Buffer {
-        const buffer = CryptoJS.enc.Hex.parse(content.toString('hex'))
-        const cipher = CryptoJS.SHA256(buffer)
-
-        return Buffer.from(cipher.toString(CryptoJS.enc.Hex), 'hex')
+        return Buffer.from(Runtime.SHA256.digest(content, 'HEX'), 'hex')
     }
 
     /**
@@ -58,7 +54,7 @@ export class Multihash {
      * @returns
      */
     public static decode (multihashBuffer: Buffer): { algorithm: number, hash: Buffer } {
-        const multihash = multihashes.decode(Uint8Array.from(multihashBuffer))
+        const multihash = Runtime.Multihashes.decode(Uint8Array.from(multihashBuffer))
 
         return {
             hash: Buffer.from(multihash.digest),
@@ -93,7 +89,7 @@ export class Multihash {
      */
     public static isComputedUsingHashAlgorithm (hash: Buffer, expectedHashAlgorithmInMultihashCode: number): boolean {
         try {
-            const multihash = multihashes.decode(Uint8Array.from(hash))
+            const multihash = Runtime.Multihashes.decode(Uint8Array.from(hash))
 
             return (multihash.code === expectedHashAlgorithmInMultihashCode)
         } catch {

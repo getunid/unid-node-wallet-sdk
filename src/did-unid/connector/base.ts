@@ -1,4 +1,3 @@
-import { ObjectId } from 'mongodb'
 import { Secp256k1HexKeyPair } from '../keyring/secp256k1'
 
 export type Id<T> = T & { _id: string }
@@ -15,7 +14,7 @@ export interface MnemonicKeyringModel {
 
 export abstract class BaseConnector {
     abstract insert(payload: MnemonicKeyringModel): Promise<Id<MnemonicKeyringModel>>
-    abstract update(id: ObjectId, payload: MnemonicKeyringModel): Promise<Id<MnemonicKeyringModel>>
+    abstract update(id: string, payload: MnemonicKeyringModel): Promise<Id<MnemonicKeyringModel>>
     abstract findByDid(did: string): Promise<Id<MnemonicKeyringModel> | undefined>
     abstract deleteById(payload: MnemonicKeyringModel): Promise<MnemonicKeyringModel>
 }

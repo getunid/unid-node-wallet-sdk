@@ -1,8 +1,7 @@
-import { Secp256k1 as Context } from "../keyring/secp256k1";
-import crypto from 'crypto'
-import secp256k1 from 'secp256k1'
 import base64url from 'base64url'
 import lodash from 'lodash'
+import { Runtime } from '../../runtime'
+import { Secp256k1 as Context } from "../keyring/secp256k1";
 import { DateTimeTypes, DateTimeUtils } from "../../utils/datetime";
 import { utils } from "../../utils/utils";
 import { UNiDNotCompatibleError } from "../../error";
@@ -196,10 +195,6 @@ export class Jws {
 export class Signer {
     /**
      */
-    public  static readonly ALGORITHM: string = 'sha256'
-
-    /**
-     */
     private constructor() {}
 
     /**
@@ -208,13 +203,9 @@ export class Signer {
      * @returns
      */
     public static async sign(message: Buffer, context: Context): Promise<Buffer> {
-        const hasher  = crypto.createHash(this.ALGORITHM)
-        const payload = JSON.stringify(message)
-
-        hasher.update(payload)
-
-        const digest    = hasher.digest()
-        const signature = secp256k1.ecdsaSign(
+        const payload   = Buffer.from(JSON.stringify(message), 'utf-8')
+        const digest    = Buffer.from(Runtime.SHA256.digest(payload, 'HEX'), 'hex')
+        const signature = Runtime.Secp256k1.ecdsaSign(
             Uint8Array.from(digest),
             Uint8Array.from(context.getPrivateKey()),
         )
@@ -229,13 +220,9 @@ export class Signer {
      * @returns
      */
     public static async verify(message: object, signature: Buffer, context: Context): Promise<boolean> {
-        const hasher  = crypto.createHash(this.ALGORITHM)
-        const payload = JSON.stringify(message)
-
-        hasher.update(payload)
-
-        const digest = hasher.digest()
-        const verify = secp256k1.ecdsaVerify(
+        const payload = Buffer.from(JSON.stringify(message), 'utf-8')
+        const digest  = Buffer.from(Runtime.SHA256.digest(payload, 'HEX'), 'hex')
+        const verify  = Runtime.Secp256k1.ecdsaVerify(
             Uint8Array.from(signature),
             Uint8Array.from(digest),
             Uint8Array.from(context.getPublicKey())

@@ -1,4 +1,3 @@
-import crypto from 'crypto'
 import { UNiDNotCompatibleError } from '../error'
 
 /**
@@ -24,16 +23,6 @@ const splitDid = (input: string): { did: string, keyId: string } => {
  */
 const isBase64 = (input: string): boolean => {
     return (Buffer.from(input, 'base64').toString('base64') === input)
-}
-
-/**
- * @param length 
- * @returns
- */
-const getRandomHexString = (length: number): string => {
-    let bytes = crypto.randomBytes(length * 2).toString('hex')
-
-    return bytes.slice(0, length)
 }
 
 /**
@@ -108,7 +97,6 @@ const isRequiredUpdate = (l: string, r: string): boolean => {
 }
 
 const utils = {
-    getRandomHexString,
     getRandomInt,
     trimString,
     range,

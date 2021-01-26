@@ -1,4 +1,4 @@
-import crypto from 'crypto'
+import { Runtime } from '../../runtime'
 
 /**
  */
@@ -19,12 +19,8 @@ export class Hasher {
      * @param secret 
      * @returns
      */
-    public static digest(data: Buffer, secret: Buffer): string {
-        const hasher = crypto.createHmac(Hasher.ALGORITHM, secret)
-
-        hasher.update(data)
-
-        return hasher.digest('hex')
+    public static digest(content: Buffer, secret: Buffer): string {
+        return Runtime.HMAC.digest(content, secret, 'SHA512', 'HEX')
     }
 
     /**
@@ -33,12 +29,10 @@ export class Hasher {
      * @param secret 
      * @returns
      */
-    public static verify(data: Buffer, digest: Buffer, secret: Buffer): boolean {
-        const hasher = crypto.createHmac(Hasher.ALGORITHM, secret)
+    public static verify(content: Buffer, digest: Buffer, secret: Buffer): boolean {
+        const _digest = Buffer.from(Runtime.HMAC.digest(content, secret, 'SHA512', 'HEX'), 'hex')
 
-        hasher.update(data)
-
-        return hasher.digest().equals(digest)
+        return _digest.equals(digest)
     }
 
     /**

@@ -46,23 +46,23 @@ export class MongoDBConnector implements BaseConnector {
      * @param payload 
      * @returns
      */
-    async update(_id: ObjectId, payload: MnemonicKeyringModel): Promise<Id<MnemonicKeyringModel>> {
+    async update(_id: string, payload: MnemonicKeyringModel): Promise<Id<MnemonicKeyringModel>> {
         const coll  = this.database.collection<WithId<MnemonicKeyringModel>>(this.COLLECTION_NAME, {})
         const model = await this.encryptModel(payload)
         const item  = await coll.findOne({
-            _id: _id,
+            _id: new ObjectId(_id),
         })
         if (item === undefined) {
             throw new UNiDInvalidDataError()
         }
 
         await coll.updateOne({ 
-            _id: _id,
+            _id: new ObjectId(_id),
         }, {
             $set: model,
         })
 
-        return Object.assign<Id<{}>, MnemonicKeyringModel>({ _id: _id.toHexString() }, payload)
+        return Object.assign<Id<{}>, MnemonicKeyringModel>({ _id: _id }, payload)
     }
 
     /**
