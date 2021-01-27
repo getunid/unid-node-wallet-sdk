@@ -1,4 +1,4 @@
-import { KeyPair, PublicKeyType } from "./key-pair";
+import { KeyPairSecp256K1, PublicKeyType } from "./key-pair";
 
 export interface ServiceEndpoint {
     id: string
@@ -11,7 +11,7 @@ export interface DidPublicKey {
     id: string
     controller: string
     type: PublicKeyType,
-    publicKeyJwk: KeyPair.Secp256K1
+    publicKeyJwk: KeyPairSecp256K1
 }
   
 export interface Authentication {

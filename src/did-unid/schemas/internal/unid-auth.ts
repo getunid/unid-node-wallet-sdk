@@ -1,7 +1,7 @@
 import { Text } from '../schema.org'
 import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../../../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiableCredentialTypes, UNiDVerifiablePresentation, UNiDVerifiablePresentationMetadata } from '..';
-import { KeyPair } from '../../../core';
+import { KeyPairSecp256K1 } from '../../../core/interfaces/key-pair';
 
 // UNiDAuthCredentialV1
 
@@ -31,7 +31,7 @@ export interface AuthnRequest extends UNiDCredentialSubjectMetadata {
 export interface AuthnResponse extends UNiDCredentialSubjectMetadata {
     '@type': 'AuthnResponse',
     did: Readonly<Text>,
-    sub_jwk: Readonly<KeyPair.Secp256K1>,
+    sub_jwk: Readonly<KeyPairSecp256K1>,
     verifiablePresentation: Readonly<UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, UNiDCredentialSubjectMetadata>> & UNiDVerifiablePresentationMetadata>,
 }
 

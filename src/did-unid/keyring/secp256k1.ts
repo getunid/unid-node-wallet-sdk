@@ -1,7 +1,8 @@
 import base64url from 'base64url'
-import { KeyPair, PublicKeyPayload } from '../../core'
+import { PublicKeyPayload } from '../../core'
 import { utils } from '../../utils/utils'
 import { Runtime } from '../../runtime'
+import { KeyPairSecp256K1 } from '../../core/interfaces/key-pair'
 
 interface Secp256k1Context {
     public : Buffer,
@@ -73,7 +74,7 @@ export class Secp256k1 {
      * @param jwk 
      * @returns
      */
-    public static fromJwk(jwk: KeyPair.Secp256K1): Secp256k1 {
+    public static fromJwk(jwk: KeyPairSecp256K1): Secp256k1 {
         let d = jwk.d
         let x = jwk.x
         let y = jwk.y
@@ -102,12 +103,12 @@ export class Secp256k1 {
      * @param includedPrivateKey 
      * @returns
      */
-    public toJwk(includedPrivateKey: boolean = false): KeyPair.Secp256K1 {
+    public toJwk(includedPrivateKey: boolean = false): KeyPairSecp256K1 {
         if (! this.validatePoint()) {
             throw new Error()
         }
 
-        const jwk: KeyPair.Secp256K1 = {
+        const jwk: KeyPairSecp256K1 = {
             kty: 'EC',
             crv: 'secp256k1',
             x  : base64url.encode(this.getPointX()),

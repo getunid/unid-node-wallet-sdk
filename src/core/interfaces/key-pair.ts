@@ -1,12 +1,10 @@
-export namespace KeyPair {
-    export interface Secp256K1 {
-        kty: 'EC'
-        crv: 'secp256k1'
-        x: string
-        y: string
-        d?: string
-        kid?: string,
-    }
+export interface KeyPairSecp256K1 {
+    kty: 'EC'
+    crv: 'secp256k1'
+    x: string
+    y: string
+    d?: string
+    kid?: string,
 }
 
 export type PublicKeyType =

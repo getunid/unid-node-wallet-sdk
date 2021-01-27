@@ -1,10 +1,10 @@
 import { DIDDocument } from "./did-document";
-import { KeyPair, PublicKeyType } from "./key-pair";
+import { KeyPairSecp256K1, PublicKeyType } from "./key-pair";
 
 export interface PublicKeyPayload {
     id  : string,
     type: PublicKeyType,
-    jwk : KeyPair.Secp256K1,
+    jwk : KeyPairSecp256K1,
     purpose: Array<string>,
 }
 
@@ -82,8 +82,8 @@ export interface DIDResolutionResponse {
 export interface DIDCreateRequest {
     publicKeys: Array<PublicKeyPayload>,
     commitmentKeys: {
-        recovery: KeyPair.Secp256K1,
-        update  : KeyPair.Secp256K1,
+        recovery: KeyPairSecp256K1,
+        update  : KeyPairSecp256K1,
     },
     serviceEndpoints: Array<string>,
 }
