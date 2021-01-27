@@ -1,7 +1,7 @@
 import { Text } from '../schema.org'
 import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../../../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiableCredentialTypes, UNiDVerifiablePresentation, UNiDVerifiablePresentationMetadata } from '..';
-import { KeyPairSecp256K1 } from '../../../core/interfaces/key-pair';
+import { KeyPairSecp256K1 } from '../../../core';
 
 // UNiDAuthCredentialV1
 

@@ -1,8 +1,7 @@
 import base64url from 'base64url'
-import { PublicKeyPayload } from '../../core'
+import { KeyPairSecp256K1, PublicKeyPayload } from '../../core'
 import { utils } from '../../utils/utils'
 import { Runtime } from '../../runtime'
-import { KeyPairSecp256K1 } from '../../core/interfaces/key-pair'
 
 interface Secp256k1Context {
     public : Buffer,
