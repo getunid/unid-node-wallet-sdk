@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.40](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.39...v0.0.40) (2021-01-27)
+
+
+### Features
+
+* Remove namespace ([87fb1c7](https://github.com/getunid/unid-nodejs-sdk/commit/87fb1c72197dd0c1231eb06a5502c657713fed7a))
+
 ### [0.0.39](https://github.com/getunid/unid-nodejs-sdk/compare/v0.0.38...v0.0.39) (2021-01-26)
 
 
