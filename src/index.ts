@@ -1,6 +1,4 @@
 import { UNiD, UNiDNetworkType } from './unid'
-import { MongoDBClient } from './did-unid/adapters/mongodb'
-import { MongoDBConnector } from './did-unid/connector/mongodb'
 import { KeyRingType } from './did-unid/keyring'
 import { Hasher } from './did-unid/cipher/hasher'
 import { AddressCredentialV1 } from './did-unid/schemas/address'
@@ -20,8 +18,6 @@ import { UNiDAuthCredentialV1 } from './did-unid/schemas/internal/unid-auth'
 export {
     UNiD,
     UNiDNetworkType,
-    MongoDBClient,
-    MongoDBConnector,
     KeyRingType,
     Hasher,
     AddressCredentialV1,

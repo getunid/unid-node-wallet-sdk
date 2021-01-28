@@ -15,10 +15,9 @@ import {
 import { DateTimeTypes, DateTimeUtils } from '../../utils/datetime'
 import { UNiDInvalidDataError, UNiDInvalidSignatureError, UNiDNotCompatibleError, UNiDNotUniqueError } from '../../error'
 import { VerifiablePresentation } from './presentation'
-import { SIGNING_KEY_ID, UNiDVerifyCredentialResponse } from '../../unid'
+import { SIGNING_KEY_ID, UNiDContextInternal, UNiDVerifyCredentialResponse } from '../../unid'
 import { Cipher } from '../cipher/cipher'
 import { UNiDSDSCredentialV1, UNiDSDSCredentialV1Types } from '../schemas/internal/unid-sds'
-import { ContextManager } from '../../context'
 import { UNiDSDSOperator, SDSCreateResponse, SDSFindOperationResponsePayload } from '../sds/operator'
 import { UNiD } from '../../unid'
 import { promise } from '../../utils/promise'
@@ -29,6 +28,7 @@ import { UNiDAuthCredentialV1 } from '../schemas/internal/unid-auth'
 /**
  */
 interface UNiDDidContext {
+    context : UNiDContextInternal
     keyring : MnemonicKeyring
     operator: UNiDDidOperator
 }
@@ -70,11 +70,16 @@ export class UNiDDid {
     private readonly operator: UNiDDidOperator
 
     /**
+     */
+    private readonly context: UNiDContextInternal
+
+    /**
      * @param context 
      */
     constructor(context: UNiDDidContext) {
         this.keyring  = context.keyring
         this.operator = context.operator
+        this.context  = context.context
     }
 
     /**
@@ -212,7 +217,9 @@ export class UNiDDid {
      * @returns
      */
     public async postCredential<T1, T2, T3>(credential: UNiDVerifyCredentialResponse<T1, T2, T3>): Promise<SDSCreateResponse> {
-        const operator = new UNiDSDSOperator()
+        const operator = new UNiDSDSOperator({
+            context: this.context,
+        })
 
         const data: Buffer   = Buffer.from(credential.toJSON(), 'utf-8')
         const secret: Buffer = this.keyring.getEncryptKeyPair().getPrivateKey()
@@ -227,7 +234,7 @@ export class UNiDDid {
                 new UNiDSDSCredentialV1({
                     '@id'    : this.getIdentifier(),
                     '@type'  : 'CreateOperation',
-                    clientId : ContextManager.context.clientId,
+                    clientId : this.context.clientId,
                     payload  : encrypted,
                     context  : metadata['@context'],
                     type     : metadata.type,
@@ -249,7 +256,9 @@ export class UNiDDid {
      * @returns
      */
     public async getCredential(query: UNiDFindOneQuery): Promise<UNiDVerifyCredentialResponse<string, string, UNiDCredentialSubjectMetadata> | undefined> {
-        const operator = new UNiDSDSOperator()
+        const operator = new UNiDSDSOperator({
+            context: this.context,
+        })
 
         let issuanceDate  : { begin?: string, end?: string } | undefined = undefined
         let expirationDate: { begin?: string, end?: string } | undefined = undefined
@@ -272,7 +281,7 @@ export class UNiDDid {
                 new UNiDSDSCredentialV1({
                     '@id'   : this.getIdentifier(),
                     '@type' : 'FindOneOperation',
-                    clientId: ContextManager.context.clientId,
+                    clientId: this.context.clientId,
                     // REQUIRED
                     type                : query.type,
                     credentialSubjectDid: this.getIdentifier(),
@@ -300,7 +309,9 @@ export class UNiDDid {
      * @returns
      */
     public async getCredentials(query: UNiDFindQuery): Promise<Array<UNiDVerifyCredentialResponse<string, string, UNiDCredentialSubjectMetadata>>> {
-        const operator = new UNiDSDSOperator()
+        const operator = new UNiDSDSOperator({
+            context: this.context,
+        })
 
         let issuanceDate  : { begin?: string, end?: string } | undefined = undefined
         let expirationDate: { begin?: string, end?: string } | undefined = undefined
@@ -323,7 +334,7 @@ export class UNiDDid {
                 new UNiDSDSCredentialV1({
                     '@id'   : this.getIdentifier(),
                     '@type' : 'FindOperation',
-                    clientId: ContextManager.context.clientId,
+                    clientId: this.context.clientId,
                     // METADATA/REQUIRED
                     type                : query.type,
                     credentialSubjectDid: this.getIdentifier(),

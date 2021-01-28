@@ -1,13 +1,14 @@
 import { Hasher } from "../cipher/hasher"
-import { ContextManager } from "../../context"
 import { UNiDVerifiableCredential, UNiDVerifiablePresentation, UNiDVerifiablePresentationMetadata } from "../schemas"
 import { UNiDSDSCredentialV1Types } from "../schemas/internal/unid-sds"
 import { ConfigManager } from "../../config"
 import { UNiDNotImplementedError } from "../../error"
 import { HttpClient } from "../../utils/http-client"
+import { UNiDContextInternal } from "../../unid"
 
 interface UNiDSDSOperatorContext {
-    debug?: boolean
+    context  : UNiDContextInternal
+    debug?   : boolean
     endpoint?: string
 }
 
@@ -112,16 +113,20 @@ export class UNiDSDSOperator {
     private readonly client: HttpClient
 
     /**
+     */
+    private readonly context: UNiDContextInternal
+
+    /**
      * @param context 
      */
-    constructor(context?: UNiDSDSOperatorContext) {
-        if ((context !== undefined) && (context.debug !== undefined)) {
+    constructor(context: UNiDSDSOperatorContext) {
+        if (context.debug !== undefined) {
             this.debug = context.debug
         } else {
             this.debug = false
         }
 
-        if ((context !== undefined) && (context.endpoint !== undefined)) {
+        if (context.endpoint !== undefined) {
             this.endpoint = context.endpoint
         } else {
             this.endpoint = ConfigManager.SDS_ENDPOINT_URI
@@ -132,6 +137,8 @@ export class UNiDSDSOperator {
         }, {
             debug: this.debug,
         })
+
+        this.context = context.context
     }
 
     /**
@@ -146,7 +153,7 @@ export class UNiDSDSOperator {
                 payload: JSON.stringify(request.payload)
             }
             const digest = Hasher.generateRequestDigest(URI, context.payload, {
-                clientSecret: ContextManager.context.clientSecret,
+                clientSecret: this.context.clientSecret,
             })
             const response = await this.client.setHeaders({
                 [UNiDSDSOperator.REQUEST_HEADER_KEY]: digest,
@@ -170,7 +177,7 @@ export class UNiDSDSOperator {
                 payload: JSON.stringify(request.payload)
             }
             const digest = Hasher.generateRequestDigest(URI, context.payload, {
-                clientSecret: ContextManager.context.clientSecret,
+                clientSecret: this.context.clientSecret,
             })
             const response = await this.client.setHeaders({
                 [UNiDSDSOperator.REQUEST_HEADER_KEY]: digest,
@@ -194,7 +201,7 @@ export class UNiDSDSOperator {
                 payload: JSON.stringify(request.payload)
             }
             const digest = Hasher.generateRequestDigest(URI, context.payload, {
-                clientSecret: ContextManager.context.clientSecret,
+                clientSecret: this.context.clientSecret,
             })
             const response = await this.client.setHeaders({
                 [UNiDSDSOperator.REQUEST_HEADER_KEY]: digest,

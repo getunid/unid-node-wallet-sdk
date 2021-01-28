@@ -1,7 +1,6 @@
+import { MongoClient } from 'mongodb'
 import {
     UNiD,
-    MongoDBClient,
-    MongoDBConnector,
     KeyRingType,
     AddressCredentialV1,
     PhoneCredentialV1,
@@ -16,19 +15,17 @@ import {
     WorksForCredentialV1,
 } from '../src'
 
+const client = new MongoClient('mongodb://root:password@localhost:27017', {
+    useUnifiedTopology: true,
+})
+
 beforeAll(() => {
     return new Promise(async (resolve, reject) => {
-        const client = await MongoDBClient.initialize({
-            uri: 'mongodb://root:password@localhost:27017',
-        })
-        const connector = new MongoDBConnector({
-            client: client,
-        })
         UNiD.init({
             clientId     : '718AC7F1006ECA672E1D1BE9B4666D3EEFD6C2805F9200328502853AFDFD3219',
             clientSecret : '670E362C65183C3850A8FC6E0ED26EC72FDAE67846FDCE1904F604C8E4757273',
             encryptionKey: '1AFFD4C6096D0EF4344E963612229DBF786BBC23C60611093FA9149C0E815E68',
-            connector    : connector,
+            mongoClient  : await client.connect(),
         })
 
         return resolve(true)
@@ -37,7 +34,9 @@ beforeAll(() => {
 
 afterAll(() => {
     return new Promise(async (resolve, reject) => {
-        await MongoDBClient.kill()
+        if (client.isConnected()) {
+            await client.close()
+        }
 
         return resolve(true)
     })

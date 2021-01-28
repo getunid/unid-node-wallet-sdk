@@ -1,4 +1,4 @@
-import { BaseConnector, MnemonicKeyringModel, Id } from '../connector/base'
+import { Connector, Id, MnemonicKeyringModel } from '@unid/wallet-sdk-base-connector'
 import { Secp256k1 } from './secp256k1'
 import { BIP32Interface, Runtime } from '../../runtime'
 
@@ -21,7 +21,7 @@ export interface MnemonicKeyringOptions {
 }
 
 interface MnemonicKeyringContext {
-    connector: BaseConnector
+    connector: Connector
     context  : BIP39Context
     sign     : Secp256k1
     update   : Secp256k1
@@ -43,7 +43,7 @@ export class MnemonicKeyring {
     public static readonly recoveryDerivationPath: string = `${ MnemonicKeyring.baseDerivationPath }/30`
     public static readonly encryptDerivationPath: string  = `${ MnemonicKeyring.baseDerivationPath }/40`
 
-    private connector: BaseConnector
+    private connector: Connector
     private context  : BIP39Context
     private sign     : Secp256k1
     private update   : Secp256k1
@@ -126,7 +126,7 @@ export class MnemonicKeyring {
      * @param options 
      * @returns
      */
-    public static async createKeyring(connector: BaseConnector, options?: MnemonicKeyringOptions): Promise<MnemonicKeyring> {
+    public static async createKeyring(connector: Connector, options?: MnemonicKeyringOptions): Promise<MnemonicKeyring> {
         const context  = await MnemonicKeyring.generateBip39Seed(options)
         const sign     = MnemonicKeyring.generateSecp256k1(context, MnemonicKeyring.signDerivationPath)
         const update   = MnemonicKeyring.generateSecp256k1(context, MnemonicKeyring.updateDerivationPath)
@@ -152,7 +152,7 @@ export class MnemonicKeyring {
      * @param did 
      * @returns
      */
-    public static async loadKeyring(connector: BaseConnector, did: string): Promise<MnemonicKeyring> {
+    public static async loadKeyring(connector: Connector, did: string): Promise<MnemonicKeyring> {
         const keyring = await connector.findByDid(did)
 
         if (! keyring) {

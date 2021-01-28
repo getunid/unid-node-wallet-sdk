@@ -1,6 +1,6 @@
 import { UNiDDidOperator, PublicKeyPurpose, UNiDDidDocument } from './core'
-import { ContextManager } from './context'
-import { BaseConnector } from './did-unid/connector/base'
+import { MongoDBConnector } from '@unid/wallet-sdk-mongo-connector'
+import { MongoClient } from 'mongodb'
 import { UNiDDid } from './did-unid/did'
 import { VerifiableCredential } from './did-unid/did/credential'
 import { VerifiablePresentation } from './did-unid/did/presentation'
@@ -21,6 +21,7 @@ import {
 } from './did-unid/schemas'
 import { UNiDAuthCredentialV1 } from './did-unid/schemas/internal/unid-auth'
 import { promise } from './utils/promise'
+import { Cipher } from './did-unid/cipher/cipher'
 
 /**
  */
@@ -31,12 +32,38 @@ export enum UNiDNetworkType {
 
 /**
  */
-export interface UNiDContext {
-    clientId     : string,
-    clientSecret : string,
-    connector    : BaseConnector,
+interface UNiDNetwork {
+    envNetwork? : UNiDNetworkType
+}
+
+/**
+ */
+interface UNiDAPIClient {
+    clientId    : string,
+    clientSecret: string,
+}
+
+/**
+ */
+interface UNiDPersistentStoreExternal {
+    mongoClient  : MongoClient,
     encryptionKey: string,
-    envNetwork?  : UNiDNetworkType
+}
+
+/**
+ */
+interface UNiDPersistentStoreInternal {
+    connector: MongoDBConnector
+}
+
+/**
+ */
+interface UNiDContextExternal extends UNiDNetwork, UNiDAPIClient, UNiDPersistentStoreExternal {
+}
+
+/**
+ */
+export interface UNiDContextInternal extends UNiDNetwork, UNiDAPIClient, UNiDPersistentStoreInternal {
 }
 
 /**
@@ -64,7 +91,13 @@ export interface UNiDVerifyPresentationResponse<T1> {
 /**
  */
 class UNiDKlass {
+    /**
+     */
     private readonly operator: UNiDDidOperator
+
+    /**
+     */
+    private context?: UNiDContextInternal
 
     /**
      * @param context 
@@ -76,15 +109,42 @@ class UNiDKlass {
     /**
      * @param context 
      */
-    public init(context: UNiDContext) {
-        ContextManager.setContext(context)
+    public init(context: UNiDContextExternal) {
+        const connector = new MongoDBConnector({
+            client   : context.mongoClient,
+            encrypter: Cipher.encrypt,
+            decrypter: Cipher.decrypt,
+            encryptionKey: context.encryptionKey,
+        })
+
+        this.context = {
+            clientId    : context.clientId,
+            clientSecret: context.clientSecret,
+            connector   : connector,
+            envNetwork  : context.envNetwork,
+        }
     }
 
     /**
      * @returns
      */
-    private getConnector(): BaseConnector {
-        return ContextManager.context.connector
+    private getConnector(): MongoDBConnector {
+        if (this.context === undefined) {
+            throw new UNiDNotImplementedError()
+        }
+
+        return this.context.connector
+    }
+
+    /**
+     * @returns
+     */
+    private getContext(): UNiDContextInternal {
+        if (this.context === undefined) {
+            throw new UNiDNotImplementedError()
+        }
+
+        return this.context
     }
 
     /**
@@ -95,6 +155,7 @@ class UNiDKlass {
         const keyring = await MnemonicKeyring.loadKeyring(this.getConnector(), params.did)
 
         return new UNiDDid({
+            context : this.getContext(),
             keyring : keyring,
             operator: this.operator,
         })
@@ -124,6 +185,7 @@ class UNiDKlass {
                 await keyring.setDid(document.identifier)
 
                 return new UNiDDid({
+                    context : this.getContext(),
                     keyring : keyring,
                     operator: this.operator,
                 })

@@ -1,5 +1,5 @@
 import crypto from 'crypto'
-import { Cipher } from '../src/did-unid/cipher/cipher'
+import { Cipher, IV_LENGTH, SALT_LENGTH } from '../src/did-unid/cipher/cipher'
 
 test('Cipher#enc/dec - 1', async () => {
     const data: Buffer   = Buffer.from('hello', 'utf-8')
@@ -39,7 +39,7 @@ test('Cipher#enc/dec - 3', async () => {
 })
 
 test('Cipher#dec - 1', async () => {
-    const data = crypto.randomBytes((Cipher.SALT_LENGTH + Cipher.IV_LENGTH) - 1)
+    const data = crypto.randomBytes((SALT_LENGTH + IV_LENGTH) - 1)
     const secret: Buffer = Buffer.from('secret', 'utf-8')
 
     await expect(async () => {
