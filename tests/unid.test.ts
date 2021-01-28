@@ -21,11 +21,13 @@ const client = new MongoClient('mongodb://root:password@localhost:27017', {
 
 beforeAll(() => {
     return new Promise(async (resolve, reject) => {
+        await client.connect()
+
         UNiD.init({
             clientId     : '718AC7F1006ECA672E1D1BE9B4666D3EEFD6C2805F9200328502853AFDFD3219',
             clientSecret : '670E362C65183C3850A8FC6E0ED26EC72FDAE67846FDCE1904F604C8E4757273',
             encryptionKey: '1AFFD4C6096D0EF4344E963612229DBF786BBC23C60611093FA9149C0E815E68',
-            mongoClient  : await client.connect(),
+            localStorage : client,
         })
 
         return resolve(true)

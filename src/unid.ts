@@ -46,7 +46,7 @@ interface UNiDAPIClient {
 /**
  */
 interface UNiDPersistentStoreExternal {
-    mongoClient  : MongoClient,
+    localStorage : MongoClient,
     encryptionKey: string,
 }
 
@@ -111,7 +111,7 @@ class UNiDKlass {
      */
     public init(context: UNiDContextExternal) {
         const connector = new MongoDBConnector({
-            client   : context.mongoClient,
+            client   : context.localStorage,
             encrypter: Cipher.encrypt,
             decrypter: Cipher.decrypt,
             encryptionKey: context.encryptionKey,
