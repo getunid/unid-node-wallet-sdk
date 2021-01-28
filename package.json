@@ -1,6 +1,6 @@
 {
   "name": "@unid/node-wallet-sdk",
-  "version": "0.0.43",
+  "version": "1.0.0",
   "main": "libs/index.js",
   "types": "libs/index.d.ts",
   "author": "UNiD <>",
@@ -17,7 +17,7 @@
   ],
   "scripts": {
     "build": "npx tsc",
-    "release": "npx rimraf libs && npx yarn build && npx standard-version --commit-all --sign && npm publish",
+    "release": "npx rimraf libs && npx yarn build && npx standard-version -r  major --commit-all --sign && npm publish",
     "ts-node": "npx ts-node --files -r tsconfig-paths/register",
     "test": "jest"
   },
