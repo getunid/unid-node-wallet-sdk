@@ -1,5 +1,5 @@
 {
-  "name": "@unid/nodejs-wallet-sdk",
+  "name": "@unid/node-wallet-sdk",
   "version": "0.0.42",
   "main": "libs/index.js",
   "types": "libs/index.d.ts",
