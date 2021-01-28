@@ -274,7 +274,7 @@ class UNiDKlass {
         }
 
         // Verify: Signatures
-        await promise.all(verifiedVP.payload.verifiableCredential, async (item, index) => {
+        await promise.all(verifiedVP.payload.verifiableCredential, async (item, _) => {
             if (! this.isVerifiableCredential(item)) {
                 throw new UNiDNotCompatibleError()
             }

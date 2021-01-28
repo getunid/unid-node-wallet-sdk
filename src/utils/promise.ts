@@ -42,7 +42,7 @@ const all = async <T1, T2>(array  : Array<T1>, worker : (item: T1, index: string
  * @returns
  */
 const wait = (timeout: number): Promise<boolean> => {
-    return new Promise<boolean>((resolve, reject) => {
+    return new Promise<boolean>((resolve, _) => {
         setTimeout(() => {
             return resolve(true)
         }, timeout)

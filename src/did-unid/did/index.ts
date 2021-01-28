@@ -173,7 +173,7 @@ export class UNiDDid {
             })
         })
 
-        const duplicated = types.filter((type, index, self) => {
+        const duplicated = types.filter((type, _, self) => {
             return self.indexOf(type) !== self.lastIndexOf(type)
         })
 
@@ -339,7 +339,7 @@ export class UNiDDid {
         ])) as UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, UNiDSDSCredentialV1Types>> & UNiDVerifiablePresentationMetadata
         
         const response = await operator.find({ payload: payload })
-        const verified = await promise.all<SDSFindOperationResponsePayload, UNiDVerifyCredentialResponse<string, string, UNiDCredentialSubjectMetadata>>(response.payload, async (item, index) => {
+        const verified = await promise.all<SDSFindOperationResponsePayload, UNiDVerifyCredentialResponse<string, string, UNiDCredentialSubjectMetadata>>(response.payload, async (item, _) => {
             return this.decryptCredential(item.document)
         })
 

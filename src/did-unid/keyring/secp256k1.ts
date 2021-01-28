@@ -90,9 +90,9 @@ export class Secp256k1 {
             private: Buffer.from(base64url.toBuffer(d)),
             public : Buffer.from(
                 Buffer.concat([
-                    Uint8Array.from([ 0x04 ]),
-                    Uint8Array.from(base64url.toBuffer(x)),
-                    Uint8Array.from(base64url.toBuffer(y)),
+                    Buffer.from(Uint8Array.from([ 0x04 ])),
+                    Buffer.from(Uint8Array.from(base64url.toBuffer(x))),
+                    Buffer.from(Uint8Array.from(base64url.toBuffer(y))),
                 ])
             ),
         })

@@ -38,7 +38,7 @@ export class UNiDDidOperator {
         if ((context !== undefined) && (context.endpoint !== undefined)) {
             this.endpoint = context.endpoint
         } else {
-            this.endpoint = ConfigManager.DID_ENDPOINT_BASE_URI
+            this.endpoint = ConfigManager.DID_ENDPOINT_URI
         }
 
         this.client = HttpClient.new({

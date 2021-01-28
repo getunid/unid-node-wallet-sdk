@@ -205,12 +205,12 @@ export class Signer {
     public static async sign(message: Buffer, context: Context): Promise<Buffer> {
         const payload   = Buffer.from(JSON.stringify(message), 'utf-8')
         const digest    = Buffer.from(Runtime.SHA256.digest(payload, 'HEX'), 'hex')
-        const signature = Runtime.Secp256k1.ecdsaSign(
+        const signature = await Runtime.Secp256k1.ecdsaSign(
             Uint8Array.from(digest),
             Uint8Array.from(context.getPrivateKey()),
         )
 
-        return Buffer.from(signature.signature)
+        return Buffer.from(signature)
     }
 
     /**
@@ -222,7 +222,7 @@ export class Signer {
     public static async verify(message: object, signature: Buffer, context: Context): Promise<boolean> {
         const payload = Buffer.from(JSON.stringify(message), 'utf-8')
         const digest  = Buffer.from(Runtime.SHA256.digest(payload, 'HEX'), 'hex')
-        const verify  = Runtime.Secp256k1.ecdsaVerify(
+        const verify  = await Runtime.Secp256k1.ecdsaVerify(
             Uint8Array.from(signature),
             Uint8Array.from(digest),
             Uint8Array.from(context.getPublicKey())

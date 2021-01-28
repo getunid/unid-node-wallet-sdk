@@ -124,7 +124,7 @@ export class UNiDSDSOperator {
         if ((context !== undefined) && (context.endpoint !== undefined)) {
             this.endpoint = context.endpoint
         } else {
-            this.endpoint = ConfigManager.SDS_ENDPOINT_BASE_URI
+            this.endpoint = ConfigManager.SDS_ENDPOINT_URI
         }
 
         this.client = HttpClient.new({
@@ -209,7 +209,7 @@ export class UNiDSDSOperator {
     /**
      * @param request 
      */
-    public async update(request: SDSUpdateRequest): Promise<SDSUpdateResponse> {
+    public async update(_: SDSUpdateRequest): Promise<SDSUpdateResponse> {
         try {
             throw new UNiDNotImplementedError()
         } catch (err) {
@@ -220,7 +220,7 @@ export class UNiDSDSOperator {
     /**
      * @param request 
      */
-    public async delete(request: SDSDeleteRequest): Promise<SDSDeleteResponse> {
+    public async delete(_: SDSDeleteRequest): Promise<SDSDeleteResponse> {
         try {
             throw new UNiDNotImplementedError()
         } catch (err) {

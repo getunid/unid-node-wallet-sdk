@@ -16,7 +16,7 @@ export class MongoDBConnector implements BaseConnector {
 
     /**
      */
-    private readonly DATABASE_NAME: string   = 'node_wallet_sdk'
+    private readonly DATABASE_NAME: string = 'node_wallet_sdk'
 
     /**
      */
@@ -25,7 +25,7 @@ export class MongoDBConnector implements BaseConnector {
     /**
      * @param context 
      */
-    constructor(context: MongoDBConnectorContext) {
+    constructor(_: MongoDBConnectorContext) {
         this.database = MongoDBClient.agent.db(this.DATABASE_NAME, {})
     }
 
@@ -85,7 +85,7 @@ export class MongoDBConnector implements BaseConnector {
     /**
      * @param payload 
      */
-    async deleteById(payload: MnemonicKeyringModel): Promise<MnemonicKeyringModel> {
+    async deleteById(_: MnemonicKeyringModel): Promise<MnemonicKeyringModel> {
         throw new Error()
     }
 

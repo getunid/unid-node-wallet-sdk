@@ -85,10 +85,8 @@ export class Runtime {
              * @param privateKey 
              * @returns
              */
-            public ecdsaSign (message: Uint8Array, privateKey: Uint8Array): {
-                signature: Uint8Array
-            } {
-                return secp256k1.ecdsaSign(message, privateKey)
+            public async ecdsaSign (message: Uint8Array, privateKey: Uint8Array): Promise<Uint8Array> {
+                return secp256k1.ecdsaSign(message, privateKey).signature
             }
 
             /**
@@ -97,7 +95,7 @@ export class Runtime {
              * @param publicKey 
              * @returns
              */
-            public ecdsaVerify (signature: Uint8Array, message: Uint8Array, publicKey: Uint8Array): boolean {
+            public async ecdsaVerify (signature: Uint8Array, message: Uint8Array, publicKey: Uint8Array): Promise<boolean> {
                 return secp256k1.ecdsaVerify(signature, message, publicKey)
             }
         }()
@@ -109,7 +107,7 @@ export class Runtime {
              * @param strength 
              * @returns
              */
-            public generateMnemonic (strength?: number | undefined): string {
+            public async generateMnemonic (strength?: number | undefined): Promise<string> {
                 return bip39.generateMnemonic(strength)
             }
 
@@ -146,7 +144,7 @@ export class Runtime {
              * @param size 
              * @returns
              */
-            public randomBytes(size: number): Buffer {
+            public async randomBytes(size: number): Promise<Buffer> {
                 const bytes = CryptoJS.lib.WordArray.random(size)
                 const hex   = bytes.toString(CryptoJS.enc.Hex)
 

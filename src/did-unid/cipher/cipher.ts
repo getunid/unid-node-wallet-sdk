@@ -29,8 +29,8 @@ export class Cipher {
      * @returns
      */
     public static async encrypt(content: Buffer, secret: Buffer): Promise<Buffer> {
-        const salt = Runtime.Commons.randomBytes(this.SALT_LENGTH)
-        const iv   = Runtime.Commons.randomBytes(this.IV_LENGTH)
+        const salt = await Runtime.Commons.randomBytes(this.SALT_LENGTH)
+        const iv   = await Runtime.Commons.randomBytes(this.IV_LENGTH)
         const key  = await Runtime.Scrypt.kdf(secret, salt, this.PASS_LENGTH)
 
         return Buffer.concat([ salt, Runtime.AES.encrypt(content, key, iv), iv ])

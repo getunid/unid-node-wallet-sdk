@@ -305,9 +305,9 @@ export class MnemonicKeyring {
             }
         }
 
-        const mnemonic = Runtime.BIP39.generateMnemonic(fromSize(options.length))
+        const mnemonic = await Runtime.BIP39.generateMnemonic(fromSize(options.length))
         const seed     = await Runtime.BIP39.mnemonicToSeed(mnemonic)
-    
+
         return {
             mnemonic: mnemonic,
             seed    : seed,

@@ -59,7 +59,7 @@ const trimString = (input: string | undefined, length: number): string => {
  * @returns
  */
 const range = (start: number, end: number): Array<number> => {
-    return Array.from({ length: (end - start) }, (v, k) => k + start);
+    return Array.from({ length: (end - start) }, (_, k) => k + start);
 }
 
 /**
