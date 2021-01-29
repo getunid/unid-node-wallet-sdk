@@ -42,7 +42,7 @@ export class QualificationCredentialV1 extends UNiDVerifiableCredentialBase<Qual
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is QualificationCredentialV1Schema & UNiDVerifiableCredentialMetadata {
+    public static isCompatible(input: any): input is QualificationCredentialV1Schema & UNiDVerifiableCredentialMetadata {
         if (typeof input !== 'object') {
             return false
         }

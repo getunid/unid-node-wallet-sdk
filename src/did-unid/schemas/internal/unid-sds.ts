@@ -144,7 +144,7 @@ export class UNiDSDSCredentialV1 extends UNiDVerifiableCredentialBase<UNiDSDSCre
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is UNiDSDSCredentialV1Schema & UNiDVerifiableCredentialMetadata {
+    public static isCompatible(input: any): input is UNiDSDSCredentialV1Schema & UNiDVerifiableCredentialMetadata {
         if (typeof input !== 'object') {
             return false
         }

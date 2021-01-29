@@ -42,7 +42,7 @@ export class WorksForCredentialV1 extends UNiDVerifiableCredentialBase<WorksForC
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is WorksForCredentialV1Schema & UNiDVerifiableCredentialMetadata {
+    public static isCompatible(input: any): input is WorksForCredentialV1Schema & UNiDVerifiableCredentialMetadata {
         if (typeof input !== 'object') {
             return false
         }

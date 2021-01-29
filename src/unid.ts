@@ -278,20 +278,12 @@ class UNiDKlass {
      * @param payload 
      * @returns
      */
-    private async validateAuthentication<T1>(payload: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata) {
-        const verifiedVP = await this.verifyPresentation(payload)
-
-        if (! verifiedVP.isValid) {
-            throw new UNiDInvalidSignatureError()
-        }
-
-        const selectedVC = UNiDAuthCredentialV1.select(verifiedVP.payload)
-
-        if (selectedVC === undefined) {
+    private async validateAuthentication(payload: UNiDVerifiableCredential<string, string, UNiDCredentialSubjectMetadata> & UNiDVerifiableCredentialMetadata) {
+        if (! UNiDAuthCredentialV1.isCompatible(payload)) {
             throw new UNiDNotCompatibleError()
         }
 
-        const verifiedVC = await this.verifyCredential(selectedVC)
+        const verifiedVC = await this.verifyCredential(payload)
 
         if (! verifiedVC.isValid) {
             throw new UNiDInvalidSignatureError()
@@ -304,7 +296,7 @@ class UNiDKlass {
      * @param request 
      * @returns
      */
-    public async validateAuthenticationRequest<T1>(request: UNiDVerifiablePresentation<UNiDVerifiableCredential<string, string, T1>> & UNiDVerifiablePresentationMetadata) {
+    public async validateAuthenticationRequest(request: UNiDVerifiableCredential<string, string, UNiDCredentialSubjectMetadata> & UNiDVerifiableCredentialMetadata) {
         const subject = await this.validateAuthentication(request)
 
         if (subject['@type'] !== 'AuthnRequest') {
@@ -322,21 +314,32 @@ class UNiDKlass {
         required: Array<UNiDVerifiableCredentialTypes>,
         optional: Array<UNiDVerifiableCredentialTypes>,
     }) {
-        const subject = await this.validateAuthentication(response)
+        const verifiedOuterVC = await this.verifyPresentation(response)
+
+        if (! verifiedOuterVC.isValid) {
+            throw new UNiDInvalidSignatureError()
+        }
+
+        const selectedVC = UNiDAuthCredentialV1.select(verifiedOuterVC.payload)
+
+        if (selectedVC === undefined) {
+            throw new UNiDNotCompatibleError()
+        }
+
+        const subject = await this.validateAuthentication(selectedVC)
 
         if (subject['@type'] !== 'AuthnResponse') {
             throw new UNiDNotCompatibleError()
         }
 
-        const vp = subject.verifiablePresentation
-        const verifiedVP = await this.verifyPresentation(vp)
+        const verifiedInnerVP = await this.verifyPresentation(subject.verifiablePresentation)
 
-        if (! verifiedVP.isValid) {
+        if (! verifiedInnerVP.isValid) {
             throw new UNiDInvalidSignatureError()
         }
 
         // Verify: Signatures
-        await promise.all(verifiedVP.payload.verifiableCredential, async (item, _) => {
+        await promise.all(verifiedInnerVP.payload.verifiableCredential, async (item, _) => {
             if (! this.isVerifiableCredential(item)) {
                 throw new UNiDNotCompatibleError()
             }
@@ -352,12 +355,12 @@ class UNiDKlass {
 
         // Verify: Types
         options.required.forEach((type) => {
-            if (verifiedVP.metadata.credentialTypes.indexOf(type) < 0) {
+            if (verifiedInnerVP.metadata.credentialTypes.indexOf(type) < 0) {
                 throw new UNiDNotCompatibleError()
             }
         })
 
-        return verifiedVP
+        return verifiedInnerVP
     }
 }
 

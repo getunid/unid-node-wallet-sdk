@@ -72,7 +72,7 @@ export class UNiDAuthCredentialV1 extends UNiDVerifiableCredentialBase<UNiDAuthC
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is UNiDAuthCredentialV1Schema & UNiDVerifiableCredentialMetadata {
+    public static isCompatible(input: any): input is UNiDAuthCredentialV1Schema & UNiDVerifiableCredentialMetadata {
         if (typeof input !== 'object') {
             return false
         }

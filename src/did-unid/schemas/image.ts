@@ -42,7 +42,7 @@ export class ImageCredentialV1 extends UNiDVerifiableCredentialBase<ImageCredent
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is ImageCredentialV1Schema & UNiDVerifiableCredentialMetadata {
+    public static isCompatible(input: any): input is ImageCredentialV1Schema & UNiDVerifiableCredentialMetadata {
         if (typeof input !== 'object') {
             return false
         }

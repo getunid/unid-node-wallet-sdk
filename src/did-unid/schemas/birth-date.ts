@@ -42,7 +42,7 @@ export class BirthDateCredentialV1 extends UNiDVerifiableCredentialBase<BirthDat
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is BirthDateCredentialV1Schema & UNiDVerifiableCredentialMetadata {
+    public static isCompatible(input: any): input is BirthDateCredentialV1Schema & UNiDVerifiableCredentialMetadata {
         if (typeof input !== 'object') {
             return false
         }

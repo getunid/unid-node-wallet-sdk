@@ -49,7 +49,7 @@ export class PhoneCredentialV1 extends UNiDVerifiableCredentialBase<PhoneCredent
     /**
      * @param input 
      */
-    private static isCompatible(input: any): input is PhoneCredentialV1Schema & UNiDVerifiableCredentialMetadata {
+    public static isCompatible(input: any): input is PhoneCredentialV1Schema & UNiDVerifiableCredentialMetadata {
         if (typeof input !== 'object') {
             return false
         }
