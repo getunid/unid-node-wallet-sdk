@@ -1,4 +1,4 @@
-import { Organization } from './schema.org'
+import { OrganizationLeaf } from './schema.org'
 import { UNiDNotCompatibleError, UNiDNotUniqueError } from '../../error'
 import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiableCredentialBase, UNiDVerifiableCredentialMetadata, UNiDVerifiableCredentialOptions, UNiDVerifiablePresentation } from '.'
 
@@ -8,7 +8,7 @@ import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiable
  */
 interface WorksForOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'WorksForOrganization',
-    worksFor: Array<Organization>,
+    worksFor: Array<OrganizationLeaf>,
 }
 
 /**

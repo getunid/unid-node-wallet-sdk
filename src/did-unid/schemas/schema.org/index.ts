@@ -6701,7 +6701,7 @@ interface OrganizationBase extends ThingBase {
     /** The Value-added Tax ID of the organization or person. */
     "vatID"?: SchemaValue<Text>;
 }
-interface OrganizationLeaf extends OrganizationBase {
+export interface OrganizationLeaf extends OrganizationBase {
     "@type": "Organization";
 }
 /** An organization such as a school, NGO, corporation, club, etc. */
