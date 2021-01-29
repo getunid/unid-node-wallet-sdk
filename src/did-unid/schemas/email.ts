@@ -8,14 +8,14 @@ import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiable
  */
 interface EmailPerson extends UNiDCredentialSubjectMetadata {
     '@type': 'EmailPerson',
-    email  : Readonly<Text>,
+    email: Text,
 }
 
 /**
  */
 interface EmailOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'EmailOrganization',
-    email  : Readonly<Text>,
+    email: Text,
 }
 
 /**

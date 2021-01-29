@@ -8,7 +8,7 @@ import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiable
  */
 interface BirthDatePerson extends UNiDCredentialSubjectMetadata {
     '@type': 'BirthDatePerson',
-    birthDate: Readonly<Date>,
+    birthDate: Date,
 }
 
 /**

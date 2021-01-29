@@ -8,7 +8,7 @@ import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiable
  */
 interface GenderPerson extends UNiDCredentialSubjectMetadata {
     '@type': 'GenderPerson',
-    gender : Readonly<Text>,
+    gender: Text,
 }
 
 /**

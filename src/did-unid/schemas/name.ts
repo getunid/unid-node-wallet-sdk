@@ -8,18 +8,18 @@ import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiable
  */
 interface NamePerson extends UNiDCredentialSubjectMetadata {
     '@type': 'NamePerson',
-    name: Readonly<Text>,
-    givenName: Readonly<Text>,
-    familyName: Readonly<Text>,
+    name: Text,
+    givenName: Text,
+    familyName: Text,
 }
 
 /**
  */
 interface NameOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'NameOrganization',
-    name: Readonly<Text>,
-    givenName: Readonly<Text>,
-    familyName: Readonly<Text>,
+    name: Text,
+    givenName: Text,
+    familyName: Text,
 }
 
 /**

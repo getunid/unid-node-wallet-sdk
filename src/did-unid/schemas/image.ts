@@ -8,7 +8,7 @@ import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiable
  */
 interface ImagePerson extends UNiDCredentialSubjectMetadata {
     '@type': 'ImagePerson',
-    image: Readonly<ImageObject>,
+    image: ImageObject,
 }
 
 /**

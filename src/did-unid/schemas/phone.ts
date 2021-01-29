@@ -8,14 +8,14 @@ import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiable
  */
 interface PhonePerson extends UNiDCredentialSubjectMetadata {
     '@type': 'PhonePerson',
-    telephone: Readonly<Text>
+    telephone: Text,
 }
 
 /**
  */
 interface PhoneOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'PhoneOrganization',
-    telephone: Readonly<Text>
+    telephone: Text,
 }
 
 /**
