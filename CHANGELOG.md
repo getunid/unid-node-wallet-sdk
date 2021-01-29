@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/getunid/unid-nodejs-sdk/compare/v1.0.1...v1.1.0) (2021-01-29)
+
+
+### Features
+
+* Modified auth-n payload ([ffdb2f2](https://github.com/getunid/unid-nodejs-sdk/commit/ffdb2f2451febeb83906953f21d7886c8fa61d66))
+
 ### [1.0.1](https://github.com/getunid/unid-nodejs-sdk/compare/v1.0.0...v1.0.1) (2021-01-28)
 
 
