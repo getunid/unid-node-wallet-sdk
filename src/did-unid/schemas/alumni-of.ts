@@ -8,7 +8,7 @@ import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiable
  */
 interface AlumniOfOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'AlumniOfOrganization',
-    alumniOf: Organization,
+    alumniOf: Readonly<Array<Organization>>,
 }
 
 /**

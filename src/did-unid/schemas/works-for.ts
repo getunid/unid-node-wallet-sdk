@@ -8,7 +8,7 @@ import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiable
  */
 interface WorksForOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'WorksForOrganization',
-    worksFor: Readonly<Organization>,
+    worksFor: Readonly<Array<Organization>>,
 }
 
 /**

@@ -8,7 +8,7 @@ import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiable
  */
 interface QualificationPerson extends UNiDCredentialSubjectMetadata {
     '@type': 'QualificationPerson',
-    hasCredential: Array<EducationalOccupationalCredential>,
+    hasCredential: Readonly<Array<EducationalOccupationalCredential>>,
 }
 
 /**

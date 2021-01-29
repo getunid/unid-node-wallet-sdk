@@ -8,14 +8,14 @@ import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiable
  */
 interface AddressPerson extends UNiDCredentialSubjectMetadata {
     '@type': 'AddressPerson',
-    address: PostalAddress,
+    address: Readonly<PostalAddress>,
 }
 
 /**
  */
 interface AddressOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'AddressOrganization',
-    address: PostalAddress,
+    address: Readonly<PostalAddress>,
 }
 
 /**

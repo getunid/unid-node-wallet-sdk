@@ -8,14 +8,14 @@ import { UNiDCredentialSubjectMetadata, UNiDVerifiableCredential, UNiDVerifiable
  */
 interface ContactPointPerson extends UNiDCredentialSubjectMetadata {
     '@type': 'ContactPointPerson',
-    contactPoint: ContactPoint
+    contactPoint: Readonly<ContactPoint>,
 }
 
 /**
  */
 interface ContactPointOrganization extends UNiDCredentialSubjectMetadata {
     '@type': 'ContactPointOrganization',
-    contactPoint: ContactPoint,
+    contactPoint: Readonly<ContactPoint>,
 }
 
 /**
