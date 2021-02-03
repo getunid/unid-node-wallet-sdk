@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/getunid/unid-nodejs-sdk/compare/v1.1.3...v1.2.0) (2021-02-03)
+
+
+### Features
+
+* modified did-auth request object ([ad66a14](https://github.com/getunid/unid-nodejs-sdk/commit/ad66a149835b025939fb849a0e57eabc0bb41a8e))
+
 ### [1.1.3](https://github.com/getunid/unid-nodejs-sdk/compare/v1.1.2...v1.1.3) (2021-01-29)
 
 
