@@ -1,7 +1,7 @@
 import { MongoClient } from 'mongodb'
 import { UNiD, KeyRingType } from '../src'
 
-const client = new MongoClient('mongodb://root:password@localhost:27017', {
+const client = new MongoClient('mongodb://root:password@localhost:27018', {
     useUnifiedTopology: true,
 })
 

@@ -365,7 +365,7 @@ export class UNiDDid {
         required: Array<UNiDVerifiableCredentialTypes>,
         optional: Array<UNiDVerifiableCredentialTypes>,
     }) {
-        return await this.createCredential(
+        const vc = await this.createCredential(
                 new UNiDAuthCredentialV1({
                 '@id'  : this.getIdentifier(),
                 '@type': 'AuthnRequest',
@@ -380,6 +380,8 @@ export class UNiDDid {
                 },
             })
         )
+
+        return await this.createPresentation([ vc ])
     }
 
     /**

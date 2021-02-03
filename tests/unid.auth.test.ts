@@ -8,7 +8,7 @@ import {
 } from '../src'
 import lodash from 'lodash'
 
-const client = new MongoClient('mongodb://root:password@localhost:27017', {
+const client = new MongoClient('mongodb://root:password@localhost:27018', {
     useUnifiedTopology: true,
 })
 

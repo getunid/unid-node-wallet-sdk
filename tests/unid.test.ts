@@ -15,7 +15,7 @@ import {
     WorksForCredentialV1,
 } from '../src'
 
-const client = new MongoClient('mongodb://root:password@localhost:27017', {
+const client = new MongoClient('mongodb://root:password@localhost:27018', {
     useUnifiedTopology: true,
 })
 
@@ -153,9 +153,9 @@ test('UNiD - 6', async () => {
         new AlumniOfCredentialV1({
             '@id'  : DID.getIdentifier(),
             '@type': 'AlumniOfOrganization',
-            alumniOf: {
+            alumniOf: [{
                 '@type': 'Organization',
-            }
+            }]
         })
     )
 
@@ -253,9 +253,9 @@ test('UNiD - 6', async () => {
         new WorksForCredentialV1({
             '@id': DID.getIdentifier(),
             '@type': 'WorksForOrganization',
-            worksFor: {
+            worksFor: [{
                 '@type': 'Organization',
-            }
+            }]
         })
     )
 
