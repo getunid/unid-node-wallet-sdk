@@ -37,7 +37,7 @@ interface UNiDDidContext {
  */
 interface UNiDFindOneQuery {
     // [[ REQUIRED ]]
-    type: UNiDVerifiableCredentialTypes,
+    type: UNiDVerifiableCredentialTypes | string,
 
     // [[ OPTIONAL ]]
     issuerDid?     : string,
