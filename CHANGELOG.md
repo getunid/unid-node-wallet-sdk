@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/getunid/unid-nodejs-sdk/compare/v1.2.0...v1.3.0) (2021-02-05)
+
+
+### Features
+
+* modified exports ([3c56df5](https://github.com/getunid/unid-nodejs-sdk/commit/3c56df58b60acb8addf777ae858e1c93cc85380c))
+
 ## [1.2.0](https://github.com/getunid/unid-nodejs-sdk/compare/v1.1.3...v1.2.0) (2021-02-03)
 
 
