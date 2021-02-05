@@ -14,6 +14,18 @@ import { ImageCredentialV1 } from './did-unid/schemas/image'
 import { WorksForCredentialV1 } from './did-unid/schemas/works-for'
 import { UNiDSDSCredentialV1 } from './did-unid/schemas/internal/unid-sds'
 import { UNiDAuthCredentialV1 } from './did-unid/schemas/internal/unid-auth'
+import {
+    UNiDCredentialSubjectMetadata,
+    UNiDVerifiableCredential,
+    UNiDVerifiableCredentialBase,
+    UNiDVerifiableCredentialOptions,
+    UNiDVerifiableCredentialMetadata,
+    UNiDVerifiablePresentation,
+} from './did-unid/schemas'
+import {
+    UNiDNotCompatibleError,
+    UNiDNotUniqueError,
+} from './error'
 
 export {
     UNiD,
@@ -33,4 +45,12 @@ export {
     WorksForCredentialV1,
     UNiDSDSCredentialV1,
     UNiDAuthCredentialV1,
+    UNiDCredentialSubjectMetadata,
+    UNiDVerifiableCredential,
+    UNiDVerifiableCredentialBase,
+    UNiDVerifiableCredentialOptions,
+    UNiDVerifiableCredentialMetadata,
+    UNiDVerifiablePresentation,
+    UNiDNotCompatibleError,
+    UNiDNotUniqueError,
 }
