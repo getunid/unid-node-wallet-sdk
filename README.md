@@ -49,7 +49,8 @@ The NodeJS SDK uses MongoDB as a local repository to store keyRings by default. 
 
 ## Configuration
 
-After you've completed setting up your account through [UNiD Studio](https://www.getunid.io/), you will get values: `clientId`, `clientSecret`, and `encryptionKey`. These values are managed by each tenants and used for authorization to other DIDs and SDS endpoints.
+Configuration should happen as early as possible in your application's lifecycle.
+Once you have set up a cloud agent in [UNiD Studio](https://www.getunid.io/), you will get values required for configuration.
 
 ```typescript
 import { UNiD } from '@unid/node-wallet-sdk'
@@ -74,7 +75,15 @@ const mongoClient = new MongoClient(uri, {
     })
 })()
 ```
-Now that you've completed setting up the NodeJS SDK.
+
+| Values          | Description                                                                                                                       |
+| --------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| `clientId`      | It is associated with each cloud agent for a tenant. A string consisting of 64 characters that can be retrieved from UNiD Studio. |
+| `clientSecret`  | A string consisting of 64 characters that can be retrieved from UNiD Studio. It is paired with the `clientId `.                   |
+| `encryptionKey` | A string used to encrypt keyRings (digital wallet) with AES-256-CBC algorithm and store them in MongoDB.                          |
+| `envNetwork`    | The DPKI network to which the DID refers.                                                                                         |
+| `localStorage`  | A connection instance to MongoDB that must be initialized and instantiated outside of the UNiD libraries to MongoDB.              |
+
 
 ## Tutorial
 
