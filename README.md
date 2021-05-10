@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://i.gyazo.com/559a90367ab8a59c741591d65589717d.png" alt="logo" width="160" />
+  <img src="https://i.gyazo.com/2b3ac7a80e916ed0aee482ea269d1ca7.png" alt="logo" width="160" />
 </p>
 
 <h1 align="center" style="text-align: center;">UNiD</h1>
