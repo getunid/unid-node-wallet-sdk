@@ -5,13 +5,9 @@
 <h1 align="center" style="text-align: center;">UNiD</h1>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/typeorm-seeding">
-    <img src="https://img.shields.io/npm/v/typeorm-seeding" alt="NPM package" />
+  <a href="https://github.com/semantic-release/semantic-release">
+    <img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg" alt="Sematic-Release" />
   </a>
-  <a href="https://travis-ci.org/w3tecch/typeorm-seeding">
-    <img src="https://travis-ci.org/w3tecch/typeorm-seeding.svg?branch=master" alt="Build Status" />
-  </a>
-  <a href="https://github.com/semantic-release/semantic-release"><img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg" alt="Sematic-Release" /></a>
 </p>
 
 <p align="center">
