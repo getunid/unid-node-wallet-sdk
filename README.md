@@ -106,7 +106,7 @@ For more methods and how to use them, please refer to [UNiD Documentation](https
 
 ## Changelog
 
-[Changelog](https://github.com/getunid/unid-node-wallet-sdk/blob/develop/CHANGELOG.md)
+[CHANGELOG](CHANGELOG.md)
 
 ## License
 
