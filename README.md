@@ -89,6 +89,7 @@ First create new DID in your application.
 
 ```typescript
 import { UNiD, KeyRingType } from '@unid/node-wallet-sdk'
+
 (async () => {
     try{
         const DID = await UNiD.createDidDocument(
