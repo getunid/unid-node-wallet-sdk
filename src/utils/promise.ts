@@ -24,8 +24,8 @@ const all = async <T1, T2>(array  : Array<T1>, worker : (item: T1, index: string
         async.forEachOfLimit(array, options.limit, async (item, index, next) => {
             try {
                 results.push(await worker(item, index))
-            } catch (error) {
-                return next(error)
+            } catch (err: any) {
+                return next(err)
             }
 
             return next()
