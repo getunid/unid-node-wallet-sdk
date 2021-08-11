@@ -1,6 +1,5 @@
 import { UNiDDidOperator, PublicKeyPurpose, UNiDDidDocument } from './core'
-import { MongoDBConnector } from '@unid/wallet-sdk-mongo-connector'
-import { MongoClient } from 'mongodb'
+import { BaseConnector } from '@unid/wallet-sdk-base-connector'
 import { UNiDDid } from './did-unid/did'
 import { VerifiableCredential } from './did-unid/did/credential'
 import { VerifiablePresentation } from './did-unid/did/presentation'
@@ -21,7 +20,6 @@ import {
 } from './did-unid/schemas'
 import { UNiDAuthCredentialV1 } from './did-unid/schemas/internal/unid-auth'
 import { promise } from './utils/promise'
-import { Cipher } from './did-unid/cipher/cipher'
 
 /**
  */
@@ -46,14 +44,13 @@ interface UNiDAPIClient {
 /**
  */
 interface UNiDPersistentStoreExternal {
-    localStorage : MongoClient,
-    encryptionKey: string,
+    connector: BaseConnector<any>
 }
 
 /**
  */
 interface UNiDPersistentStoreInternal {
-    connector: MongoDBConnector
+    connector: BaseConnector<any>
 }
 
 /**
@@ -110,17 +107,10 @@ class UNiDKlass {
      * @param context 
      */
     public init(context: UNiDContextExternal) {
-        const connector = new MongoDBConnector({
-            client   : context.localStorage,
-            encrypter: Cipher.encrypt,
-            decrypter: Cipher.decrypt,
-            encryptionKey: context.encryptionKey,
-        })
-
         this.context = {
             clientId    : context.clientId,
             clientSecret: context.clientSecret,
-            connector   : connector,
+            connector   : context.connector,
             envNetwork  : context.envNetwork,
         }
     }
@@ -128,7 +118,7 @@ class UNiDKlass {
     /**
      * @returns
      */
-    private getConnector(): MongoDBConnector {
+    private getConnector(): BaseConnector<any> {
         if (this.context === undefined) {
             throw new UNiDNotImplementedError()
         }
