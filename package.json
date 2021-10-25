@@ -1,6 +1,6 @@
 {
   "name": "@unid/node-wallet-sdk",
-  "version": "1.3.5",
+  "version": "1.3.6",
   "main": "libs/index.js",
   "types": "libs/index.d.ts",
   "author": "UNiD <>",
@@ -25,9 +25,7 @@
     "scripts": {}
   },
   "bin": {},
-  "publishConfig": {
-    "registry": "https://npm-registry.getunid.io"
-  },
+  "publishConfig": {},
   "dependencies": {
     "@unid/wallet-sdk-base-connector": "^0.0.10",
     "async": "^3.2.0",
