@@ -4,6 +4,7 @@
   "main": "libs/index.js",
   "types": "libs/index.d.ts",
   "author": "UNiD <>",
+  "description": "",
   "contributors": [
     "vaachii <s@pws.jp>"
   ],
