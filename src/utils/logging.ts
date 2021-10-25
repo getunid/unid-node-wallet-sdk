@@ -121,7 +121,7 @@ class Logging {
             }
 
             return JSON.stringify(data)
-        } catch (error) {
+        } catch (err: any) {
             return ''
         }
     }

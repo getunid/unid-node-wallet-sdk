@@ -1,6 +1,8 @@
 import { UNiD, UNiDNetworkType } from './unid'
 import { KeyRingType } from './did-unid/keyring'
 import { Hasher } from './did-unid/cipher/hasher'
+import { Cipher } from './did-unid/cipher/cipher'
+import { Signer } from './did-unid/cipher/signer'
 import { AddressCredentialV1 } from './did-unid/schemas/address'
 import { AlumniOfCredentialV1 } from './did-unid/schemas/alumni-of'
 import { BirthDateCredentialV1 } from './did-unid/schemas/birth-date'
@@ -32,6 +34,8 @@ export {
     UNiDNetworkType,
     KeyRingType,
     Hasher,
+    Cipher,
+    Signer,
     AddressCredentialV1,
     AlumniOfCredentialV1,
     BirthDateCredentialV1,

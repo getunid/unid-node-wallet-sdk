@@ -160,7 +160,7 @@ export class UNiDSDSOperator {
             }).agent.post<SDSCreateResponse>(URI, context)
 
             return response.data
-        } catch (err) {
+        } catch (err: any) {
             throw err
         }
     }
@@ -184,7 +184,7 @@ export class UNiDSDSOperator {
             }).agent.post<SDSFindResponse>(URI, context)
 
             return response.data
-        } catch (err) {
+        } catch (err: any) {
             throw err
         }
     }
@@ -208,7 +208,7 @@ export class UNiDSDSOperator {
             }).agent.post<SDSFindOneResponse>(URI, context)
 
             return response.data
-        } catch (err) {
+        } catch (err: any) {
             throw err
         }
     }
@@ -219,7 +219,7 @@ export class UNiDSDSOperator {
     public async update(_: SDSUpdateRequest): Promise<SDSUpdateResponse> {
         try {
             throw new UNiDNotImplementedError()
-        } catch (err) {
+        } catch (err: any) {
             throw err
         }
     }
@@ -230,7 +230,7 @@ export class UNiDSDSOperator {
     public async delete(_: SDSDeleteRequest): Promise<SDSDeleteResponse> {
         try {
             throw new UNiDNotImplementedError()
-        } catch (err) {
+        } catch (err: any) {
             throw err
         }
     }

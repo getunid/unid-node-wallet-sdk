@@ -163,7 +163,7 @@ export class Runtime {
              */
             public async kdf (secret: Buffer, salt: Buffer, keylen: number): Promise<Buffer> {
                 return new Promise<Buffer>((resolve, reject) => {
-                    crypto.scrypt(secret, salt, keylen, (err, key) => {
+                    crypto.scrypt(secret.toString('hex'), Buffer.from([]), keylen, (err, key) => {
                         if (err) {
                             return reject(err)
                         }

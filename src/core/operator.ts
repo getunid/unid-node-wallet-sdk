@@ -57,7 +57,7 @@ export class UNiDDidOperator {
             const response = await this.client.agent.get<DIDResolutionResponse>(`/api/v1/identifiers/${ params.did }`)
 
             return new UNiDDidDocument(response.data.didDocument)
-        } catch (err) {
+        } catch (err: any) {
             throw new err
         }
     }
@@ -72,7 +72,7 @@ export class UNiDDidOperator {
             const response = await this.client.agent.post<DIDCreateResponse>('/api/v1/operations', payload)
 
             return new UNiDDidDocument(response.data.didDocument)
-        } catch (err) {
+        } catch (err: any) {
             throw new err
         }
     }

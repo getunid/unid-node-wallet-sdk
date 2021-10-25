@@ -85,7 +85,7 @@ export class UNiDDid {
     /**
      * @returns
      */
-    protected getKeyPairs(): {
+    public getKeyPairs(): {
         sign    : Secp256k1,
         update  : Secp256k1,
         recovery: Secp256k1,
@@ -366,7 +366,7 @@ export class UNiDDid {
         optional: Array<UNiDVerifiableCredentialTypes>,
     }) {
         const vc = await this.createCredential(
-                new UNiDAuthCredentialV1({
+            new UNiDAuthCredentialV1({
                 '@id'  : this.getIdentifier(),
                 '@type': 'AuthnRequest',
                 iss: this.getIdentifier(),
