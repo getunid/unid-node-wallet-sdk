@@ -28,7 +28,7 @@
   "bin": {},
   "publishConfig": {},
   "dependencies": {
-    "@unid/wallet-sdk-base-connector": "^0.0.10",
+    "@getunid/wallet-sdk-base-connector": "^0.0.10",
     "async": "^3.2.0",
     "axios": "^0.21.1",
     "base64url": "^3.0.1",
